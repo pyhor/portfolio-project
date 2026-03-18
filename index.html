@@ -9,7 +9,7 @@
     <style>
       body {
         margin: 0;
-        font-family: 'Inter', sans-serif;
+        font-family: 'Inter', system-ui, sans-serif;
         color: white;
         background-color: transparent; /* VERY IMPORTANT: Let 3D canvas show through */
         overflow-x: hidden;
@@ -40,13 +40,40 @@
         max-width: 500px;
         opacity: 0.8;
       }
+
+      /* CSS Typing Animation */
+      .typewriter-text {
+        overflow: hidden; /* Ensures the content is not revealed until the animation */
+        border-right: .15em solid white; /* The typwriter cursor */
+        white-space: nowrap; /* Keeps the content on a single line */
+        margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+        letter-spacing: .1em; /* Adjust as needed */
+        animation: 
+          typing 3.5s steps(40, end),
+          blink-caret .75s step-end infinite;
+      }
+
+      /* The typing effect */
+      @keyframes typing {
+        from { width: 0 }
+        to { width: 100% }
+      }
+
+      /* The typewriter cursor effect */
+      @keyframes blink-caret {
+        from, to { border-color: transparent }
+        50% { border-color: white; }
+      }
     </style>
   </head>
   <body>
     <!-- The HTML content -->
     <section class="section">
       <h1>The Void.</h1>
-      <p>Scroll down to explore the geometries of deep space.</p>
+      <!-- Added the typing class and width wrapping -->
+      <div style="display: inline-block;">
+        <p class="typewriter-text">Scroll down to explore the geometries of deep space.</p>
+      </div>
     </section>
 
     <section class="section">
