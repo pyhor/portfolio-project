@@ -41,49 +41,40 @@
         opacity: 0.8;
       }
 
-      /* CSS Typing Animation */
-      .typewriter-text {
-        overflow: hidden; /* Ensures the content is not revealed until the animation */
-        border-right: .15em solid white; /* The typwriter cursor */
-        white-space: nowrap; /* Keeps the content on a single line */
-        margin: 0 auto; /* Gives that scrolling effect as the typing happens */
-        letter-spacing: .1em; /* Adjust as needed */
-        animation: 
-          typing 3.5s steps(40, end),
-          blink-caret .75s step-end infinite;
+      /* Story text fading in */
+      .story-text {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 1s ease-out, transform 1s ease-out;
       }
-
-      /* The typing effect */
-      @keyframes typing {
-        from { width: 0 }
-        to { width: 100% }
+      .story-text.visible {
+        opacity: 1;
+        transform: translateY(0);
       }
-
-      /* The typewriter cursor effect */
-      @keyframes blink-caret {
-        from, to { border-color: transparent }
-        50% { border-color: white; }
+      
+      /* Make sections take more space so scrolling is longer */
+      .story-section {
+        min-height: 120vh;
       }
     </style>
   </head>
   <body>
     <!-- The HTML content -->
-    <section class="section">
-      <h1>The Void.</h1>
-      <!-- Added the typing class and width wrapping -->
+    <section class="section story-section">
+      <h1>The Call.</h1>
       <div style="display: inline-block;">
-        <p class="typewriter-text">Scroll down to explore the geometries of deep space.</p>
+        <p class="story-text">You awaken in the void. A strange structure spins slowly in the darkness, whispering a forgotten language. Hover to inspect.</p>
       </div>
     </section>
 
-    <section class="section">
-      <h1>Refraction.</h1>
-      <p>A twenty-sided prism reflecting invisible light.</p>
+    <section class="section story-section">
+      <h1>The Encounter.</h1>
+      <p class="story-text">Deeper in, an Icosahedron pulses with ancient energy. It reacts to your presence. Click to interact.</p>
     </section>
 
-    <section class="section">
-      <h1>Convergence.</h1>
-      <p>The final destination at the end of the scroll.</p>
+    <section class="section story-section">
+      <h1>The Warning.</h1>
+      <p class="story-text">The Octahedron spins chaotically, a warning of the convergence. The journey ends here.</p>
     </section>
 
     <!-- Vite main.js entry -->

@@ -105,9 +105,35 @@ scene.add(particlesMesh);
 
 // Mouse interaction tracking
 let cursor = { x: 0, y: 0 };
+const mouse = new THREE.Vector2(-2, -2); // Default offscreen
+const raycaster = new THREE.Raycaster();
+
 document.addEventListener('mousemove', (event) => {
   cursor.x = (event.clientX / window.innerWidth) - 0.5;
   cursor.y = (event.clientY / window.innerHeight) - 0.5;
+
+  // For raycaster
+  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+});
+
+document.addEventListener('click', () => {
+  raycaster.setFromCamera(mouse, camera);
+  const intersects = raycaster.intersectObjects(meshes);
+  if (intersects.length > 0) {
+    const clickedObj = intersects[0].object;
+    // Pop scale on click
+    clickedObj.scale.set(1.5, 1.5, 1.5);
+    
+    // Story element interactions
+    if (clickedObj === knot) {
+        clickedObj.material.wireframe = !clickedObj.material.wireframe;
+    } else if (clickedObj === icosahedron) {
+        document.body.style.backgroundColor = document.body.style.backgroundColor === 'rgb(20, 0, 0)' ? 'transparent' : 'rgb(20, 0, 0)';
+    } else if (clickedObj === octahedron) {
+        particlesMaterial.color.setHex(Math.random() * 0xffffff);
+    }
+  }
 });
 
 // Scroll interaction tracking
@@ -115,6 +141,21 @@ let scrollY = window.scrollY;
 document.addEventListener('scroll', () => {
     scrollY = window.scrollY;
 });
+
+// Story Text Fade-in Observer
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+        if(entry.isIntersecting) {
+            const textElement = entry.target.querySelector('.story-text');
+            if(textElement) textElement.classList.add('visible');
+        } else {
+            const textElement = entry.target.querySelector('.story-text');
+            if(textElement) textElement.classList.remove('visible');
+        }
+    });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('.story-section').forEach((section) => observer.observe(section));
 
 // Handle window resize
 window.addEventListener('resize', () => {
@@ -165,6 +206,29 @@ function animate() {
         mesh.rotation.x = elapsedTime * 0.2 + (scrollY * 0.005);
         mesh.rotation.z = elapsedTime * 0.3;
       }
+      
+      // Default reset scale and emissive
+      mesh.scale.lerp(new THREE.Vector3(1, 1, 1), 0.1);
+      if(mesh.material.emissive) {
+          mesh.material.emissive.lerp(new THREE.Color(0x111111), 0.1);
+      }
+  }
+
+  // Raycaster for Hover interaction
+  raycaster.setFromCamera(mouse, camera);
+  const intersects = raycaster.intersectObjects(meshes);
+
+  if (intersects.length > 0) {
+      const hoveredObj = intersects[0].object;
+      hoveredObj.scale.lerp(new THREE.Vector3(1.2, 1.2, 1.2), 0.1);
+      
+      if(hoveredObj.material.emissive) {
+          hoveredObj.material.emissive.lerp(new THREE.Color(0xff0000), 0.1);
+      }
+      
+      // Rotate a bit faster when hovered
+      hoveredObj.rotation.x += 0.01;
+      hoveredObj.rotation.y += 0.01;
   }
 
   // Animate particles slowly
