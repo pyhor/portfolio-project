@@ -1,14 +1,22 @@
+# This workflow automatically builds and deploys your Vite project to GitHub Pages
+# It runs every time you push to the main branch
 name: Deploy static content to Pages
+
 on:
+  # Trigger this workflow on every push to the main branch
   push:
     branches: ["main"]
+  # Also allows you to trigger it manually from the Actions tab on GitHub
   workflow_dispatch:
 
+# Grant the workflow permission to read your code and deploy to GitHub Pages
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: read   # Needed to checkout your repository
+  pages: write     # Needed to deploy to GitHub Pages
+  id-token: write  # Needed for authentication with GitHub Pages
 
+# Only allow one deployment at a time
+# If a new push comes in while deploying, it waits instead of cancelling the current one
 concurrency:
   group: "pages"
   cancel-in-progress: false
@@ -17,31 +25,42 @@ jobs:
   deploy:
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
+      url: ${{ steps.deployment.outputs.page_url }} # Outputs the live URL after deployment
+
+    runs-on: ubuntu-latest # Run all steps on a fresh Ubuntu virtual machine
+
     steps:
+      # Step 1: Download your repository code into the virtual machine
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Step 2: Install Node.js so we can run npm commands
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 20 # Use Node.js version 20 (LTS)
 
+      # Step 3: Install all project dependencies defined in package.json
+      # Uses `npm ci` instead of `npm install` for cleaner, reproducible installs
       - name: Install dependencies
         run: npm ci
 
+      # Step 4: Run Vite to compile and bundle your source files into the dist/ folder
       - name: Build
         run: npm run build
 
+      # Step 5: Configure the GitHub Pages environment for deployment
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
+      # Step 6: Package the built dist/ folder as an artifact to be deployed
+      # This is the compiled output — NOT your raw source files
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist'   # ← this is the key change
+          path: './dist' # Only deploy the Vite build output, not the whole repo
 
+      # Step 7: Take the uploaded artifact and publish it live to GitHub Pages
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
