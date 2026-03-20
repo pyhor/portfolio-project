@@ -9,10 +9,11 @@
     <style>
       body {
         margin: 0;
-        font-family: 'Inter', system-ui, sans-serif;
-        color: white;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        color: #000000;
         background-color: transparent; /* VERY IMPORTANT: Let 3D canvas show through */
         overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
       }
       .section {
         display: flex;
@@ -29,16 +30,18 @@
         align-items: flex-end;
       }
       h1 {
-        font-size: 5rem;
+        font-size: 5.5rem;
+        font-weight: 300;
         margin: 0;
-        text-transform: uppercase;
-        letter-spacing: 5px;
-        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        letter-spacing: -2px;
+        color: #000000;
       }
       p {
-        font-size: 1.5rem;
-        max-width: 500px;
-        opacity: 0.8;
+        font-size: 1.25rem;
+        font-weight: 400;
+        max-width: 480px;
+        opacity: 0.6;
+        line-height: 1.6;
       }
 
       /* Story text fading in */
@@ -56,8 +59,76 @@
       .story-section {
         min-height: 120vh;
       }
+
+      /* GitHub Profile Card */
+      .github-card {
+        background: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(0, 0, 0, 0.04);
+        border-radius: 24px;
+        padding: 3rem 2.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        text-align: center;
+        max-width: 420px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.03);
+        transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        cursor: pointer;
+      }
+      .github-card:hover {
+        transform: translateY(-8px) scale(1.01);
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.06);
+        border: 1px solid rgba(0, 0, 0, 0.08);
+      }
+      .github-avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        object-fit: cover;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.04);
+        transition: transform 0.5s ease;
+      }
+      .github-card:hover .github-avatar {
+        transform: scale(1.05);
+      }
+      .github-stats {
+        display: flex;
+        gap: 2.5rem;
+        margin-top: 2rem;
+      }
+      .stat {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .stat-value {
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: #000;
+        letter-spacing: -0.5px;
+      }
+      .stat-label {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        opacity: 0.4;
+        margin-top: 0.4rem;
+        font-weight: 500;
+      }
+      .github-card a {
+        color: inherit;
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
     </style>
-    <script type="module" crossorigin src="/portfolio-project/assets/index-DC_CKAzh.js"></script>
+    <script type="module" crossorigin src="/portfolio-project/assets/index-NlZG7Fvn.js"></script>
   </head>
   <body>
     <!-- The HTML content -->
@@ -76,6 +147,13 @@
     <section class="section story-section">
       <h1>The Warning.</h1>
       <p class="story-text">The Octahedron spins chaotically, a warning of the convergence. The journey ends here.</p>
+    </section>
+
+    <section class="section story-section">
+      <h1>The Creator.</h1>
+      <div class="github-card story-text" id="github-card">
+        <div style="text-align: center; width: 100%; opacity: 0.7;">Initializing data sequence...</div>
+      </div>
     </section>
 
     <!-- Vite main.js entry -->

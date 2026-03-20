@@ -1,8 +1,9 @@
 import * as THREE from 'three';
+import './github.js';
 
 // 1. Scene setup
 const scene = new THREE.Scene();
-scene.fog = new THREE.FogExp2(0x000000, 0.015);
+scene.fog = new THREE.FogExp2(0xffffff, 0.015);
 
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 // Start camera closer
@@ -13,7 +14,7 @@ camera.position.y = 0;
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setClearColor(0x050510);
+renderer.setClearColor(0xffffff);
 // Make the canvas fixed in the background so you can scroll HTML over it
 renderer.domElement.style.position = 'fixed';
 renderer.domElement.style.top = '0';
@@ -22,14 +23,14 @@ renderer.domElement.style.zIndex = '-1';
 document.body.appendChild(renderer.domElement);
 
 // Adding fancy lights
-const ambientLight = new THREE.AmbientLight(0x222222);
+const ambientLight = new THREE.AmbientLight(0xffffff, 3);
 scene.add(ambientLight);
 
-const pointLight1 = new THREE.PointLight(0xff0066, 300, 100);
+const pointLight1 = new THREE.PointLight(0xffffff, 100, 100);
 pointLight1.position.set(10, 10, 10);
 scene.add(pointLight1);
 
-const pointLight2 = new THREE.PointLight(0x00ccff, 300, 100);
+const pointLight2 = new THREE.PointLight(0xffffff, 100, 100);
 pointLight2.position.set(-10, -10, 10);
 scene.add(pointLight2);
 
@@ -37,11 +38,12 @@ scene.add(pointLight2);
 // Mesh 1: The Torus Knot
 const knoGeometry = new THREE.TorusKnotGeometry(4, 1.2, 100, 16);
 const knotMaterial = new THREE.MeshStandardMaterial({ 
-  color: 0x222222,
-  roughness: 0.1,
-  metalness: 0.8,
+  color: 0x000000,
+  roughness: 1.0,
+  metalness: 0.0,
   wireframe: true,
-  emissive: 0x111111,
+  transparent: true,
+  opacity: 0.05,
 });
 const knot = new THREE.Mesh(knoGeometry, knotMaterial);
 scene.add(knot);
@@ -49,10 +51,12 @@ scene.add(knot);
 // Mesh 2: Icosahedron
 const icosaGeometry = new THREE.IcosahedronGeometry(3, 0);
 const icosaMaterial = new THREE.MeshStandardMaterial({
-    color: 0x00ccff,
-    roughness: 0.2,
-    metalness: 0.8,
-    wireframe: true
+    color: 0x000000,
+    roughness: 1.0,
+    metalness: 0.0,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.05,
 });
 const icosahedron = new THREE.Mesh(icosaGeometry, icosaMaterial);
 scene.add(icosahedron);
@@ -60,10 +64,12 @@ scene.add(icosahedron);
 // Mesh 3: Octahedron
 const octaGeometry = new THREE.OctahedronGeometry(3, 0);
 const octaMaterial = new THREE.MeshStandardMaterial({
-    color: 0xff0066,
-    roughness: 0.2,
-    metalness: 0.8,
-    wireframe: true
+    color: 0x000000,
+    roughness: 1.0,
+    metalness: 0.0,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.05,
 });
 const octahedron = new THREE.Mesh(octaGeometry, octaMaterial);
 scene.add(octahedron);
@@ -93,11 +99,11 @@ for(let i = 0; i < particlesCount * 3; i++) {
 
 particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
 const particlesMaterial = new THREE.PointsMaterial({
-  size: 0.1,
-  color: 0xffffff,
+  size: 0.05,
+  color: 0x000000,
   transparent: true,
-  opacity: 0.4,
-  blending: THREE.AdditiveBlending
+  opacity: 0.1,
+  blending: THREE.NormalBlending
 });
 
 const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
@@ -129,9 +135,9 @@ document.addEventListener('click', () => {
     if (clickedObj === knot) {
         clickedObj.material.wireframe = !clickedObj.material.wireframe;
     } else if (clickedObj === icosahedron) {
-        document.body.style.backgroundColor = document.body.style.backgroundColor === 'rgb(20, 0, 0)' ? 'transparent' : 'rgb(20, 0, 0)';
+        document.body.style.backgroundColor = document.body.style.backgroundColor === 'rgb(250, 250, 250)' ? 'transparent' : 'rgb(250, 250, 250)';
     } else if (clickedObj === octahedron) {
-        particlesMaterial.color.setHex(Math.random() * 0xffffff);
+        particlesMaterial.opacity = particlesMaterial.opacity === 0.1 ? 0.3 : 0.1;
     }
   }
 });
@@ -207,11 +213,9 @@ function animate() {
         mesh.rotation.z = elapsedTime * 0.3;
       }
       
-      // Default reset scale and emissive
+      // Default reset scale and opacity
       mesh.scale.lerp(new THREE.Vector3(1, 1, 1), 0.1);
-      if(mesh.material.emissive) {
-          mesh.material.emissive.lerp(new THREE.Color(0x111111), 0.1);
-      }
+      mesh.material.opacity += (0.05 - mesh.material.opacity) * 0.1;
   }
 
   // Raycaster for Hover interaction
@@ -220,11 +224,9 @@ function animate() {
 
   if (intersects.length > 0) {
       const hoveredObj = intersects[0].object;
-      hoveredObj.scale.lerp(new THREE.Vector3(1.2, 1.2, 1.2), 0.1);
+      hoveredObj.scale.lerp(new THREE.Vector3(1.1, 1.1, 1.1), 0.1);
       
-      if(hoveredObj.material.emissive) {
-          hoveredObj.material.emissive.lerp(new THREE.Color(0xff0000), 0.1);
-      }
+      hoveredObj.material.opacity += (0.25 - hoveredObj.material.opacity) * 0.1;
       
       // Rotate a bit faster when hovered
       hoveredObj.rotation.x += 0.01;
