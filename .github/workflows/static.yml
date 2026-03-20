@@ -58,7 +58,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist' # Only deploy the Vite build output, not the whole repo
+          path: './docs' # Only deploy the Vite build output, not the whole repo
 
       # Step 7: Take the uploaded artifact and publish it live to GitHub Pages
       - name: Deploy to GitHub Pages
