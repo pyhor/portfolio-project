@@ -7,7 +7,7 @@ export default defineConfig(({ command }) => ({
 
   // 👇 IMPORTANT for GitHub Pages
   //base: command === 'build' ? '/portfolio-project/' : '/',
-  base: '/pyhor/',
+  base: command === 'build' ? '/portfolio-project/' : '/',
 
   build: {
     outDir: 'dist',
