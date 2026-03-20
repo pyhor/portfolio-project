@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3D Scroll Experience</title>
+    <!-- Add some dummy text layers so there is content to scroll over -->
+    <style>
+      body {
+        margin: 0;
+        font-family: 'Inter', system-ui, sans-serif;
+        color: white;
+        background-color: transparent; /* VERY IMPORTANT: Let 3D canvas show through */
+        overflow-x: hidden;
+      }
+      .section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        padding: 0 10%;
+      }
+      .section:nth-child(odd) {
+        align-items: flex-start;
+      }
+      .section:nth-child(even) {
+        align-items: flex-end;
+      }
+      h1 {
+        font-size: 5rem;
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 5px;
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      }
+      p {
+        font-size: 1.5rem;
+        max-width: 500px;
+        opacity: 0.8;
+      }
+
+      /* Story text fading in */
+      .story-text {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 1s ease-out, transform 1s ease-out;
+      }
+      .story-text.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      
+      /* Make sections take more space so scrolling is longer */
+      .story-section {
+        min-height: 120vh;
+      }
+    </style>
+    <script type="module" crossorigin src="/portfolio-project/assets/index-DC_CKAzh.js"></script>
+  </head>
+  <body>
+    <!-- The HTML content -->
+    <section class="section story-section">
+      <h1>The Call.</h1>
+      <div style="display: inline-block;">
+        <p class="story-text">You awaken in the void. A strange structure spins slowly in the darkness, whispering a forgotten language. Hover to inspect.</p>
+      </div>
+    </section>
+
+    <section class="section story-section">
+      <h1>The Encounter.</h1>
+      <p class="story-text">Deeper in, an Icosahedron pulses with ancient energy. It reacts to your presence. Click to interact.</p>
+    </section>
+
+    <section class="section story-section">
+      <h1>The Warning.</h1>
+      <p class="story-text">The Octahedron spins chaotically, a warning of the convergence. The journey ends here.</p>
+    </section>
+
+    <!-- Vite main.js entry -->
+  </body>
+</html>
