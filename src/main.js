@@ -1,5 +1,10 @@
 import * as THREE from 'three';
+import { initI18n } from './i18n.js';
 import './github.js';
+import './projects.js';
+
+// Initialize i18n engine before 3D loads natively
+initI18n();
 
 // 1. Scene setup
 const scene = new THREE.Scene();
@@ -23,68 +28,72 @@ renderer.domElement.style.zIndex = '-1';
 document.body.appendChild(renderer.domElement);
 
 // Adding fancy lights
-const ambientLight = new THREE.AmbientLight(0xffffff, 3);
+const ambientLight = new THREE.AmbientLight(0xffffff, 2); // Soft white ambient
 scene.add(ambientLight);
 
-const pointLight1 = new THREE.PointLight(0xffffff, 100, 100);
+// Pastel peach light
+const pointLight1 = new THREE.PointLight(0xffdac4, 300, 100);
 pointLight1.position.set(10, 10, 10);
 scene.add(pointLight1);
 
-const pointLight2 = new THREE.PointLight(0xffffff, 100, 100);
+// Pale lavender light
+const pointLight2 = new THREE.PointLight(0xe5d1ff, 300, 100);
 pointLight2.position.set(-10, -10, 10);
 scene.add(pointLight2);
 
 // Objects to scroll past
-// Mesh 1: The Torus Knot
-const knoGeometry = new THREE.TorusKnotGeometry(4, 1.2, 100, 16);
-const knotMaterial = new THREE.MeshStandardMaterial({ 
-  color: 0x000000,
-  roughness: 1.0,
-  metalness: 0.0,
-  wireframe: true,
+// Objects to scroll past
+// Premium Glass Material
+const glassMaterial = new THREE.MeshPhysicalMaterial({
+  color: 0xffffff,
+  metalness: 0.1,
+  roughness: 0.15,
+  transmission: 0.95, // clear glass effect
+  ior: 1.5,
+  thickness: 2.0,
   transparent: true,
-  opacity: 0.05,
+  opacity: 1
 });
-const knot = new THREE.Mesh(knoGeometry, knotMaterial);
-scene.add(knot);
 
-// Mesh 2: Icosahedron
-const icosaGeometry = new THREE.IcosahedronGeometry(3, 0);
-const icosaMaterial = new THREE.MeshStandardMaterial({
-    color: 0x000000,
-    roughness: 1.0,
-    metalness: 0.0,
-    wireframe: true,
-    transparent: true,
-    opacity: 0.05,
-});
-const icosahedron = new THREE.Mesh(icosaGeometry, icosaMaterial);
-scene.add(icosahedron);
+// Helper to prepare organic morphing shapes
+function createOrganicBlob(baseRadius, detail, scaleX, scaleY, scaleZ) {
+    const geometry = new THREE.IcosahedronGeometry(baseRadius, detail);
+    geometry.scale(scaleX, scaleY, scaleZ);
+    
+    const originalPositions = [];
+    const posAttr = geometry.attributes.position;
+    for (let i = 0; i < posAttr.count; i++) {
+        originalPositions.push(new THREE.Vector3().fromBufferAttribute(posAttr, i));
+    }
+    
+    const mesh = new THREE.Mesh(geometry, glassMaterial);
+    return { mesh, originalPositions, geometry };
+}
 
-// Mesh 3: Octahedron
-const octaGeometry = new THREE.OctahedronGeometry(3, 0);
-const octaMaterial = new THREE.MeshStandardMaterial({
-    color: 0x000000,
-    roughness: 1.0,
-    metalness: 0.0,
-    wireframe: true,
-    transparent: true,
-    opacity: 0.05,
-});
-const octahedron = new THREE.Mesh(octaGeometry, octaMaterial);
-scene.add(octahedron);
+// 1: Hero Blob (Perfect sphere morphing into blob)
+const blob1 = createOrganicBlob(4, 16, 1, 1, 1);
+scene.add(blob1.mesh);
+
+// 2: Oval Blob (Horizontal)
+const blob2 = createOrganicBlob(3, 16, 1.5, 0.8, 1);
+scene.add(blob2.mesh);
+
+// 3: Vertical Pill Blob
+const blob3 = createOrganicBlob(3, 16, 0.8, 1.5, 0.8);
+scene.add(blob3.mesh);
 
 // Position them vertically spacing them out
-knot.position.y = -2;
-knot.position.x = 4;
+blob1.mesh.position.y = -2;
+blob1.mesh.position.x = 4;
 
-icosahedron.position.y = -18;
-icosahedron.position.x = -4;
+blob2.mesh.position.y = -18;
+blob2.mesh.position.x = -4;
 
-octahedron.position.y = -34;
-octahedron.position.x = 4;
+blob3.mesh.position.y = -34;
+blob3.mesh.position.x = 4;
 
-const meshes = [knot, icosahedron, octahedron];
+const morphables = [blob1, blob2, blob3];
+const meshes = [blob1.mesh, blob2.mesh, blob3.mesh]; // for raycasting
 
 // Add a floating particle system
 const particlesGeometry = new THREE.BufferGeometry();
@@ -100,9 +109,9 @@ for(let i = 0; i < particlesCount * 3; i++) {
 particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
 const particlesMaterial = new THREE.PointsMaterial({
   size: 0.05,
-  color: 0x000000,
+  color: 0xaaaaaa,
   transparent: true,
-  opacity: 0.1,
+  opacity: 0.4,
   blending: THREE.NormalBlending
 });
 
@@ -132,12 +141,12 @@ document.addEventListener('click', () => {
     clickedObj.scale.set(1.5, 1.5, 1.5);
     
     // Story element interactions
-    if (clickedObj === knot) {
-        clickedObj.material.wireframe = !clickedObj.material.wireframe;
-    } else if (clickedObj === icosahedron) {
-        document.body.style.backgroundColor = document.body.style.backgroundColor === 'rgb(250, 250, 250)' ? 'transparent' : 'rgb(250, 250, 250)';
-    } else if (clickedObj === octahedron) {
-        particlesMaterial.opacity = particlesMaterial.opacity === 0.1 ? 0.3 : 0.1;
+    if (clickedObj === blob1.mesh) {
+        clickedObj.material.transmission = clickedObj.material.transmission > 0.5 ? 0.0 : 0.95;
+    } else if (clickedObj === blob2.mesh) {
+        document.body.style.backgroundColor = document.body.style.backgroundColor === 'rgb(249, 246, 255)' ? 'transparent' : 'rgb(249, 246, 255)';
+    } else if (clickedObj === blob3.mesh) {
+        particlesMaterial.color.setHex(Math.random() * 0xffffff);
     }
   }
 });
@@ -174,6 +183,7 @@ window.addEventListener('resize', () => {
 const clock = new THREE.Clock();
 let currentIntersect = null;
 let previousTime = 0;
+const tempVertex = new THREE.Vector3();
 
 function animate() {
   requestAnimationFrame(animate);
@@ -182,8 +192,6 @@ function animate() {
   previousTime = elapsedTime;
 
   // ==== SCROLL INTERACTION LOGIC ====
-  // The camera moves DOWN as we scroll DOWN (y becomes more negative)
-  // And it moves UP when you scroll UP.
   const targetScrollY = -scrollY * 0.02;
 
   // Parallax / slight camera movement based on mouse
@@ -191,31 +199,44 @@ function animate() {
   const parallaxY = -cursor.y * 2;
   camera.position.x += (parallaxX - camera.position.x) * 0.05;
   
-  // Notice we add the parallax effect to the scroll effect for Y
   const targetCameraY = targetScrollY + parallaxY;
-  
-  // Smoothly interpolate the camera's position towards the combined scroll + parallax target
-  // This causes the camera to seemingly float to the correct height as you scroll up and down
   camera.position.y += (targetCameraY - camera.position.y) * 0.05;
   // ==================================
 
-  // Rotate Meshes as the camera flies past them
-  // We use scrollY to make them spin as you scroll!
-  for (const mesh of meshes) {
-      if (mesh === knot) {
-        mesh.rotation.y = elapsedTime * 0.2 + (scrollY * 0.005);
-        mesh.rotation.z = elapsedTime * 0.1;
-      } else if (mesh === icosahedron) {
-        mesh.rotation.x = elapsedTime * 0.3;
-        mesh.rotation.y = elapsedTime * 0.1 + (scrollY * 0.005);
-      } else if (mesh === octahedron) {
-        mesh.rotation.x = elapsedTime * 0.2 + (scrollY * 0.005);
-        mesh.rotation.z = elapsedTime * 0.3;
-      }
+  // Rotate and MORPH organic blobs
+  for (let b = 0; b < morphables.length; b++) {
+      const morph = morphables[b];
+      const mesh = morph.mesh;
+      const originalPositions = morph.originalPositions;
+      const posAttr = morph.geometry.attributes.position;
       
-      // Default reset scale and opacity
+      // Rotations
+      mesh.rotation.y = elapsedTime * (0.1 + b * 0.05) + (scrollY * 0.005);
+      mesh.rotation.z = elapsedTime * (0.05 + b * 0.02);
+      
+      // Undulate (Liquid Morphing)
+      const morphSpeed = elapsedTime * 0.5 + (b * 10);
+      for (let i = 0; i < posAttr.count; i++) {
+          tempVertex.copy(originalPositions[i]);
+          
+          // Noise-like organic displacement using combined sin/cos waves
+          const waveX = Math.sin(tempVertex.x * 0.8 + morphSpeed);
+          const waveY = Math.cos(tempVertex.y * 0.8 + morphSpeed);
+          const waveZ = Math.sin(tempVertex.z * 0.8 + morphSpeed);
+          
+          const displacement = (waveX * waveY * waveZ) * 0.6; // Bump intensity
+          
+          const distance = tempVertex.length();
+          tempVertex.normalize().multiplyScalar(distance + displacement);
+          
+          posAttr.setXYZ(i, tempVertex.x, tempVertex.y, tempVertex.z);
+      }
+      posAttr.needsUpdate = true;
+      morph.geometry.computeVertexNormals(); // Crucial for glass reflections
+      
+      // Default reset scale and roughness (glassy)
       mesh.scale.lerp(new THREE.Vector3(1, 1, 1), 0.1);
-      mesh.material.opacity += (0.05 - mesh.material.opacity) * 0.1;
+      mesh.material.roughness += (0.15 - mesh.material.roughness) * 0.1;
   }
 
   // Raycaster for Hover interaction
@@ -224,10 +245,11 @@ function animate() {
 
   if (intersects.length > 0) {
       const hoveredObj = intersects[0].object;
-      hoveredObj.scale.lerp(new THREE.Vector3(1.1, 1.1, 1.1), 0.1);
+      hoveredObj.scale.lerp(new THREE.Vector3(1.05, 1.05, 1.05), 0.1);
       
-      hoveredObj.material.opacity += (0.25 - hoveredObj.material.opacity) * 0.1;
-      
+      // Make the glass clearer on hover
+      hoveredObj.material.roughness += (0.02 - hoveredObj.material.roughness) * 0.1;
+
       // Rotate a bit faster when hovered
       hoveredObj.rotation.x += 0.01;
       hoveredObj.rotation.y += 0.01;
@@ -244,3 +266,39 @@ function animate() {
 }
 
 animate();
+
+// --- Theme Toggle Logic ---
+const themeToggle = document.getElementById('theme-toggle');
+if (themeToggle) {
+    // Check local storage for persistent theme
+    let isDark = localStorage.getItem('theme') === 'dark';
+    
+    const applyTheme = () => {
+        document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+        themeToggle.textContent = isDark ? '☀' : '☾';
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        
+        // Update 3D Scene
+        const bgColor = isDark ? 0x050505 : 0xffffff;
+        if (!scene.background) scene.background = new THREE.Color();
+        scene.background.setHex(bgColor);
+        scene.fog.color.setHex(bgColor);
+        
+        // Update Materials for better dark mode aesthetics
+        glassMaterial.color.setHex(isDark ? 0x000000 : 0xffffff);
+        particlesMaterial.color.setHex(isDark ? 0x222222 : 0xaaaaaa);
+        
+        // Shift lighting for an authentically dark, neon-lit 3D scene
+        ambientLight.intensity = isDark ? 0.1 : 2.0;
+        pointLight1.color.setHex(isDark ? 0x9900ff : 0xffdac4); // Deep Purple glowing through the black glass
+        pointLight2.color.setHex(isDark ? 0x00aaff : 0xe5d1ff); // Deep Blue glowing through the black glass
+    };
+
+    // Apply immediately if saved as dark
+    if (isDark) applyTheme();
+
+    themeToggle.addEventListener('click', () => {
+        isDark = !isDark;
+        applyTheme();
+    });
+}
