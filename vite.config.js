@@ -4,7 +4,7 @@ import { resolve } from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/portfolio-project/',
+  base: process.env.VERCEL ? '/' : '/portfolio-project/',
   plugins: [react()],
   build: {
     outDir: 'docs',

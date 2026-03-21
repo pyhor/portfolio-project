@@ -15,6 +15,7 @@ public/api/
 dist
 dist-ssr
 *.local
+docs
 
 .gitignore
 
