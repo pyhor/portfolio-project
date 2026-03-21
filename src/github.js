@@ -2,7 +2,7 @@ import { t } from './i18n.js';
 
 let cachedProfile = null;
 
-const BACKEND_URL = import.meta.env.VITE_API_URL;
+const BACKEND_URL = import.meta.env.BASE_URL;
 
 export async function loadGitHubProfile() {
   const card = document.getElementById('github-card');
@@ -10,7 +10,7 @@ export async function loadGitHubProfile() {
 
   try {
     if (!cachedProfile) {
-      const response = await fetch(`${BACKEND_URL}/api/profile`);
+      const response = await fetch(`${BACKEND_URL}api/profile.json`);
       cachedProfile = await response.json();
     }
     const data = cachedProfile;

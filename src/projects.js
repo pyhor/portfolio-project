@@ -2,7 +2,7 @@ import { t } from './i18n.js';
 
 let cachedProjects = null;
 
-const BACKEND_URL = import.meta.env.VITE_API_URL;
+const BACKEND_URL = import.meta.env.BASE_URL;
 
 export async function loadGitHubProjects() {
   const container = document.getElementById('projects-container');
@@ -10,7 +10,7 @@ export async function loadGitHubProjects() {
 
   try {
     if (!cachedProjects) {
-        const response = await fetch(`${BACKEND_URL}/api/repos`);
+        const response = await fetch(`${BACKEND_URL}api/repos.json`);
         const repos = await response.json();
         
         // Fetch languages for each repo in parallel using our new backend proxy
@@ -18,7 +18,7 @@ export async function loadGitHubProjects() {
             try {
                 const owner = repo.owner.login;
                 const repoName = repo.name;
-                const langRes = await fetch(`${BACKEND_URL}/api/languages?owner=${owner}&repo=${repoName}`);
+                const langRes = await fetch(`${BACKEND_URL}api/languages/${repoName}.json`);
                 const languages = await langRes.json();
                 repo.all_languages = Object.keys(languages);
             } catch (e) {

@@ -11,6 +11,7 @@ node_modules
 server/node_modules
 server/.env
 .env
+public/api/
 dist
 dist-ssr
 *.local
