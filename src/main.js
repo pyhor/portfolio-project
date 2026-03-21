@@ -1,3 +1,4 @@
+import './style.scss';
 import * as THREE from 'three';
 import { initI18n } from './i18n.js';
 import './github.js';

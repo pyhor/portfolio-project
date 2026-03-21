@@ -1,0 +1,1 @@
+import{t as e}from"./i18n-CJWwqw2Q.js";var t=localStorage.getItem(`theme`)||`light`;document.documentElement.setAttribute(`data-theme`,t),e();
