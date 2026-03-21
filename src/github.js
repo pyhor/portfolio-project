@@ -2,7 +2,9 @@ import { t } from './i18n.js';
 
 let cachedProfile = null;
 
-const BACKEND_URL = 'http://localhost:3001';
+const BACKEND_URL = import.meta.env.DEV 
+  ? import.meta.env.VITE_API_URL_DEV 
+  : import.meta.env.VITE_API_URL_PROD;
 
 export async function loadGitHubProfile() {
   const card = document.getElementById('github-card');

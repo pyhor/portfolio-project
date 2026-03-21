@@ -2,13 +2,14 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 
+const { GITHUB_API } = require('./config');
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
 
-const GITHUB_API = 'https://api.github.com';
 const headers = {
     Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
     Accept: 'application/vnd.github.v3+json'
