@@ -20,6 +20,10 @@
   </div>
 
   <button id="theme-toggle" class="nav-button" style="right: 210px; cursor: pointer; border: none; font-size: 1.2rem; padding: 6px 16px;">☾</button>
+  <div class="nav-button" style="right: 520px; cursor: default; display: flex; align-items: center; gap: 8px;">
+    <span style="opacity: 0.6; font-size: 0.8rem; font-weight: 600;">TIME:</span>
+    <span class="current-time" style="font-weight: 700; font-family: 'JetBrains Mono', monospace; min-width: 90px;">00:00:00 AM</span>
+  </div>
   <a href="./about.html" class="nav-button" data-i18n="nav_about" style="right: 40px;">About Me &rarr;</a>
 
   <!-- The HTML content -->
@@ -51,6 +55,13 @@
   </section>
 
   <section class="section story-section">
+    <h1 data-i18n="contributions_title">Activity.</h1>
+    <div id="contributions-container" style="width: 100%; max-width: 900px; margin-top: 40px;">
+      <!-- Contributions go here -->
+    </div>
+  </section>
+
+  <section class="section story-section">
     <h1 data-i18n="connect_title">Connect.</h1>
     <div class="github-card story-text" id="github-card" style="margin-top: 40px;">
       <div style="text-align: center; width: 100%; opacity: 0.7;" data-i18n="connect_loading">Initializing data
@@ -58,12 +69,13 @@
     </div>
     <div class="story-text" style="display: flex; gap: 30px; margin-top: 30px; font-size: 1.1rem; font-weight: 500;">
       <a href="https://linkedin.com/in/pyhor" data-i18n="social_linkedin" target="_blank" rel="noopener noreferrer" class="link-minimal">LinkedIn &rarr;</a>
-      <a href="mailto:hello@pyhor.com" data-i18n="social_email" class="link-minimal">Email &rarr;</a>
+      <a href="mailto:[EMAIL_ADDRESS]" data-i18n="social_email" class="link-minimal">Email &rarr;</a>
     </div>
   </section>
 
   <!-- Vite main.js entry -->
   <script type="module" src="/src/main.js"></script>
+  <script type="module" src="/src/extra.js"></script>
 </body>
 
 </html>

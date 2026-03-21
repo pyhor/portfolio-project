@@ -9,7 +9,23 @@ export async function loadGitHubProjects() {
   try {
     if (!cachedProjects) {
         const response = await fetch('https://api.github.com/users/pyhor/repos?sort=updated&per_page=6');
-        cachedProjects = await response.json();
+        const repos = await response.json();
+        
+        // Fetch languages for each repo in parallel
+        cachedProjects = await Promise.all(repos.map(async (repo) => {
+          if (repo.languages_url) {
+            try {
+              const langRes = await fetch(repo.languages_url);
+              const languages = await langRes.json();
+              repo.all_languages = Object.keys(languages);
+            } catch (e) {
+              repo.all_languages = repo.language ? [repo.language] : [];
+            }
+          } else {
+            repo.all_languages = repo.language ? [repo.language] : [];
+          }
+          return repo;
+        }));
     }
     const repos = cachedProjects;
 
@@ -20,6 +36,10 @@ export async function loadGitHubProjects() {
     
     let html = '';
     repos.forEach(repo => {
+      const languages = repo.all_languages && repo.all_languages.length > 0 
+        ? repo.all_languages.join(', ') 
+        : (repo.language || t('stat_code', 'Code'));
+
       // Create a minimalist card for each repo
       html += `
         <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer" class="project-card">
@@ -27,7 +47,7 @@ export async function loadGitHubProjects() {
             <h3 style="margin: 0 0 8px 0; font-size: 1.1rem; font-weight: 600; letter-spacing: -0.5px;">${repo.name}</h3>
             <p style="margin: 0 0 16px 0; font-size: 0.85rem; opacity: 0.6; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.55rem;">${repo.description || 'No description provided.'}</p>
             <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; opacity: 0.5;">
-              <span>${repo.language || t('stat_code', 'Code')}</span>
+              <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 70%;">${languages}</span>
               <span>⭐ ${repo.stargazers_count}</span>
             </div>
           </div>

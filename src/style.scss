@@ -10,6 +10,7 @@
   --glass-hover-bg: rgba(255, 255, 255, 0.8);
   --glass-hover-border: rgba(144, 115, 255, 0.15);
   --glass-hover-shadow: rgba(144, 115, 255, 0.08);
+  --calendar-filter: none;
   
   // About page specific variables
   --about-bg-color: #ffffff;
@@ -27,6 +28,7 @@
   --glass-hover-bg: rgba(30, 30, 35, 0.8);
   --glass-hover-border: rgba(160, 140, 255, 0.4);
   --glass-hover-shadow: rgba(160, 140, 255, 0.15);
+  --calendar-filter: brightness(1.2);
 
   // About page dark theme
   --about-bg-color: #050505;
@@ -168,6 +170,53 @@ p {
     &:hover {
         opacity: 0.8;
     }
+  }
+}
+
+.contributions-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  padding: 2.5rem;
+  box-shadow: 0 20px 40px var(--glass-shadow);
+  transition: background 0.6s ease;
+  width: 100%;
+  box-sizing: border-box;
+
+  .calendar-wrapper img {
+    border-radius: 4px;
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    filter: var(--calendar-filter);
+    transition: filter 0.5s ease;
+  }
+
+  .year-select {
+    background: var(--glass-bg);
+    color: var(--text-color);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: var(--glass-hover-bg);
+      border-color: var(--glass-hover-border);
+    }
+  }
+
+  .calendar-wrapper {
+    position: relative;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
   }
 }
 

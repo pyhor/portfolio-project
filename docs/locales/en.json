@@ -26,5 +26,8 @@
   "detail_languages_val": "JavaScript, PHP, HTML/CSS",
   "detail_interests": "Interests",
   "detail_interests_val": "Three.js, Creative Web",
-  "link_github": "GitHub Profile &rarr;"
+  "link_github": "GitHub Profile &rarr;",
+  "contributions_title": "Activity.",
+  "contributions_desc": "My recent activity on GitHub",
+  "contributions_error": "Unable to load contribution data."
 }
