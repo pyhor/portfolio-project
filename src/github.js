@@ -2,7 +2,8 @@ import { t } from './i18n.js';
 
 let cachedProfile = null;
 
-const BACKEND_URL = import.meta.env.BASE_URL;
+const BACKEND_URL = import.meta.env.PROD ? 'https://pyhor.github.io/portfolio-project/' : import.meta.env.BASE_URL;
+const EXT = import.meta.env.PROD ? '' : '.json';
 
 export async function loadGitHubProfile() {
   const card = document.getElementById('github-card');
@@ -10,7 +11,7 @@ export async function loadGitHubProfile() {
 
   try {
     if (!cachedProfile) {
-      const response = await fetch(`${BACKEND_URL}api/profile.json`);
+      const response = await fetch(`${BACKEND_URL}api/profile${EXT}`);
       cachedProfile = await response.json();
     }
     const data = cachedProfile;
