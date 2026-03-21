@@ -2,29 +2,29 @@ import { t } from './i18n.js';
 
 let cachedProjects = null;
 
+const BACKEND_URL = 'http://localhost:3001';
+
 export async function loadGitHubProjects() {
   const container = document.getElementById('projects-container');
   if (!container) return;
 
   try {
     if (!cachedProjects) {
-        const response = await fetch('https://api.github.com/users/pyhor/repos?sort=updated&per_page=6');
+        const response = await fetch(`${BACKEND_URL}/api/repos`);
         const repos = await response.json();
         
-        // Fetch languages for each repo in parallel
+        // Fetch languages for each repo in parallel using our new backend proxy
         cachedProjects = await Promise.all(repos.map(async (repo) => {
-          if (repo.languages_url) {
             try {
-              const langRes = await fetch(repo.languages_url);
-              const languages = await langRes.json();
-              repo.all_languages = Object.keys(languages);
+                const owner = repo.owner.login;
+                const repoName = repo.name;
+                const langRes = await fetch(`${BACKEND_URL}/api/languages?owner=${owner}&repo=${repoName}`);
+                const languages = await langRes.json();
+                repo.all_languages = Object.keys(languages);
             } catch (e) {
-              repo.all_languages = repo.language ? [repo.language] : [];
+                repo.all_languages = repo.language ? [repo.language] : [];
             }
-          } else {
-            repo.all_languages = repo.language ? [repo.language] : [];
-          }
-          return repo;
+            return repo;
         }));
     }
     const repos = cachedProjects;

@@ -2,13 +2,15 @@ import { t } from './i18n.js';
 
 let cachedProfile = null;
 
+const BACKEND_URL = 'http://localhost:3001';
+
 export async function loadGitHubProfile() {
   const card = document.getElementById('github-card');
   if (!card) return;
 
   try {
     if (!cachedProfile) {
-      const response = await fetch('https://api.github.com/users/pyhor');
+      const response = await fetch(`${BACKEND_URL}/api/profile`);
       cachedProfile = await response.json();
     }
     const data = cachedProfile;
