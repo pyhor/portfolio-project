@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "fetch-github": "node scripts/fetch-github-data.mjs",
+    "prebuild": "node scripts/fetch-github-data.mjs",
     "build": "vite build",
     "preview": "vite preview",
     "predeploy": "npm run build",
@@ -17,9 +19,11 @@
     "vite": "^8.0.0"
   },
   "dependencies": {
+    "gsap": "^3.15.0",
+    "lucide-react": "^1.16.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "react-router-dom": "^7.13.1",
+    "react-router-dom": "^7.15.1",
     "three": "^0.183.2"
   }
 }

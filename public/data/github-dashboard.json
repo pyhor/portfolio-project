@@ -1,0 +1,113 @@
+{
+  "profile": {
+    "login": "pyhor",
+    "id": 165729654,
+    "node_id": "U_kgDOCeDVdg",
+    "avatar_url": "https://avatars.githubusercontent.com/u/165729654?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/pyhor",
+    "html_url": "https://github.com/pyhor",
+    "followers_url": "https://api.github.com/users/pyhor/followers",
+    "following_url": "https://api.github.com/users/pyhor/following{/other_user}",
+    "gists_url": "https://api.github.com/users/pyhor/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/pyhor/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/pyhor/subscriptions",
+    "organizations_url": "https://api.github.com/users/pyhor/orgs",
+    "repos_url": "https://api.github.com/users/pyhor/repos",
+    "events_url": "https://api.github.com/users/pyhor/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/pyhor/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false,
+    "name": "pyhor",
+    "company": null,
+    "blog": "",
+    "location": "Kuala Lumpur, Malaysia 🇲🇾",
+    "email": null,
+    "hireable": true,
+    "bio": "Hi, I'm pyhor.",
+    "twitter_username": null,
+    "public_repos": 7,
+    "public_gists": 0,
+    "followers": 2,
+    "following": 13,
+    "created_at": "2024-04-01T22:43:50Z",
+    "updated_at": "2026-05-13T15:55:51Z"
+  },
+  "repos": [
+    {
+      "id": 1178778026,
+      "name": "vet-mgmt-system-2024",
+      "description": "A full-stack veterinary management system designed to manage pet records, owners, and clinic appointments.",
+      "html_url": "https://github.com/pyhor/vet-mgmt-system-2024",
+      "language": "PHP",
+      "stargazers_count": 1,
+      "forks_count": 0,
+      "languages": {
+        "PHP": 1
+      },
+      "commitCount": null
+    },
+    {
+      "id": 1215586584,
+      "name": "hotel-website-2023",
+      "description": "[Archive] 🏨 Hotel Website (2023) | Diploma Frontend Project. • Tech: HTML, CSS, JavaScript. • Features: Multi-page hotel UI & responsive layout. • Goal: Practice frontend web development.",
+      "html_url": "https://github.com/pyhor/hotel-website-2023",
+      "language": "HTML",
+      "stargazers_count": 1,
+      "forks_count": 0,
+      "languages": {
+        "HTML": 1
+      },
+      "commitCount": null
+    },
+    {
+      "id": 1147118241,
+      "name": "pyhor",
+      "description": "hi",
+      "html_url": "https://github.com/pyhor/pyhor",
+      "language": null,
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "languages": {},
+      "commitCount": null
+    },
+    {
+      "id": 1178461721,
+      "name": "cinema-mgmt-system-2020",
+      "description": "[Archive] 🎬 Cinema System (2020) | SPM Sains Komputer Folio. • Context: Form 5 school project. • Tech: PHP & MySQL (WAMP). • Features: Registration, Login, Movie DB & Ticket Booking. • Goal: Fundamental CRUD & Database design.",
+      "html_url": "https://github.com/pyhor/cinema-mgmt-system-2020",
+      "language": "PHP",
+      "stargazers_count": 1,
+      "forks_count": 0,
+      "languages": {
+        "PHP": 1
+      },
+      "commitCount": null
+    },
+    {
+      "id": 1184918736,
+      "name": "portfolio-project",
+      "description": null,
+      "html_url": "https://github.com/pyhor/portfolio-project",
+      "language": "JavaScript",
+      "stargazers_count": 1,
+      "forks_count": 0,
+      "languages": {
+        "JavaScript": 1
+      },
+      "commitCount": null
+    },
+    {
+      "id": 1147141780,
+      "name": "blablabla",
+      "description": null,
+      "html_url": "https://github.com/pyhor/blablabla",
+      "language": null,
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "languages": {},
+      "commitCount": null
+    }
+  ]
+}

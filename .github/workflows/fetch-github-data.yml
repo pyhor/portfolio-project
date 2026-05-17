@@ -1,0 +1,25 @@
+name: Fetch GitHub data
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master]
+    paths:
+      - 'scripts/fetch-github-data.mjs'
+      - '.github/workflows/fetch-github-data.yml'
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: node scripts/fetch-github-data.mjs
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'chore: refresh GitHub dashboard JSON'
+          file_pattern: public/data/github-dashboard.json

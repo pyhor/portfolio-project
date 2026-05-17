@@ -1,0 +1,47 @@
+{
+  "profile": {
+    "login": "pyhor",
+    "name": "Pei Yu Hor",
+    "bio": "Developer building cute, modern web experiences.",
+    "avatar_url": "https://github.com/pyhor.png",
+    "html_url": "https://github.com/pyhor",
+    "public_repos": 0,
+    "followers": 0,
+    "location": "Kuala Lumpur, Malaysia"
+  },
+  "repos": [
+    {
+      "id": 1,
+      "name": "vet-mgmt-system-2024",
+      "description": "Final Year Project — veterinary management system with client and admin sides.",
+      "html_url": "https://github.com/pyhor/vet-mgmt-system-2024",
+      "language": "PHP",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "languages": { "PHP": 1, "JavaScript": 1, "CSS": 1 },
+      "commitCount": null
+    },
+    {
+      "id": 2,
+      "name": "hotel-website-2023",
+      "description": "Diploma project — hotel website built with HTML, CSS, and JavaScript.",
+      "html_url": "https://github.com/pyhor/hotel-website-2023",
+      "language": "JavaScript",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "languages": { "HTML": 1, "JavaScript": 1, "CSS": 1 },
+      "commitCount": null
+    },
+    {
+      "id": 3,
+      "name": "cinema-mgmt-system-2020",
+      "description": "First project — cinema management system with client and admin panels.",
+      "html_url": "https://github.com/pyhor/cinema-mgmt-system-2020",
+      "language": "PHP",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "languages": { "PHP": 1, "JavaScript": 1, "CSS": 1 },
+      "commitCount": null
+    }
+  ]
+}
