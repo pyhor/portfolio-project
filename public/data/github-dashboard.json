@@ -36,6 +36,19 @@
   },
   "repos": [
     {
+      "id": 1184918736,
+      "name": "portfolio-project",
+      "description": null,
+      "html_url": "https://github.com/pyhor/portfolio-project",
+      "language": "JavaScript",
+      "stargazers_count": 1,
+      "forks_count": 0,
+      "languages": {
+        "JavaScript": 1
+      },
+      "commitCount": null
+    },
+    {
       "id": 1178778026,
       "name": "vet-mgmt-system-2024",
       "description": "A full-stack veterinary management system designed to manage pet records, owners, and clinic appointments.",
@@ -82,19 +95,6 @@
       "forks_count": 0,
       "languages": {
         "PHP": 1
-      },
-      "commitCount": null
-    },
-    {
-      "id": 1184918736,
-      "name": "portfolio-project",
-      "description": null,
-      "html_url": "https://github.com/pyhor/portfolio-project",
-      "language": "JavaScript",
-      "stargazers_count": 1,
-      "forks_count": 0,
-      "languages": {
-        "JavaScript": 1
       },
       "commitCount": null
     },
