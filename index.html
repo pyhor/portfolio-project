@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="%BASE_URL%favicon.svg" />
@@ -18,7 +18,8 @@
     <title>pyhor | Cute Tech Portfolio</title>
     <script>
       ;(function () {
-        var theme = localStorage.getItem('theme') || 'dark'
+        var stored = localStorage.getItem('theme')
+        var theme = stored === 'dark' || stored === 'light' ? stored : 'light'
         document.documentElement.setAttribute('data-theme', theme)
         document.querySelector('meta[name="theme-color"]').setAttribute('content', theme === 'dark' ? '#1a1918' : '#faf8f4')
       })()

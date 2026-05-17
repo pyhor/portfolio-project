@@ -1,16 +1,21 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
 
 const ThemeContext = createContext(null)
+const THEME_STORAGE_KEY = 'theme'
+const DEFAULT_THEME = 'light'
+
+function readStoredTheme() {
+  if (typeof window === 'undefined') return DEFAULT_THEME
+  const stored = localStorage.getItem(THEME_STORAGE_KEY)
+  return stored === 'dark' || stored === 'light' ? stored : DEFAULT_THEME
+}
 
 export function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState(() => {
-    if (typeof window === 'undefined') return 'light'
-    return localStorage.getItem('theme') || 'dark'
-  })
+  const [theme, setTheme] = useState(readStoredTheme)
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
-    localStorage.setItem('theme', theme)
+    localStorage.setItem(THEME_STORAGE_KEY, theme)
     document.documentElement.style.colorScheme = theme === 'dark' ? 'dark' : 'light'
   }, [theme])
 

@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import { PageTransition } from '../components/PageTransition'
 import { ProgressNavigation } from '../components/ProgressNavigation'
+import { ScrollToTop } from '../components/ScrollToTop'
 import { isHomePath } from '../routes'
 import { usePageScroll } from '../hooks/usePageScroll'
 import { useScrollReveal } from '../hooks/useScrollReveal'
@@ -43,6 +44,7 @@ export function Layout() {
         <span className="dopa-orb dopa-orb--3" />
       </Box>
       <ProgressNavigation pageProgress={pageProgress} />
+      <ScrollToTop />
       <main className="portfolio-main">
         <PageTransition>
           <Outlet />
