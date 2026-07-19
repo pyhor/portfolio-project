@@ -45,6 +45,8 @@ export function I18nProvider({ children }) {
       setLang(nextLang)
       localStorage.setItem('lang', nextLang)
       document.documentElement.setAttribute('lang', nextLang)
+      const pageTitle = data.site_title || fallbackDict.site_title
+      if (pageTitle) document.title = pageTitle
       setReady(true)
     } catch (error) {
       console.error('Failed to load language', nextLang, error)

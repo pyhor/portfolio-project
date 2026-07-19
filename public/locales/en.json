@@ -171,7 +171,7 @@
   "contact_eyebrow": "Let's connect",
   "contact_heading": "Have something in mind?",
   "contact_body": "Whether it's a product idea, collaboration, or a friendly hello — I'd love to hear from you.",
-  "contact_type_1": "Let's build something cute and ambitious.",
+  "contact_type_1": "Let's build something ambitious.",
   "contact_type_2": "Open to collaborations and opportunities.",
   "contact_type_3": "Say hi — I reply friendly and fast.",
   "contact_email_label": "Email",
@@ -283,5 +283,6 @@
   "hero_value_line": "Problem solver · fast learner · builder of practical client & admin systems.",
   "matters_lede": "Real systems, real growth, and public proof you can verify on GitHub.",
   "why_me_p3": "I use AI as a productivity partner — not a shortcut — to think clearer, debug faster, and deliver better solutions.",
-  "about_p4": "I learn quickly by experimenting, debugging, and shipping real projects. I like analyzing problems and building answers people can actually use."
+  "about_p4": "I learn quickly by experimenting, debugging, and shipping real projects. I like analyzing problems and building answers people can actually use.",
+  "site_title": "pyhor | Portfolio"
 }
