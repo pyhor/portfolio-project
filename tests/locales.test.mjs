@@ -49,7 +49,7 @@ test('dynamic system and workflow content is complete in both primary locales', 
 })
 
 test('project and navigation translation references exist in both locales', () => {
-  for (const file of ['src/data/featuredProjects.js', 'src/routes.js', 'src/data/timeline.js']) {
+  for (const file of ['src/data/featuredProjects.js', 'src/data/showcaseProjects.js', 'src/routes.js', 'src/data/timeline.js']) {
     for (const [, key] of read(file).matchAll(/\b\w+Key:\s*['"]([^'"]+)['"]/g)) {
       assert.ok(en[key], `Missing English ${key} in ${file}`)
       assert.ok(zh[key], `Missing Chinese ${key} in ${file}`)

@@ -1,3 +1,4 @@
+import { AccentText } from './AccentText'
 import { useState } from 'react'
 import { ArrowDown, ArrowRight, ArrowUpRight, Check, ClipboardList, Code2, FileCheck2, GitBranch, Rocket, Search } from 'lucide-react'
 import { Link } from 'react-router-dom'
@@ -21,7 +22,7 @@ export function BusinessWorkflow() {
   const Icon = stage.icon
   const choose = (index) => { setSelected(index); setPreview(null) }
   return <section className="page-section business-workflow" id="home-matters" aria-labelledby="workflow-heading">
-    <div className="section-heading"><div><p className="eyebrow">02 — {t('workflow_kicker', 'BUSINESS & SYSTEM THINKING')}</p><h2 id="workflow-heading" className="section-title">{t('workflow_heading', 'The thinking behind the interface.')}</h2></div><p className="section-heading__note">{t('workflow_intro', 'A useful system starts with understanding people, then connecting the details.')}</p></div>
+    <div className="section-heading"><div><p className="eyebrow">02 — {t('workflow_kicker', 'BUSINESS & SYSTEM THINKING')}</p><h2 id="workflow-heading" className="section-title"><AccentText>{t('workflow_heading', 'The thinking behind the interface.')}</AccentText></h2></div><p className="section-heading__note">{t('workflow_intro', 'A useful system starts with understanding people, then connecting the details.')}</p></div>
     <div className="workflow-board">
       <div className="workflow-board__bar"><span><span className="status-dot" /> {t('workflow_board', 'FROM REQUIREMENT TO RELEASE')}</span><span>{String(active + 1).padStart(2, '0')} / 06</span></div>
       <div className="workflow-nodes" role="group" aria-label={t('workflow_select', 'Explore a delivery stage')} onPointerLeave={() => setPreview(null)}>{STAGES.map(({ id, icon: NodeIcon, title, tone }, i) => <div className={`workflow-step ${i <= active ? 'is-connected' : ''}`} key={id}><button type="button" className={`workflow-node ${i === active ? 'is-active' : ''}`} data-tone={tone} data-cursor="explore" aria-pressed={selected === i} aria-controls="workflow-details" onPointerEnter={(event) => { if (event.pointerType === 'mouse') setPreview(i) }} onFocus={() => setPreview(i)} onBlur={() => setPreview(null)} onClick={() => choose(i)}><span className="workflow-node__number">0{i + 1}</span><NodeIcon size={21} strokeWidth={1.5} /><span>{t(`workflow_${id}`, title)}</span><span className="workflow-node__dot" /></button>{i < STAGES.length - 1 && <ArrowRight className="workflow-connector" size={15} aria-hidden="true" />}</div>)}</div>

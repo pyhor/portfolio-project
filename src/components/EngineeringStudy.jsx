@@ -1,3 +1,4 @@
+import { AccentText } from './AccentText'
 import { useState } from 'react'
 import { ArrowDown, ArrowRight, Check, CircleAlert, Code2, MousePointer2, TextCursorInput } from 'lucide-react'
 import { useI18n } from '../context/I18nProvider'
@@ -14,7 +15,7 @@ export function EngineeringStudy() {
     <section className="engineering-chapter page-section" id="home-playground" aria-labelledby="engineering-heading">
       <div className="engineering-chapter__heading">
         <p className="eyebrow">05 — {t('lab_kicker', 'A LITTLE CREATIVE ENGINEERING')}</p>
-        <div className="engineering-title-grid"><h2 id="engineering-heading" className="section-title">{t('lab_heading', 'Serious about details. Curious about possibilities.')}</h2><div><p className="page-lede">{t('engineering_intro', 'A system can be functional without being forgettable. The interesting part is how clearly it responds to people.')}</p><p>{t('engineering_context', 'A 2D interaction study inspired by the registration flow in my cinema project. Change the input scenario, then explore the decisions behind the response.')}</p></div></div>
+        <div className="engineering-title-grid"><h2 id="engineering-heading" className="section-title"><AccentText>{t('lab_heading', 'Serious about details. Curious about possibilities.')}</AccentText></h2><div><p className="page-lede">{t('engineering_intro', 'A system can be functional without being forgettable. The interesting part is how clearly it responds to people.')}</p><p>{t('engineering_context', 'A 2D interaction study inspired by the registration flow in my cinema project. Change the input scenario, then explore the decisions behind the response.')}</p></div></div>
       </div>
       <div className="engineering-workspace">
         <div className="engineering-toolbar"><span className="engineering-file"><Code2 size={16} /> registration.flow</span><span className="engineering-demo"><span className="status-dot" />{t('engineering_demo', 'LOCAL INTERACTION STUDY')}</span></div>

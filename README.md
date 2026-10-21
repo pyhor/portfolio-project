@@ -4,6 +4,10 @@ A responsive business and technology portfolio built with React, Vite, Three.js,
 
 Full-width editorial chapters connect a business/build/quality preview, detailed project presentations, an interactive delivery workflow, a strictly 2D engineering study, and project reflections. Sections span the viewport while paragraphs keep readable line lengths. The combined career/project timeline sorts machine-readable end dates newest first.
 
+The homepage project rail uses the documented hotel, cinema, veterinary, and ASEAN research projects. It renders one accessible copy of each project and recycles offscreen positions for a slow desktop loop. Hover, focus, the pause button, hidden tabs, and offscreen visibility stop the loop. Touch and reduced-motion visitors browse a native horizontal scroll area. Text-led summaries are labeled where local project screenshots are unavailable.
+
+Scroll-linked chapter entrances use the existing GSAP/ScrollTrigger stack without pinning or wheel interception. Selective heading accents reveal meaningful English words and Chinese phrases; reduced motion keeps all text immediately readable and removes chapter movement.
+
 The only Three.js scene is an optional hero disclosure. Its bundle loads after the visitor chooses to open the study, pauses while offscreen or the tab is hidden, and unmounts when closed. Section 05 has no 3D content. Touch dragging preserves vertical scrolling; arrow keys, surface/mesh, pause, and reset controls remain available.
 
 A brief, skippable identity intro plays once per browser session and never waits for decorative 3D assets. A desktop-only contextual cursor indicates VIEW, OPEN, EXPLORE, and DRAG actions. Forms and modal dialogs retain native cursor behavior. Reduced motion disables the custom cursor, magnetic movement, pointer parallax, and automatic 3D animation, and shortens the intro.
