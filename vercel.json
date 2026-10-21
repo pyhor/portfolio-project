@@ -1,5 +1,35 @@
 {
   "framework": "vite",
   "buildCommand": "npm run build",
-  "outputDirectory": "docs"
+  "outputDirectory": "docs",
+  "rewrites": [
+    {
+      "source": "/about",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/trajectory",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/education",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/projects",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/volunteering",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/contact",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/about.html",
+      "destination": "/index.html"
+    }
+  ]
 }

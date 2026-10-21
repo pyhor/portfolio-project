@@ -1,6 +1,10 @@
 @use './styles/navigation';
 @use './styles/scene';
 @use './styles/experience';
+@use './styles/refinement';
+
+@font-face { font-family: 'Outfit'; font-style: normal; font-weight: 400 800; font-display: swap; src: url('/fonts/outfit-latin.woff2') format('woff2'); }
+@font-face { font-family: 'Space Grotesk'; font-style: normal; font-weight: 400 700; font-display: swap; src: url('/fonts/space-grotesk-latin.woff2') format('woff2'); }
 
 :root, [data-theme='light'] {
   color-scheme: light;
@@ -395,3 +399,5 @@ button:disabled { cursor: default; opacity: .55; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
   .project-cover__art, .project-cover--cinema-mgmt-system-2020 .project-cover__art { transform: none !important; }
 }
+
+@include refinement.styles;

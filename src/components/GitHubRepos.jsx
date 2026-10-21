@@ -1,14 +1,23 @@
 import { useMemo, useState } from 'react'
 import { Code2, GitFork, Star } from 'lucide-react'
 import { useI18n } from '../context/I18nProvider'
-import { getRateLimitMessage } from '../lib/githubApi'
 import { TechStackBadges } from './TechStackBadges'
 
 const Box = 'd' + 'iv'
+const REPO_DESCRIPTION_KEYS = {
+  'hotel-website-2023': 'repo_hotel_desc',
+  'cinema-mgmt-system-2020': 'repo_cinema_desc',
+  'vet-mgmt-system-2024': 'repo_vet_desc',
+  'portfolio-project': 'repo_portfolio_desc',
+  pyhor: 'repo_profile_desc',
+  'testing-tanstack-app': 'repo_tanstack_desc',
+}
+
 
 function RepoCard({ repo }) {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
   const languages = Object.keys(repo.languages || {}).slice(0, 3)
+  const descriptionKey = REPO_DESCRIPTION_KEYS[repo.name]
 
   return (
     <a className="repo-card glass-panel float-card reveal" href={repo.html_url} target="_blank" rel="noreferrer">
@@ -16,24 +25,25 @@ function RepoCard({ repo }) {
         <Code2 size={18} />
         <span>{repo.name}</span>
       </Box>
-      <p>{repo.description || t('repo_fallback_desc', '')}</p>
+      <p>{descriptionKey ? t(descriptionKey) : lang === 'zh-cn' ? t('repo_fallback_desc', '') : repo.description || t('repo_fallback_desc', '')}</p>
+      {!descriptionKey && repo.description && lang !== 'zh-cn' && <small>{t('github_original_description', 'Original description from GitHub')}</small>}
       <TechStackBadges
         techString={(languages.length ? languages : [repo.language || t('stat_code', 'Code')]).join(', ')}
         className="language-row"
       />
       <Box className="repo-stats">
         <span>
-          <Star size={15} /> {repo.stargazers_count}
+          <Star size={15} aria-hidden="true" /> {repo.stargazers_count} {t('github_stars', 'stars')}
         </span>
         <span>
-          <GitFork size={15} /> {repo.forks_count}
+          <GitFork size={15} aria-hidden="true" /> {repo.forks_count} {t('github_forks', 'forks')}
         </span>
       </Box>
     </a>
   )
 }
 
-export function GitHubRepos({ profile, repos, loading, error, rateLimit, fromCache }) {
+export function GitHubRepos({ profile, repos, loading, error, fromCache }) {
   const [filter, setFilter] = useState('All')
   const { t } = useI18n()
 
@@ -51,7 +61,7 @@ export function GitHubRepos({ profile, repos, loading, error, rateLimit, fromCac
 
   const errorMessage =
     error === 'rate_limit'
-      ? getRateLimitMessage(rateLimit) || t('github_rate_limit', '')
+      ? t('github_rate_limit', '')
       : t('work_error', 'Failed to load projects.')
 
   return (
@@ -67,7 +77,7 @@ export function GitHubRepos({ profile, repos, loading, error, rateLimit, fromCac
             <img src={profile.avatar_url} alt="" />
             <Box>
               <strong>{profile.name || profile.login}</strong>
-              <p>{profile.bio}</p>
+              <p>{t('github_profile_description', 'Public projects and development activity')}</p>
               <span>
                 {fromCache ? t('profile_cached', 'Cached GitHub data') : t('profile_live', 'Live from GitHub API')}
               </span>
@@ -78,7 +88,7 @@ export function GitHubRepos({ profile, repos, loading, error, rateLimit, fromCac
       {fromCache && error === 'rate_limit' && (
         <p className="cache-notice reveal">{errorMessage}</p>
       )}
-      <Box className="filter-bar reveal" aria-label="Project filters">
+      <Box className="filter-bar reveal" aria-label={t('github_filters', 'Project filters')}>
         {languages.map((language) => (
           <button
             className={filter === language ? 'active' : ''}
@@ -93,7 +103,7 @@ export function GitHubRepos({ profile, repos, loading, error, rateLimit, fromCac
       {loading && (
         <Box className="loading-panel glass-panel reveal">
           <span className="loader" />
-          {t('work_loading', 'Syncing repository telemetry...')}
+          {t('work_loading', 'Loading repositories…')}
         </Box>
       )}
       {error && !loading && !repos.length && (

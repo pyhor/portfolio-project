@@ -47,6 +47,8 @@ jobs:
 
       # Step 4: Run Vite to compile and bundle your source files into the dist/ folder
       - name: Build
+        env:
+          VITE_CONTACT_API_URL: ${{ vars.VITE_CONTACT_API_URL }}
         run: npm run build
 
       # Step 5: Configure the GitHub Pages environment for deployment

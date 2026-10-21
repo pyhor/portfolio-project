@@ -355,7 +355,7 @@ export function HeroScene() {
         <ArrowUpRight size={17} strokeWidth={1.4} />
       </div>
       <div className="hero-scene__coordinates" aria-hidden="true">
-        <span>FIG. 01</span>
+        <span>{t('scene_figure', 'FIG. 01')}</span>
         <span>X / Y / Z</span>
       </div>
       <div className="hero-scene__orbit hero-scene__orbit--one" aria-hidden="true" />

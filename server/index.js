@@ -1,14 +1,29 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config({ path: require('path').resolve(__dirname, '.env.dev') });
+require('dotenv').config({ path: require('path').resolve(__dirname, '.env') });
 
 const { GITHUB_API } = require('./config');
+const { createContactHandler, sendContactResult } = require('./contact.cjs');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+const handleContact = createContactHandler();
+// Keep contact CORS separate from the read-only GitHub proxy's public CORS.
+app.all('/api/contact', express.json({ limit: '20kb' }), async (req, res) => {
+    sendContactResult(res, await handleContact({
+        method: req.method, origin: req.get('origin') || '',
+        contentType: req.get('content-type') || '',
+        ip: req.socket.remoteAddress,
+        body: req.body,
+    }));
+});
+app.use('/api/contact', (error, req, res, next) => {
+    if (!error) return next();
+    res.status(error.type === 'entity.too.large' ? 413 : 400).json({ ok: false, code: error.type === 'entity.too.large' ? 'payload_too_large' : 'validation_error' });
+});
 app.use(cors());
-app.use(express.json());
 
 const headers = {
     Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,

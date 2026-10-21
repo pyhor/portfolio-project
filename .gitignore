@@ -17,7 +17,6 @@ dist
 dist-ssr
 *.local
 
-.gitignore
 
 # Editor directories and files
 .vscode/*
@@ -29,3 +28,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Private environment variants; examples contain names and placeholders only.
+.env.*
+!.env.example

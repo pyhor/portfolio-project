@@ -19,7 +19,7 @@ function techClassName(label) {
 function parseTechItems(techString) {
   if (!techString?.trim()) return []
   return techString
-    .split(/[,·|/]/)
+    .split(/[,，、·|/]/)
     .map((item) => item.trim())
     .filter(Boolean)
 }

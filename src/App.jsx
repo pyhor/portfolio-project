@@ -23,6 +23,7 @@ export default function App() {
               <Route element={<Layout />}>
                 <Route index element={<HomePage />} />
                 <Route path="about" element={<AboutPage />} />
+                <Route path="about.html" element={<Navigate to="/about" replace />} />
                 <Route path="trajectory" element={<TrajectoryPage />} />
                 <Route path="education" element={<EducationPage />} />
                 <Route path="projects" element={<ProjectsPage />} />

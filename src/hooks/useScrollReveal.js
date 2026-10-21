@@ -57,6 +57,19 @@ export function useScrollReveal(deps = []) {
       })
     })
 
-    return () => media.revert()
+    // Expanded project details and language changes can move later sections.
+    // Keep reveal positions tied to the current content height.
+    let refreshFrame = 0
+    const main = document.querySelector('.portfolio-main')
+    const resize = new ResizeObserver(() => {
+      cancelAnimationFrame(refreshFrame)
+      refreshFrame = requestAnimationFrame(() => ScrollTrigger.refresh())
+    })
+    if (main) resize.observe(main)
+    return () => {
+      resize.disconnect()
+      cancelAnimationFrame(refreshFrame)
+      media.revert()
+    }
   }, deps)
 }

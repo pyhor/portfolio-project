@@ -16,8 +16,8 @@ export function ValueHighlights({ keys, className = '' }) {
 }
 
 export const PERSONAL_VALUE_KEYS = [
-  'highlight_ai',
+  'highlight_quality',
   'highlight_problem',
   'highlight_builder',
-  'highlight_creative',
+  'highlight_systems',
 ]

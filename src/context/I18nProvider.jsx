@@ -1,4 +1,6 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import english from '../../public/locales/en.json'
+import simplifiedChinese from '../../public/locales/zh-cn.json'
 
 const LANGS = [
   { id: 'en', label: 'EN' },
@@ -7,78 +9,59 @@ const LANGS = [
   { id: 'yue-hk', label: '粵' },
   { id: 'ms', label: 'MS' },
 ]
-
+const BUNDLED = { en: english, 'zh-cn': simplifiedChinese }
 const I18nContext = createContext(null)
 const localeBase = `${import.meta.env.BASE_URL}locales/`
 
-export function I18nProvider({ children }) {
-  const [lang, setLang] = useState(() => {
-    if (typeof window === 'undefined') return 'en'
-    return localStorage.getItem('lang') || 'en'
-  })
-  const [dict, setDict] = useState({})
-  const [fallbackDict, setFallbackDict] = useState({})
-  const [ready, setReady] = useState(false)
-  const fallbackLoaded = useRef(false)
+function savedLanguage() {
+  try {
+    const saved = localStorage.getItem('lang')
+    return LANGS.some(({ id }) => id === saved) ? saved : 'en'
+  } catch {
+    return 'en'
+  }
+}
 
-  const ensureFallback = useCallback(async () => {
-    if (fallbackLoaded.current) return
-    try {
-      const response = await fetch(`${localeBase}en.json`)
-      if (response.ok) {
-        const data = await response.json()
-        fallbackLoaded.current = true
-        setFallbackDict(data)
+export function I18nProvider({ children }) {
+  const [lang, setLang] = useState(savedLanguage)
+  // The two primary languages are ready before the first render, including the intro.
+  const [dict, setDict] = useState(() => BUNDLED[savedLanguage()] || english)
+  const [ready, setReady] = useState(() => Boolean(BUNDLED[savedLanguage()]))
+  const requestId = useRef(0)
+
+  const loadLanguage = useCallback(async (requestedLang) => {
+    const nextLang = LANGS.some(({ id }) => id === requestedLang) ? requestedLang : 'en'
+    const request = ++requestId.current
+    let data = BUNDLED[nextLang]
+    let resolvedLang = nextLang
+    if (!data) {
+      try {
+        const response = await fetch(`${localeBase}${nextLang}.json`)
+        if (!response.ok) throw new Error('Locale not found')
+        data = await response.json()
+      } catch {
+        data = english
+        resolvedLang = 'en'
       }
-    } catch {
-      /* ignore */
     }
+    // A slow earlier request must not overwrite a more recent language selection.
+    if (request !== requestId.current) return
+    setDict(data)
+    setLang(resolvedLang)
+    try { localStorage.setItem('lang', resolvedLang) } catch { /* Storage may be unavailable. */ }
+    document.documentElement.setAttribute('lang', resolvedLang)
+    document.title = data.site_title || english.site_title
+    setReady(true)
   }, [])
 
-  const loadLanguage = useCallback(async (nextLang) => {
-    try {
-      await ensureFallback()
-      const response = await fetch(`${localeBase}${nextLang}.json`)
-      if (!response.ok) throw new Error('Locale not found')
-      const data = await response.json()
-      setDict(data)
-      setLang(nextLang)
-      localStorage.setItem('lang', nextLang)
-      document.documentElement.setAttribute('lang', nextLang)
-      const pageTitle = data.site_title || fallbackDict.site_title
-      if (pageTitle) document.title = pageTitle
-      setReady(true)
-    } catch (error) {
-      console.error('Failed to load language', nextLang, error)
-      if (nextLang !== 'en') await loadLanguage('en')
-    }
-  }, [ensureFallback])
+  useEffect(() => { loadLanguage(savedLanguage()) }, [loadLanguage])
 
-  useEffect(() => {
-    const saved = localStorage.getItem('lang') || 'en'
-    loadLanguage(saved)
-  }, [loadLanguage])
+  const t = useCallback((key, fallback = '') => {
+    const value = dict[key] ?? english[key]
+    return value == null || value === '' ? fallback : value
+  }, [dict])
 
-  const t = useCallback(
-    (key, fallback = '') => {
-      const value = dict[key] ?? fallbackDict[key]
-      if (value == null || value === '') return fallback
-      return value
-    },
-    [dict, fallbackDict],
-  )
-
-  const value = useMemo(
-    () => ({
-      lang,
-      langs: LANGS,
-      ready,
-      setLang: loadLanguage,
-      t,
-    }),
-    [lang, ready, loadLanguage, t],
-  )
-
+  const value = useMemo(() => ({ lang, langs: LANGS, ready, setLang: loadLanguage, t }), [lang, ready, loadLanguage, t])
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>
 }
 

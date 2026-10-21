@@ -1,153 +1,145 @@
-import { useEffect, useRef, useState } from 'react'
-import { ArrowUpRight, Check, Copy, Link2, Mail, MessageCircle, Send } from 'lucide-react'
+import { useEffect, useId, useRef, useState } from 'react'
+import { ArrowUpRight, CheckCircle2, Link2, MessageCircle, Send, ShieldCheck } from 'lucide-react'
 import { Magnetic } from './Magnetic'
 import { useI18n } from '../context/I18nProvider'
+import { submitContact, validateContactForm } from '../lib/contact'
 
-const Box = 'd' + 'iv'
-export const CONTACT_EMAIL = import.meta.env.VITE_CONTACT_EMAIL || 'pyhor.9657@gmail.com'
 export const LINKEDIN_URL = 'https://www.linkedin.com/in/pei-yu-hor-9b3539265/'
+const EMPTY_FORM = { name: '', email: '', subject: '', message: '', website: '' }
+const FIELD_KEYS = { name: 'contact_name_label', email: 'contact_email_field_label', subject: 'contact_subject_label', message: 'contact_message_label' }
+const ERROR_KEYS = {
+  not_configured: 'contact_status_unavailable', network_error: 'contact_status_network',
+  rate_limited: 'contact_status_rate_limited', origin_not_allowed: 'contact_status_unavailable',
+  delivery_timeout: 'contact_status_timeout', validation_error: 'contact_status_validation',
+  spam_detected: 'contact_status_failed', delivery_failed: 'contact_status_failed',
+}
 
 export function ContactSection({ id = 'home-contact', compact = false, headingAs: Heading = 'h2' }) {
   const { t } = useI18n()
-  const [copyStatus, setCopyStatus] = useState('')
-  const [form, setForm] = useState({ name: '', email: '', message: '' })
-  const copyTimeout = useRef(null)
+  const formId = useId()
+  const [form, setForm] = useState({ ...EMPTY_FORM })
+  const [errors, setErrors] = useState({})
+  const [status, setStatus] = useState('')
+  const [sending, setSending] = useState(false)
+  const sendingRef = useRef(false)
+  const requestRef = useRef(null)
   const mounted = useRef(true)
-  const copied = copyStatus === 'success'
+  const formRef = useRef(null)
 
   useEffect(() => {
     mounted.current = true
-    return () => {
-      mounted.current = false
-      window.clearTimeout(copyTimeout.current)
-    }
+    return () => { mounted.current = false; requestRef.current?.abort() }
   }, [])
-
-  const copyEmail = async () => {
-    window.clearTimeout(copyTimeout.current)
-    setCopyStatus('copying')
-    try {
-      await navigator.clipboard.writeText(CONTACT_EMAIL)
-      if (!mounted.current) return
-      setCopyStatus('success')
-      copyTimeout.current = window.setTimeout(() => setCopyStatus(''), 2200)
-    } catch {
-      if (mounted.current) setCopyStatus('error')
-    }
-  }
 
   const updateField = (field) => (event) => {
     setForm((current) => ({ ...current, [field]: event.target.value }))
+    setErrors((current) => ({ ...current, [field]: undefined }))
+    if (status) setStatus('')
   }
 
-  const sendMessage = (event) => {
+  const sendMessage = async (event) => {
     event.preventDefault()
-    const body = [
-      `${t('contact_form_body_name', 'Name')}: ${form.name.trim()}`,
-      `${t('contact_form_body_email', 'Email')}: ${form.email.trim()}`,
-      '',
-      form.message.trim(),
-    ].join('\n')
-
-    const params = new URLSearchParams({
-      subject: t('contact_mailto_subject', 'Portfolio Contact Message'),
-      body,
-    })
-
-    window.location.href = `mailto:${CONTACT_EMAIL}?${params.toString()}`
+    if (sendingRef.current) return
+    const nextErrors = validateContactForm(form)
+    setErrors(nextErrors)
+    if (Object.keys(nextErrors).length) {
+      setStatus('validation_error')
+      formRef.current?.elements.namedItem(Object.keys(nextErrors)[0])?.focus()
+      return
+    }
+    sendingRef.current = true
+    setSending(true)
+    setStatus('')
+    const controller = new AbortController()
+    requestRef.current = controller
+    const timeout = window.setTimeout(() => controller.abort(), 15000)
+    try {
+      const result = await submitContact(form, {
+        endpoint: import.meta.env.VITE_CONTACT_API_URL?.trim() || '/api/contact', signal: controller.signal,
+      })
+      if (!mounted.current) return
+      if (result.ok) {
+        setStatus('success')
+        setForm({ ...EMPTY_FORM })
+        setErrors({})
+      } else {
+        setStatus(result.code)
+        if (result.code === 'validation_error') {
+          const serverErrors = {}
+          for (const field of Object.keys(FIELD_KEYS)) {
+            const code = result.fields?.[field]
+            if (['required', 'too_short', 'too_long', 'invalid'].includes(code)) serverErrors[field] = code
+          }
+          setErrors(serverErrors)
+        }
+      }
+    } finally {
+      window.clearTimeout(timeout)
+      requestRef.current = null
+      sendingRef.current = false
+      if (mounted.current) setSending(false)
+    }
   }
 
   return (
     <section className={`contact-block ${compact ? 'contact-block--compact' : ''}`} id={id}>
-      <Box className="section-kicker reveal">
-        <MessageCircle size={16} />
-        <span>{t('contact_eyebrow', "Let's connect")}</span>
-      </Box>
-      <Heading className="section-title reveal">{t('contact_heading', 'Have something in mind?')}</Heading>
-      <p className="page-lede reveal">{t('contact_body', '')}</p>
+      <div className="section-kicker reveal"><MessageCircle size={16} aria-hidden="true" /><span>{t('contact_eyebrow')}</span></div>
+      <Heading className="section-title reveal">{t('contact_heading')}</Heading>
+      <p className="page-lede reveal">{t('contact_body')}</p>
 
-      <form className="contact-form glass-panel float-card reveal" onSubmit={sendMessage}>
-        <p className="contact-form__helper">{t('contact_form_helper', '')}</p>
-        <Box className="contact-form__fields">
-          <label className="contact-form__field">
-            <span>{t('contact_name_label', 'Name')}</span>
-            <input
-              type="text"
-              name="name"
-              value={form.name}
-              onChange={updateField('name')}
-              autoComplete="name"
-              required
-            />
-          </label>
-          <label className="contact-form__field">
-            <span>{t('contact_email_field_label', 'Email')}</span>
-            <input
-              type="email"
-              name="email"
-              value={form.email}
-              onChange={updateField('email')}
-              autoComplete="email"
-              required
-            />
-          </label>
-          <label className="contact-form__field contact-form__field--full">
-            <span>{t('contact_message_label', 'Message')}</span>
-            <textarea
-              name="message"
-              rows={5}
-              value={form.message}
-              onChange={updateField('message')}
-              required
-            />
-          </label>
-        </Box>
-        <Magnetic as="button" type="submit" className="primary-cta contact-form__submit">
-          {t('contact_send_message', 'Send Message')} <Send size={16} />
-        </Magnetic>
-      </form>
-
-      <Box className="contact-cards">
-        <article className="contact-card glass-panel float-card reveal">
-          <Box className="contact-card__icon">
-            <Mail size={22} />
-          </Box>
-          <h3>{t('contact_email_label', 'Email')}</h3>
-          <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
-          <Box className="contact-card__actions">
-            <Magnetic href={`mailto:${CONTACT_EMAIL}`} className="ghost-cta">
-              {t('contact_email_cta', 'Send email')} <ArrowUpRight size={16} />
+      <div className="contact-layout">
+        <aside className="contact-support reveal">
+          <article className="contact-support__intro">
+            <p className="contact-support__eyebrow">{t('contact_support_eyebrow')}</p>
+            <h3>{t('contact_support_title')}</h3>
+            <p>{t('contact_support_body')}</p>
+          </article>
+          <div className="contact-support__note"><ShieldCheck size={20} aria-hidden="true" /><p>{t('contact_privacy_note')}</p></div>
+          <article className="contact-card glass-panel">
+            <div className="contact-card__icon contact-card__icon--linkedin"><Link2 size={22} aria-hidden="true" /></div>
+            <h3>{t('contact_linkedin_label')}</h3>
+            <p>{t('contact_linkedin_desc')}</p>
+            <Magnetic href={LINKEDIN_URL} target="_blank" rel="noreferrer" className="ghost-cta">
+              {t('contact_linkedin_cta')} <ArrowUpRight size={16} aria-hidden="true" />
             </Magnetic>
-            <button
-              type="button"
-              className={`contact-copy-btn ${copied ? 'contact-copy-btn--copied' : ''}`}
-              onClick={copyEmail}
-              disabled={copyStatus === 'copying'}
-              aria-busy={copyStatus === 'copying'}
-            >
-              {copied ? <Check size={16} /> : <Copy size={16} />}
-              {copied ? t('contact_copied', 'Copied!') : t('contact_copy_email', 'Copy Email')}
-            </button>
-          </Box>
-          <p className="contact-copy-status" role="status" aria-live="polite" aria-atomic="true">
-            {copied && t('contact_copied', 'Copied!')}
-            {copyStatus === 'error' && t(
-              'contact_copy_error',
-              'Could not copy the email. Select the address above or use Send email.',
-            )}
-          </p>
-        </article>
-        <article className="contact-card glass-panel float-card reveal">
-          <Box className="contact-card__icon contact-card__icon--linkedin">
-            <Link2 size={22} />
-          </Box>
-          <h3>{t('contact_linkedin_label', 'LinkedIn')}</h3>
-          <p>{t('contact_linkedin_desc', '')}</p>
-          <Magnetic href={LINKEDIN_URL} target="_blank" rel="noreferrer" className="primary-cta">
-            {t('contact_linkedin_cta', 'Open LinkedIn')} <ArrowUpRight size={16} />
+          </article>
+        </aside>
+
+        <form ref={formRef} className="contact-form glass-panel reveal" onSubmit={sendMessage} noValidate aria-busy={sending} aria-label={t('contact_form_label')}>
+          <div className="contact-form__intro"><h3>{t('contact_form_title')}</h3><p className="contact-form__helper">{t('contact_form_helper')}</p></div>
+          <div className="contact-form__fields">
+            {Object.entries(FIELD_KEYS).map(([field, labelKey]) => {
+              const inputId = `${formId}-${field}`
+              const errorId = `${inputId}-error`
+              const Input = field === 'message' ? 'textarea' : 'input'
+              return (
+                <div className={`contact-form__field ${['subject', 'message'].includes(field) ? 'contact-form__field--full' : ''}`} key={field}>
+                  <label htmlFor={inputId}>{t(labelKey)} <span className="contact-form__required" aria-hidden="true">*</span></label>
+                  <Input id={inputId} name={field} type={field === 'message' ? undefined : field === 'email' ? 'email' : 'text'} rows={field === 'message' ? 6 : undefined}
+                    value={form[field]} onChange={updateField(field)} disabled={sending} required
+                    autoComplete={field === 'name' ? 'name' : field === 'email' ? 'email' : undefined}
+                    maxLength={{ name: 100, email: 254, subject: 160, message: 5000 }[field]}
+                    aria-invalid={Boolean(errors[field])} aria-describedby={errors[field] ? errorId : undefined}
+                    placeholder={t(`contact_${field}_placeholder`)} />
+                  {errors[field] && <p className="contact-form__error" id={errorId}>{t(`contact_error_${field}_${errors[field]}`, t('contact_error_invalid'))}</p>}
+                </div>
+              )
+            })}
+          </div>
+          <div className="contact-form__honeypot" aria-hidden="true" hidden>
+            <label htmlFor={`${formId}-website`}>{t('contact_website_label')}</label>
+            <input id={`${formId}-website`} type="text" name="website" value={form.website} onChange={updateField('website')} tabIndex={-1} autoComplete="off" />
+          </div>
+          <p className="contact-form__privacy">{t('contact_form_privacy')}</p>
+          <Magnetic as="button" type="submit" className="primary-cta contact-form__submit" disabled={sending}>
+            {t(sending ? 'contact_sending' : 'contact_send_message')} <Send size={16} aria-hidden="true" />
           </Magnetic>
-        </article>
-      </Box>
+          <div className={`contact-form__status ${status === 'success' ? 'contact-form__status--success' : status ? 'contact-form__status--error' : ''}`} role={status && status !== 'success' ? 'alert' : 'status'} aria-live={status && status !== 'success' ? 'assertive' : 'polite'} aria-atomic="true">
+            {status === 'success' && <><CheckCircle2 size={20} aria-hidden="true" /><p>{t('contact_status_success')}</p></>}
+            {status && status !== 'success' && <p>{t(ERROR_KEYS[status] || 'contact_status_failed')}</p>}
+          </div>
+        </form>
+      </div>
     </section>
   )
 }

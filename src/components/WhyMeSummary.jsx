@@ -45,7 +45,7 @@ export function WhyMeSummary() {
         <p className="why-me__lead">{t('why_me_p3', '')}</p>
         <ValueHighlights keys={PERSONAL_VALUE_KEYS} className="value-highlights--compact" />
         {!loading && (
-          <Box className="why-me__stats" aria-label="GitHub highlights">
+          <Box className="why-me__stats" aria-label={t('github_highlights', 'GitHub highlights')}>
             <span className="why-me__badge">
               {t('why_me_stat_repos', '{{count}} public repos').replace('{{count}}', String(repoCount || '—'))}
             </span>

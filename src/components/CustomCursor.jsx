@@ -1,7 +1,9 @@
 import { useEffect, useRef } from 'react'
+import { useI18n } from '../context/I18nProvider'
 
 // Pointer animation stays outside React's render loop. No position state.
 export function CustomCursor({ enabled }) {
+  const { t } = useI18n()
   const rootRef = useRef(null)
   const dotRef = useRef(null)
   const ringRef = useRef(null)
@@ -11,6 +13,8 @@ export function CustomCursor({ enabled }) {
     if (!enabled) return undefined
     const root = rootRef.current
     const media = window.matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)')
+    const labels = { view: t('cursor_view', 'VIEW'), open: t('cursor_open', 'OPEN'), explore: t('cursor_explore', 'EXPLORE'), drag: t('cursor_drag', 'DRAG'), external: '↗' }
+    labelRef.current.textContent = labels[root.dataset.state] || ''
     let frame = 0
     let x = 0
     let y = 0
@@ -57,7 +61,7 @@ export function CustomCursor({ enabled }) {
       const state = context?.dataset.cursor || (interactive ? (interactive.matches('a[target="_blank"]') ? 'external' : 'button') : 'normal')
       if (root.dataset.state !== state) {
         root.dataset.state = state
-        labelRef.current.textContent = ({ view: 'VIEW', open: 'OPEN', explore: 'EXPLORE', drag: 'DRAG', external: '↗' })[state] || ''
+        labelRef.current.textContent = labels[state] || ''
       }
       if (!frame) frame = requestAnimationFrame(animate)
     }
@@ -86,7 +90,7 @@ export function CustomCursor({ enabled }) {
       window.removeEventListener('blur', hide)
       media.removeEventListener('change', hide)
     }
-  }, [enabled])
+  }, [enabled, t])
 
   return <div className="portfolio-cursor" ref={rootRef} data-visible="false" aria-hidden="true"><div className="cursor-point" ref={dotRef}><i /></div><div className="cursor-follower" ref={ringRef}><span ref={labelRef} /></div></div>
 }

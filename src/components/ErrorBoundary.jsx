@@ -1,14 +1,14 @@
 import React from 'react'
+import english from '../../public/locales/en.json'
+import simplifiedChinese from '../../public/locales/zh-cn.json'
 
-// Localized copy for the crash screen. The i18n React context may be
-// unavailable when the boundary triggers, so we resolve from the saved
-// language directly instead of the useI18n hook.
+// Crash recovery must remain usable even when the React i18n provider fails.
 const ERROR_COPY = {
-  en: { title: 'Something went wrong', hint: 'Open the browser console (F12) for details, then restart with npm run dev.' },
-  ms: { title: 'Sesuatu tidak kena', hint: 'Buka konsol pelayar (F12) untuk butiran, kemudian mulakan semula dengan npm run dev.' },
-  'zh-cn': { title: '出了点问题', hint: '按 F12 打开浏览器控制台查看详情，然后用 npm run dev 重新启动。' },
-  'zh-tw': { title: '出了點問題', hint: '按 F12 開啟瀏覽器主控台查看詳情，然後用 npm run dev 重新啟動。' },
-  'yue-hk': { title: '出咗啲問題', hint: '撳 F12 開瀏覽器主控台睇詳情，再用 npm run dev 重新啟動。' },
+  en: { title: english.error_title, hint: english.error_hint, reload: english.error_reload },
+  'zh-cn': { title: simplifiedChinese.error_title, hint: simplifiedChinese.error_hint, reload: simplifiedChinese.error_reload },
+  ms: { title: 'Sesuatu tidak kena', hint: 'Halaman ini tidak dapat dipaparkan. Sila cuba muat semula.', reload: 'Muat semula halaman' },
+  'zh-tw': { title: '頁面出了點問題', hint: '目前無法顯示此頁面，請重新載入後再試。', reload: '重新載入頁面' },
+  'yue-hk': { title: '頁面出咗啲問題', hint: '暫時未能顯示呢個頁面，請重新載入再試。', reload: '重新載入頁面' },
 }
 
 export class ErrorBoundary extends React.Component {
@@ -17,27 +17,18 @@ export class ErrorBoundary extends React.Component {
     this.state = { error: null }
   }
 
-  static getDerivedStateFromError(error) {
-    return { error }
-  }
+  static getDerivedStateFromError(error) { return { error } }
 
   render() {
     if (this.state.error) {
-      const lang = (typeof localStorage !== 'undefined' && localStorage.getItem('lang')) || 'en'
+      let lang = 'en'
+      try { lang = localStorage.getItem('lang') || 'en' } catch { /* Recovery also works without storage. */ }
       const copy = ERROR_COPY[lang] || ERROR_COPY.en
       return (
-        <div
-          style={{
-            padding: '2rem',
-            fontFamily: 'system-ui, sans-serif',
-            color: '#0a0a0a',
-            background: '#fff5f5',
-            minHeight: '100vh',
-          }}
-        >
+        <div lang={lang} role="alert" style={{ padding: '2rem', fontFamily: 'system-ui, sans-serif', color: '#0a0a0a', background: '#fff5f5', minHeight: '100vh' }}>
           <h1 style={{ marginTop: 0 }}>{copy.title}</h1>
-          <p style={{ maxWidth: '40rem', lineHeight: 1.6 }}>{String(this.state.error?.message || this.state.error)}</p>
-          <p style={{ opacity: 0.8 }}>{copy.hint}</p>
+          <p style={{ maxWidth: '40rem', lineHeight: 1.6 }}>{copy.hint}</p>
+          <button type="button" onClick={() => window.location.reload()}>{copy.reload}</button>
         </div>
       )
     }
