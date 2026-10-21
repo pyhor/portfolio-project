@@ -38,8 +38,8 @@ export function ProjectsPage() {
       <section className="page-section">
         <h2 className="section-title reveal">{t('projects_featured_title', 'Featured builds')}</h2>
         <Box className="featured-projects-stack">
-          {FEATURED_PROJECTS.map((project) => (
-            <FeaturedProjectCard key={project.id} project={project} />
+          {FEATURED_PROJECTS.map((project, index) => (
+            <FeaturedProjectCard key={project.id} project={project} index={index} />
           ))}
         </Box>
       </section>

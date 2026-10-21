@@ -1,173 +1,83 @@
-import {
-  ArrowUpRight,
-  Code2,
-  GraduationCap,
-  HeartHandshake,
-  Layers,
-  Route,
-  Sparkles,
-  Wrench,
-  Zap,
-} from 'lucide-react'
+import { ArrowDown, ArrowUpRight, Code2, GraduationCap, HeartHandshake, Layers, Route, Sparkles, Wrench } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { ContactSection } from '../components/ContactSection'
 import { HeroTypography } from '../components/HeroTypography'
-import { HomeProjectsPreview } from '../components/HomeProjectsPreview'
+import { FeaturedProjectCard } from '../components/FeaturedProjectCard'
 import { HomeSectionPreview } from '../components/HomeSectionPreview'
 import { Magnetic } from '../components/Magnetic'
 import { PageShell } from '../components/PageShell'
-import { PERSONAL_VALUE_KEYS, ValueHighlights } from '../components/ValueHighlights'
-import { WhyMeSummary } from '../components/WhyMeSummary'
+import { FEATURED_PROJECTS } from '../data/featuredProjects'
 import { useI18n } from '../context/I18nProvider'
 import { useGithubData } from '../hooks/useGithubData'
+import { DeferredScene } from '../components/DeferredScene'
+import { SystemOverview } from '../components/SystemOverview'
+import { BusinessWorkflow } from '../components/BusinessWorkflow'
+import { CONTACT_EMAIL } from '../components/ContactSection'
 
-const Box = 'd' + 'iv'
-
-const BUILD_CARDS = [
+const CAPABILITIES = [
   { icon: Layers, titleKey: 'build_card_1_title', descKey: 'build_card_1_desc' },
   { icon: Sparkles, titleKey: 'build_card_2_title', descKey: 'build_card_2_desc' },
   { icon: Wrench, titleKey: 'build_card_3_title', descKey: 'build_card_3_desc' },
   { icon: Code2, titleKey: 'build_card_4_title', descKey: 'build_card_4_desc' },
 ]
 
-const MATTERS_CARDS = [
-  { titleKey: 'matters_1_title', descKey: 'matters_1_desc', examplesKey: 'matters_1_examples' },
-  { titleKey: 'matters_2_title', descKey: 'matters_2_desc', examplesKey: 'matters_2_examples' },
-  { titleKey: 'matters_3_title', descKey: 'matters_3_desc' },
-  { titleKey: 'matters_4_title', descKey: 'matters_4_desc' },
-  { titleKey: 'matters_5_title', descKey: 'matters_5_desc' },
-  { titleKey: 'matters_6_title', descKey: 'matters_6_desc' },
-]
-
 export function HomePage() {
   const { t } = useI18n()
   const github = useGithubData(12)
-
-  const stats = [
-    { value: github.profile?.public_repos ?? '—', label: t('metric_repos', 'repos') },
-    { value: github.profile?.followers ?? '—', label: t('metric_followers', 'followers') },
-    { value: github.profile?.location || t('metric_location', 'Malaysia'), label: t('metric_location_label', 'Location') },
-  ]
-
   return (
     <PageShell className="home-page">
-      <Box className="home-sections">
-        <section className="page-section hero" id="home-hero">
-          <HeroTypography profileBio={github.profile?.bio}>
-            <Box className="hero-badges reveal">
-              <span className="hero-badge hero-badge--signal">{t('signal_label', 'Availability')}</span>
-              <span className="hero-badge">{t('signal_title', '')}</span>
-              <span className="hero-badge hero-badge--soft">{t('signal_sub', '')}</span>
-            </Box>
-            <Box className="hero-metrics reveal">
-              {stats.map((stat) => (
-                <span key={stat.label} className="hero-metric">
-                  <strong>{stat.value}</strong>
-                  <small>{stat.label}</small>
-                </span>
-              ))}
-            </Box>
-            <p className="hero-value-line reveal">{t('hero_value_line', '')}</p>
+      <section className="hero" id="home-hero">
+        <div className="hero-editorial">
+          <p className="eyebrow">{t('studio_portfolio', 'PEOPLE. PROCESS. PURPOSEFUL TECHNOLOGY.')}</p>
+          <HeroTypography>
+            <div className="hero-actions">
+              <Magnetic as={Link} to="/projects" className="primary-cta">{t('studio_view_work', 'Explore my work')} <ArrowUpRight size={18} /></Magnetic>
+              <Link to="/about" className="text-link">{t('studio_about', 'A little about me')} <ArrowUpRight size={17} /></Link>
+            </div>
           </HeroTypography>
-          <Box className="hero-actions reveal">
-            <Magnetic as={Link} to="/projects" className="primary-cta">
-              {t('cta_explore', 'Explore work')} <ArrowUpRight size={18} />
-            </Magnetic>
-            <Magnetic
-              href={github.profile?.html_url || 'https://github.com/pyhor'}
-              target="_blank"
-              rel="noreferrer"
-              className="ghost-cta"
-            >
-              {t('cta_github', 'GitHub')} <Code2 size={18} />
-            </Magnetic>
-          </Box>
-        </section>
+          <div className="hero-footnote"><span className="status-dot" />{t('signal_title', 'Open to ambitious web builds')}</div>
+        </div>
+        <SystemOverview />
+      </section>
 
-        <section className="page-section" id="home-why">
-          <WhyMeSummary />
-        </section>
+      <div className="intro-strip">
+        <span className="intro-strip__location"><span className="location-symbol" aria-hidden="true">↗</span> {t('studio_based', 'Based in Malaysia. Building for the web.')}</span>
+        <span className="intro-strip__stack">React <span>/</span> PHP <span>/</span> JavaScript <span>/</span> Three.js</span>
+        <a href="#home-projects" className="scroll-cue" aria-label={t('studio_scroll', 'Scroll to selected work')}><ArrowDown size={18} /></a>
+      </div>
 
-        <section className="page-section" id="home-build">
-          <Box className="section-kicker reveal">
-            <Zap size={16} />
-            <span>{t('build_kicker', 'What I can build for you')}</span>
-          </Box>
-          <h2 className="section-title reveal">{t('build_heading', '')}</h2>
-          <p className="page-lede reveal">{t('build_lede', '')}</p>
-          <ValueHighlights keys={PERSONAL_VALUE_KEYS} />
-          <Box className="value-grid">
-            {BUILD_CARDS.map(({ icon: Icon, titleKey, descKey }) => (
-              <article key={titleKey} className="value-card panel-card glass-panel reveal">
-                <Icon size={22} />
-                <h3>{t(titleKey, '')}</h3>
-                <p>{t(descKey, '')}</p>
-              </article>
-            ))}
-          </Box>
-        </section>
+      <section className="page-section selected-work" id="home-projects">
+        <div className="section-heading reveal">
+          <div><p className="eyebrow">01 — {t('studio_selected', 'SELECTED WORK')}</p><h2 className="section-title">{t('studio_work_heading', 'Ideas, made real.')}</h2></div>
+          <Link to="/projects" className="text-link">{t('studio_all_projects', 'All projects')} <ArrowUpRight size={18} /></Link>
+        </div>
+        <div className="home-project-grid">{FEATURED_PROJECTS.map((project, index) => <FeaturedProjectCard key={project.id} project={project} compact index={index} />)}</div>
+      </section>
 
-        <section className="page-section" id="home-matters">
-          <Box className="section-kicker reveal">
-            <Sparkles size={16} />
-            <span>{t('matters_kicker', 'Why my work matters')}</span>
-          </Box>
-          <h2 className="section-title reveal">{t('matters_heading', '')}</h2>
-          <p className="page-lede reveal">{t('matters_lede', '')}</p>
-          <ValueHighlights keys={PERSONAL_VALUE_KEYS} className="value-highlights--compact" />
-          <Box className="stat-row reveal">
-            <span>{t('matters_stat_years', '')}</span>
-            <span>{t('matters_stat_repos', '{{n}} public repos').replace('{{n}}', String(github.profile?.public_repos ?? '—'))}</span>
-            <span>{t('matters_stat_systems', '')}</span>
-            <span>{t('matters_stat_langs', '')}</span>
-          </Box>
-          <Box className="matters-grid">
-            {MATTERS_CARDS.map((card) => (
-              <article key={card.titleKey} className="matters-card panel-card glass-panel reveal">
-                <h3>{t(card.titleKey, '')}</h3>
-                <p>{t(card.descKey, '')}</p>
-                {card.examplesKey && <p className="matters-card__examples">{t(card.examplesKey, '')}</p>}
-              </article>
-            ))}
-          </Box>
-        </section>
+      <BusinessWorkflow />
 
-        <HomeSectionPreview
-          id="home-trajectory"
-          to="/trajectory"
-          icon={Route}
-          kickerKey="trajectory_kicker"
-          titleKey="nav_trajectory"
-          descKey="home_trajectory_preview_desc"
-          previewKeys={['traj_code_1_project', 'traj_code_2_project', 'traj_code_3_project']}
-        />
+      <section className="page-section home-about" id="home-why">
+        <div className="about-stamp" aria-hidden="true"><span>pyhor</span><Code2 strokeWidth={1} /><span>CURIOUS BY NATURE.</span></div>
+        <div className="home-about__copy reveal"><p className="eyebrow">03 — {t('nav_about', 'ABOUT')}</p><h2 className="section-title">{t('studio_about_heading', 'A curious mind. A builder at heart.')}</h2><p className="page-lede">{t('about_p2', '')}</p><p>{t('about_p4', '')}</p><Link to="/about" className="text-link">{t('studio_story', 'Get to know me')} <ArrowUpRight size={18} /></Link></div>
+        <div className="home-stats"><div><strong>{github.profile?.public_repos ?? '—'}</strong><span>{t('metric_repos', 'repos')}</span></div><div><strong>2020</strong><span>{t('studio_since', 'First coding project')}</span></div><div><strong>5</strong><span>{t('languages_kicker', 'Languages')}</span></div></div>
+      </section>
 
-        <HomeProjectsPreview repos={github.repos} loading={github.loading} />
+      <section className="page-section" id="home-build">
+        <div className="section-heading reveal"><div><p className="eyebrow">04 — {t('studio_capabilities', 'WHAT I BRING')}</p><h2 className="section-title">{t('studio_build_heading', 'Built with purpose.')}</h2></div><p className="section-heading__note">{t('hero_value_line', '')}</p></div>
+        <div className="value-grid">{CAPABILITIES.map(({icon: Icon, titleKey, descKey}, i) => <article key={titleKey} className="value-card reveal"><div className="value-card__top"><Icon size={24} strokeWidth={1.4} /><span>0{i + 1}</span></div><h3>{t(titleKey, '')}</h3><p>{t(descKey, '')}</p></article>)}</div>
+      </section>
 
-        <HomeSectionPreview
-          id="home-education"
-          to="/education"
-          icon={GraduationCap}
-          kickerKey="education_kicker"
-          titleKey="nav_education"
-          descKey="home_education_preview_desc"
-          previewKeys={['edu_1_degree', 'edu_2_degree']}
-        />
+      <section className="page-section interaction-lab" id="home-playground" aria-labelledby="lab-heading">
+        <div className="interaction-lab__copy"><p className="eyebrow">05 — {t('lab_kicker', 'A LITTLE CREATIVE ENGINEERING')}</p><h2 id="lab-heading" className="section-title">{t('lab_heading', 'Serious about details. Curious about possibilities.')}</h2><p>{t('lab_body', 'Good interfaces respond to people. This small 3D study explores the same idea: clear feedback, a little depth, and room to play.')}</p><ul className="lab-notes"><li><span>01</span>{t('lab_note_1', 'Drag horizontally to rotate. Scroll vertically as usual.')}</li><li><span>02</span>{t('lab_note_2', 'Switch between the finished surface and its structure.')}</li><li><span>03</span>{t('lab_note_3', 'Prefer a still view? Pause it. Arrow keys work, too.')}</li></ul><span className="lab-caption">{t('lab_caption', 'THREE.JS / REAL-TIME INTERACTION / RESPONSIVE BY DESIGN')}</span></div>
+        <DeferredScene />
+      </section>
 
-        <HomeSectionPreview
-          id="home-volunteering"
-          to="/volunteering"
-          icon={HeartHandshake}
-          kickerKey="volunteering_kicker"
-          titleKey="nav_volunteering"
-          descKey="home_volunteering_preview_desc"
-          previewKeys={['vol_1_title', 'vol_2_title']}
-        />
+      <section className="page-section" id="home-journey"><div className="section-heading reveal"><div><p className="eyebrow">06 — {t('studio_beyond', 'BEYOND THE CODE')}</p><h2 className="section-title">{t('studio_journey_heading', 'Always moving forward.')}</h2></div></div><div className="journey-grid">
+        <HomeSectionPreview id="home-trajectory" to="/trajectory" icon={Route} kickerKey="trajectory_kicker" titleKey="nav_trajectory" descKey="home_trajectory_preview_desc" />
+        <HomeSectionPreview id="home-education" to="/education" icon={GraduationCap} kickerKey="education_kicker" titleKey="nav_education" descKey="home_education_preview_desc" />
+        <HomeSectionPreview id="home-volunteering" to="/volunteering" icon={HeartHandshake} kickerKey="volunteering_kicker" titleKey="nav_volunteering" descKey="home_volunteering_preview_desc" />
+      </div></section>
 
-        <section className="page-section" id="home-contact">
-          <ContactSection id="home-contact-inner" />
-        </section>
-      </Box>
+      <section className="home-contact reveal" id="home-contact"><p className="eyebrow">{t('contact_eyebrow', 'LET’S CONNECT')}</p><div className="home-contact__row"><h2>{t('studio_contact_heading', 'Let’s make something matter.')}</h2><Link className="contact-orbit" to="/contact" aria-label={t('nav_contact', 'Contact')}><ArrowUpRight size={50} strokeWidth={1.2} /></Link></div><div className="home-contact__bottom"><p>{t('contact_body', '')}</p><a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL} <ArrowUpRight size={16} /></a></div></section>
     </PageShell>
   )
 }

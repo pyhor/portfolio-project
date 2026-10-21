@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ArrowUpRight, Check, Copy, Link2, Mail, MessageCircle, Send } from 'lucide-react'
 import { Magnetic } from './Magnetic'
 import { useI18n } from '../context/I18nProvider'
@@ -7,18 +7,32 @@ const Box = 'd' + 'iv'
 export const CONTACT_EMAIL = import.meta.env.VITE_CONTACT_EMAIL || 'pyhor.9657@gmail.com'
 export const LINKEDIN_URL = 'https://www.linkedin.com/in/pei-yu-hor-9b3539265/'
 
-export function ContactSection({ id = 'home-contact', compact = false }) {
+export function ContactSection({ id = 'home-contact', compact = false, headingAs: Heading = 'h2' }) {
   const { t } = useI18n()
-  const [copied, setCopied] = useState(false)
+  const [copyStatus, setCopyStatus] = useState('')
   const [form, setForm] = useState({ name: '', email: '', message: '' })
+  const copyTimeout = useRef(null)
+  const mounted = useRef(true)
+  const copied = copyStatus === 'success'
+
+  useEffect(() => {
+    mounted.current = true
+    return () => {
+      mounted.current = false
+      window.clearTimeout(copyTimeout.current)
+    }
+  }, [])
 
   const copyEmail = async () => {
+    window.clearTimeout(copyTimeout.current)
+    setCopyStatus('copying')
     try {
       await navigator.clipboard.writeText(CONTACT_EMAIL)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2200)
+      if (!mounted.current) return
+      setCopyStatus('success')
+      copyTimeout.current = window.setTimeout(() => setCopyStatus(''), 2200)
     } catch {
-      /* ignore */
+      if (mounted.current) setCopyStatus('error')
     }
   }
 
@@ -49,7 +63,7 @@ export function ContactSection({ id = 'home-contact', compact = false }) {
         <MessageCircle size={16} />
         <span>{t('contact_eyebrow', "Let's connect")}</span>
       </Box>
-      <h2 className="section-title reveal">{t('contact_heading', 'Have something in mind?')}</h2>
+      <Heading className="section-title reveal">{t('contact_heading', 'Have something in mind?')}</Heading>
       <p className="page-lede reveal">{t('contact_body', '')}</p>
 
       <form className="contact-form glass-panel float-card reveal" onSubmit={sendMessage}>
@@ -108,12 +122,20 @@ export function ContactSection({ id = 'home-contact', compact = false }) {
               type="button"
               className={`contact-copy-btn ${copied ? 'contact-copy-btn--copied' : ''}`}
               onClick={copyEmail}
-              aria-live="polite"
+              disabled={copyStatus === 'copying'}
+              aria-busy={copyStatus === 'copying'}
             >
               {copied ? <Check size={16} /> : <Copy size={16} />}
               {copied ? t('contact_copied', 'Copied!') : t('contact_copy_email', 'Copy Email')}
             </button>
           </Box>
+          <p className="contact-copy-status" role="status" aria-live="polite" aria-atomic="true">
+            {copied && t('contact_copied', 'Copied!')}
+            {copyStatus === 'error' && t(
+              'contact_copy_error',
+              'Could not copy the email. Select the address above or use Send email.',
+            )}
+          </p>
         </article>
         <article className="contact-card glass-panel float-card reveal">
           <Box className="contact-card__icon contact-card__icon--linkedin">

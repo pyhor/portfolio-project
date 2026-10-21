@@ -46,9 +46,9 @@ function ghPagesSpaFallback() {
   }
 }
 
-export default defineConfig(({ command }) => ({
+export default defineConfig(({ command, isPreview }) => ({
   // Dev: open http://localhost:5173/  |  Build: GitHub Pages subpath
-  base: command === 'serve' || process.env.VERCEL ? '/' : repoBase,
+  base: (command === 'serve' && !isPreview) || process.env.VERCEL ? '/' : repoBase,
   plugins: [react(), devBaseRedirect(), ghPagesSpaFallback()],
   build: {
     outDir: 'docs',

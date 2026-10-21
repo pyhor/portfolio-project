@@ -1,35 +1,49 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { X } from 'lucide-react'
 import { useI18n } from '../context/I18nProvider'
 
 export function MediaLightbox({ src, alt, onClose }) {
   const { t } = useI18n()
+  const dialogRef = useRef(null)
+  const closeButtonRef = useRef(null)
 
   useEffect(() => {
-    const onKey = (event) => {
-      if (event.key === 'Escape') onClose()
-    }
+    const dialog = dialogRef.current
+    if (!src || !dialog) return undefined
+
+    const previousFocus = document.activeElement
     const previousOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
-    window.addEventListener('keydown', onKey)
+    dialog.showModal()
+    closeButtonRef.current?.focus({ preventScroll: true })
+
     return () => {
+      dialog.close()
       document.body.style.overflow = previousOverflow
-      window.removeEventListener('keydown', onKey)
+      if (previousFocus instanceof HTMLElement && previousFocus.isConnected) {
+        previousFocus.focus({ preventScroll: true })
+      }
     }
-  }, [onClose])
+  }, [src])
 
   if (!src) return null
 
   return createPortal(
-    <div
+    <dialog
+      ref={dialogRef}
       className="media-lightbox"
-      role="dialog"
-      aria-modal="true"
       aria-label={t('media_lightbox_label', 'Image preview')}
-      onClick={onClose}
+      onCancel={(event) => {
+        event.preventDefault()
+        onClose()
+      }}
+      onClick={(event) => {
+        if (event.target === event.currentTarget) onClose()
+      }}
     >
       <button
+        ref={closeButtonRef}
         type="button"
         className="media-lightbox__close"
         onClick={onClose}
@@ -38,13 +52,10 @@ export function MediaLightbox({ src, alt, onClose }) {
         <X size={22} />
         <span>{t('media_close', 'Close')}</span>
       </button>
-      <figure
-        className="media-lightbox__frame"
-        onClick={(event) => event.stopPropagation()}
-      >
+      <figure className="media-lightbox__frame">
         <img src={src} alt={alt || t('media_preview', 'Preview')} />
       </figure>
-    </div>,
+    </dialog>,
     document.body,
   )
 }

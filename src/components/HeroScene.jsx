@@ -1,304 +1,418 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import * as THREE from 'three'
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js'
+import { ArrowUpRight, Move, Pause, Play, RotateCcw } from 'lucide-react'
+import { useI18n } from '../context/I18nProvider.jsx'
+
+const INITIAL_ROTATION = { x: 0.23, y: -0.35, z: -0.16 }
+
+function SculptureFallback({ id }) {
+  return (
+    <svg className="hero-scene__fallback" viewBox="0 0 600 520" aria-hidden="true">
+      <defs>
+        <linearGradient id={`${id}-blue`} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#a4cfdf" />
+          <stop offset=".32" stopColor="#477eab" />
+          <stop offset=".7" stopColor="#264f75" />
+          <stop offset="1" stopColor="#79b5bf" />
+        </linearGradient>
+        <linearGradient id={`${id}-silver`} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#c3c2b9" />
+          <stop offset=".27" stopColor="#fffdf5" />
+          <stop offset=".55" stopColor="#77796f" />
+          <stop offset=".75" stopColor="#e8e7de" />
+          <stop offset="1" stopColor="#aaa99f" />
+        </linearGradient>
+      </defs>
+      <g transform="translate(300 250) rotate(-23)" fill="none">
+        <ellipse rx="186" ry="98" stroke={`url(#${id}-silver)`} strokeWidth="3" />
+        <ellipse className="hero-scene__fallback-loop" rx="105" ry="155" transform="rotate(38)" stroke={`url(#${id}-blue)`} strokeWidth="49" />
+        <ellipse className="hero-scene__fallback-loop" rx="105" ry="155" transform="rotate(-38)" stroke={`url(#${id}-blue)`} strokeWidth="49" />
+        <path className="hero-scene__fallback-loop" d="M -118 -66 C -154 -10 -133 61 -80 104" stroke={`url(#${id}-blue)`} strokeWidth="49" strokeLinecap="round" />
+        <ellipse rx="177" ry="93" stroke={`url(#${id}-silver)`} strokeWidth="3" strokeDasharray="280 580" transform="rotate(180)" />
+      </g>
+    </svg>
+  )
+}
 
 /**
- * Scroll-driven, interactive particle visualization.
- *
- * A single cloud of ~6000 particles continuously morphs between distinct 3D
- * formations as the visitor scrolls the page — sphere → torus knot → double
- * helix → cube lattice → rippling wave. The cursor pushes nearby particles
- * away and gently steers the whole cloud (parallax), so the piece feels alive
- * and reactive rather than a static backdrop.
- *
- * - Fixed behind all content (pointer-events: none), visible on every page.
- * - Theme-aware colours, sourced from the site's CSS custom properties.
- * - Respects prefers-reduced-motion and pauses while the tab is hidden.
+ * A self-contained studio exhibit. Rendering only runs while the exhibit is
+ * visible; manual controls render a single frame when animation is disabled.
  */
 export function HeroScene() {
+  const { t } = useI18n()
+  const id = useId().replace(/:/g, '')
   const mountRef = useRef(null)
+  const controllerRef = useRef(null)
+  const [status, setStatus] = useState('loading')
+  const [mode, setMode] = useState('form')
+  const [paused, setPaused] = useState(false)
+  const [reducedMotion, setReducedMotion] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+  )
 
   useEffect(() => {
     const mount = mountRef.current
     if (!mount) return undefined
 
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const isMobile = window.matchMedia('(max-width: 720px)').matches
-    const COUNT = isMobile ? 2600 : 6000
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const mobile = window.matchMedia('(max-width: 720px)')
+    const cleanups = []
+    const geometries = []
+    const materials = []
+    let renderer
+    let environment
+    let environmentRoom
+    let generator
+    let frame = 0
+    let disposed = false
+    let failed = false
+    let visible = true
+    let manualPause = false
+    let reduceMotion = media.matches
+    let dragging = false
+    let lastTime = 0
+    let elapsed = 0
+    let activePointer = null
+    let lastX = 0
+    let lastY = 0
 
-    // ---------- theme colours ----------
-    const readPalette = () => {
-      const styles = getComputedStyle(document.documentElement)
-      const pick = (name, fallback) => new THREE.Color(styles.getPropertyValue(name).trim() || fallback)
-      return [
-        pick('--accent', '#5b7c99'),
-        pick('--accent-2', '#7a9e7e'),
-        pick('--accent-3', '#c4a882'),
-        pick('--accent-4', '#b8a9c9'),
-      ]
+    const stop = () => {
+      cancelAnimationFrame(frame)
+      frame = 0
+      lastTime = 0
     }
-    const isDark = () => document.documentElement.getAttribute('data-theme') === 'dark'
-    let palette = readPalette()
-
-    // ---------- renderer / scene ----------
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: !isMobile })
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2))
-    renderer.setSize(mount.clientWidth, mount.clientHeight)
-    mount.appendChild(renderer.domElement)
-
-    const scene = new THREE.Scene()
-    const camera = new THREE.PerspectiveCamera(60, mount.clientWidth / mount.clientHeight, 0.1, 100)
-    camera.position.z = 20
-
-    // ---------- soft round sprite ----------
-    const makeSprite = () => {
-      const size = 64
-      const c = document.createElement('canvas')
-      c.width = c.height = size
-      const ctx = c.getContext('2d')
-      const g = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2)
-      g.addColorStop(0, 'rgba(255,255,255,1)')
-      g.addColorStop(0.35, 'rgba(255,255,255,0.85)')
-      g.addColorStop(1, 'rgba(255,255,255,0)')
-      ctx.fillStyle = g
-      ctx.fillRect(0, 0, size, size)
-      const tex = new THREE.CanvasTexture(c)
-      tex.needsUpdate = true
-      return tex
+    const on = (target, name, callback, options) => {
+      target.addEventListener(name, callback, options)
+      cleanups.push(() => target.removeEventListener(name, callback, options))
     }
-    const sprite = makeSprite()
-
-    // ---------- formations (each fills a Float32Array of length COUNT*3) ----------
-    const R = isMobile ? 6.2 : 8
-    const rand = (i, salt) => {
-      const x = Math.sin(i * 12.9898 + salt * 78.233) * 43758.5453
-      return x - Math.floor(x)
-    }
-
-    const fSphere = (i, out, o) => {
-      const t = i / COUNT
-      const phi = Math.acos(1 - 2 * t)
-      const theta = Math.PI * (1 + Math.sqrt(5)) * i
-      out[o] = R * Math.sin(phi) * Math.cos(theta)
-      out[o + 1] = R * Math.sin(phi) * Math.sin(theta)
-      out[o + 2] = R * Math.cos(phi)
-    }
-    const fTorusKnot = (i, out, o) => {
-      const p = 2
-      const q = 3
-      const u = (i / COUNT) * Math.PI * 2 * q
-      const r = 2 + Math.cos((q / p) * u)
-      const s = R * 0.42
-      out[o] = s * r * Math.cos(u)
-      out[o + 1] = s * r * Math.sin(u)
-      out[o + 2] = s * r * Math.sin((q / p) * u) * 0.9 + (rand(i, 3) - 0.5) * 0.6
-    }
-    const fHelix = (i, out, o) => {
-      const strand = i % 2 === 0 ? 0 : Math.PI
-      const t = (i / COUNT) * Math.PI * 7
-      const rad = R * 0.5
-      out[o] = Math.cos(t + strand) * rad
-      out[o + 1] = (i / COUNT - 0.5) * R * 1.6
-      out[o + 2] = Math.sin(t + strand) * rad
-    }
-    const fCube = (i, out, o) => {
-      const side = Math.max(2, Math.round(Math.cbrt(COUNT)))
-      const gx = i % side
-      const gy = Math.floor(i / side) % side
-      const gz = Math.floor(i / (side * side)) % side
-      const step = (R * 1.2) / (side - 1)
-      out[o] = gx * step - R * 0.6
-      out[o + 1] = gy * step - R * 0.6
-      out[o + 2] = gz * step - R * 0.6
-    }
-    const fWave = (i, out, o) => {
-      const cols = Math.round(Math.sqrt(COUNT))
-      const gx = i % cols
-      const gz = Math.floor(i / cols)
-      const x = (gx / (cols - 1) - 0.5) * R * 1.7
-      const z = (gz / (cols - 1) - 0.5) * R * 1.7
-      out[o] = x
-      out[o + 1] = Math.sin(x * 0.7) * Math.cos(z * 0.7) * R * 0.55
-      out[o + 2] = z
-    }
-
-    const builders = [fSphere, fTorusKnot, fHelix, fCube, fWave]
-    const formations = builders.map((b) => {
-      const arr = new Float32Array(COUNT * 3)
-      for (let i = 0; i < COUNT; i += 1) b(i, arr, i * 3)
-      return arr
-    })
-
-    // ---------- geometry ----------
-    const positions = new Float32Array(COUNT * 3)
-    positions.set(formations[0])
-    const colors = new Float32Array(COUNT * 3)
-    const applyColors = () => {
-      for (let i = 0; i < COUNT; i += 1) {
-        const c = palette[i % palette.length]
-        colors[i * 3] = c.r
-        colors[i * 3 + 1] = c.g
-        colors[i * 3 + 2] = c.b
+    const teardown = () => {
+      if (disposed) return
+      disposed = true
+      stop()
+      cleanups.reverse().forEach((cleanup) => cleanup())
+      controllerRef.current = null
+      geometries.forEach((geometry) => geometry.dispose())
+      materials.forEach((material) => material.dispose())
+      environment?.dispose()
+      environmentRoom?.dispose()
+      generator?.dispose()
+      if (renderer) {
+        renderer.dispose()
+        renderer.domElement.remove()
       }
     }
-    applyColors()
 
-    const geometry = new THREE.BufferGeometry()
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
-    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3))
+    try {
+      renderer = new THREE.WebGLRenderer({ alpha: true, antialias: !mobile.matches, powerPreference: 'low-power' })
+      renderer.setClearColor(0x000000, 0)
+      renderer.outputColorSpace = THREE.SRGBColorSpace
+      renderer.toneMapping = THREE.ACESFilmicToneMapping
+      renderer.toneMappingExposure = 1.18
+      renderer.domElement.setAttribute('aria-hidden', 'true')
+      mount.appendChild(renderer.domElement)
 
-    const material = new THREE.PointsMaterial({
-      size: isMobile ? 0.14 : 0.12,
-      map: sprite,
-      vertexColors: true,
-      transparent: true,
-      opacity: isDark() ? 0.9 : 0.85,
-      depthWrite: false,
-      blending: isDark() ? THREE.AdditiveBlending : THREE.NormalBlending,
-      sizeAttenuation: true,
-    })
+      const scene = new THREE.Scene()
+      const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 50)
+      camera.position.set(0, 0, 10)
+      generator = new THREE.PMREMGenerator(renderer)
+      environmentRoom = new RoomEnvironment()
+      environment = generator.fromScene(environmentRoom, 0.04)
+      scene.environment = environment.texture
+      scene.environmentIntensity = 1.25
+      environmentRoom.dispose()
+      environmentRoom = null
+      generator.dispose()
+      generator = null
 
-    const points = new THREE.Points(geometry, material)
-    const group = new THREE.Group()
-    group.add(points)
-    group.position.x = isMobile ? 0 : 3.5
-    scene.add(group)
+      const sculpture = new THREE.Group()
+      sculpture.rotation.set(INITIAL_ROTATION.x, INITIAL_ROTATION.y, INITIAL_ROTATION.z)
+      const hoverGroup = new THREE.Group()
+      hoverGroup.add(sculpture)
+      scene.add(hoverGroup)
+      let hoverX = 0
+      let hoverY = 0
+      let velocity = 0
 
-    // ---------- interaction state ----------
-    const targetPointer = new THREE.Vector2(0, 0)
-    const pointer = new THREE.Vector2(0, 0)
-    const worldCursor = new THREE.Vector3(999, 999, 0)
-    const onPointerMove = (e) => {
-      targetPointer.x = (e.clientX / window.innerWidth) * 2 - 1
-      targetPointer.y = -((e.clientY / window.innerHeight) * 2 - 1)
-    }
-    window.addEventListener('pointermove', onPointerMove, { passive: true })
+      const geometry = new THREE.TorusKnotGeometry(1.31, 0.43, mobile.matches ? 112 : 176, 24, 2, 3)
+      const surface = new THREE.MeshPhysicalMaterial({
+        color: '#477eab',
+        metalness: 0.45,
+        roughness: 0.27,
+        clearcoat: 1,
+        clearcoatRoughness: 0.16,
+      })
+      geometries.push(geometry)
+      materials.push(surface)
+      const knot = new THREE.Mesh(geometry, surface)
+      sculpture.add(knot)
 
-    let scrollProgress = 0
-    const computeScroll = () => {
-      const max = document.documentElement.scrollHeight - window.innerHeight
-      scrollProgress = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0
-    }
-    computeScroll()
-    window.addEventListener('scroll', computeScroll, { passive: true })
+      // A coarser separate geometry makes the mesh mode legible on small screens.
+      const wireGeometry = new THREE.TorusKnotGeometry(1.31, 0.43, 64, 12, 2, 3)
+      const wireMaterial = new THREE.MeshBasicMaterial({ color: '#447e91', wireframe: true, transparent: true, opacity: 0.72 })
+      geometries.push(wireGeometry)
+      materials.push(wireMaterial)
+      const wire = new THREE.Mesh(wireGeometry, wireMaterial)
+      wire.visible = false
+      sculpture.add(wire)
 
-    // ---------- theme observer ----------
-    const themeObserver = new MutationObserver(() => {
-      palette = readPalette()
-      applyColors()
-      geometry.attributes.color.needsUpdate = true
-      material.opacity = isDark() ? 0.9 : 0.85
-      material.blending = isDark() ? THREE.AdditiveBlending : THREE.NormalBlending
-      material.needsUpdate = true
-    })
-    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
+      const ringGeometry = new THREE.TorusGeometry(2.48, 0.022, 10, 160)
+      const chrome = new THREE.MeshStandardMaterial({ color: '#d7d7cd', metalness: 0.92, roughness: 0.2 })
+      geometries.push(ringGeometry)
+      materials.push(chrome)
+      const ring = new THREE.Mesh(ringGeometry, chrome)
+      ring.rotation.set(1.02, 0.25, -0.2)
+      sculpture.add(ring)
 
-    // ---------- resize ----------
-    const onResize = () => {
-      const w = mount.clientWidth
-      const h = mount.clientHeight
-      camera.aspect = w / h
-      camera.updateProjectionMatrix()
-      renderer.setSize(w, h)
-      computeScroll()
-    }
-    window.addEventListener('resize', onResize)
+      scene.add(new THREE.HemisphereLight('#fff9e9', '#b8a18d', 2.4))
+      const keyLight = new THREE.DirectionalLight('#fff7e8', 3.5)
+      keyLight.position.set(-3, 5, 6)
+      scene.add(keyLight)
+      const fillLight = new THREE.DirectionalLight('#ffffff', 2)
+      fillLight.position.set(4, 1, -2)
+      scene.add(fillLight)
 
-    // ---------- animation ----------
-    const easeInOut = (x) => (x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2)
-    const clock = new THREE.Clock()
-    const posAttr = geometry.attributes.position
-    let progress = 0 // eased scroll actually applied
-    let raf = 0
-    const A = new THREE.Vector3()
-    const B = new THREE.Vector3()
-
-    // requestAnimationFrame is automatically throttled/paused by the browser in
-    // backgrounded tabs, so no manual visibility gating is needed.
-    const render = () => {
-      raf = requestAnimationFrame(render)
-      const t = clock.getElapsedTime()
-
-      // smooth pointer + scroll
-      pointer.x += (targetPointer.x - pointer.x) * 0.06
-      pointer.y += (targetPointer.y - pointer.y) * 0.06
-      progress += (scrollProgress - progress) * 0.07
-
-      // which two formations we're between
-      const F = formations.length
-      const seg = progress * (F - 1)
-      let idx = Math.floor(seg)
-      if (idx >= F - 1) idx = F - 2
-      const blend = easeInOut(seg - idx)
-      const from = formations[idx]
-      const to = formations[idx + 1]
-
-      // cursor projected onto the group's local z=0 plane (approx)
-      worldCursor.set(pointer.x * 12 - group.position.x, pointer.y * 8, 0)
-
-      const arr = posAttr.array
-      const breathe = reduceMotion ? 0 : Math.sin(t * 0.6) * 0.25
-      for (let i = 0; i < COUNT; i += 1) {
-        const o = i * 3
-        A.set(from[o], from[o + 1], from[o + 2])
-        B.set(to[o], to[o + 1], to[o + 2])
-        let x = A.x + (B.x - A.x) * blend
-        let y = A.y + (B.y - A.y) * blend
-        let z = A.z + (B.z - A.z) * blend
-
-        if (!reduceMotion) {
-          // gentle idle shimmer
-          const w = rand(i, 1)
-          x += Math.sin(t * 0.8 + w * 6.28) * 0.12
-          y += Math.cos(t * 0.7 + w * 6.28) * 0.12
-          // breathing scale
-          x *= 1 + breathe * 0.03
-          y *= 1 + breathe * 0.03
-
-          // cursor repulsion (in the group's local frame)
-          const dx = x - worldCursor.x
-          const dy = y - worldCursor.y
-          const d2 = dx * dx + dy * dy
-          if (d2 < 9) {
-            const d = Math.sqrt(d2) || 0.0001
-            const push = (1 - d / 3) * 2.4
-            x += (dx / d) * push
-            y += (dy / d) * push
-          }
+      const canRender = () => !disposed && !failed && visible && !document.hidden
+      const canAnimate = () => canRender() && !reduceMotion && !manualPause && !dragging
+      const fail = () => {
+        if (disposed || failed) return
+        failed = true
+        stop()
+        renderer.domElement.style.visibility = 'hidden'
+        setStatus('fallback')
+      }
+      const draw = () => {
+        if (!canRender()) return
+        try {
+          renderer.render(scene, camera)
+        } catch {
+          fail()
         }
-
-        // ease toward computed target for fluid morphing
-        arr[o] += (x - arr[o]) * 0.14
-        arr[o + 1] += (y - arr[o + 1]) * 0.14
-        arr[o + 2] += (z - arr[o + 2]) * 0.14
       }
-      posAttr.needsUpdate = true
-
-      // whole cloud rotates with scroll + leans toward cursor
-      if (!reduceMotion) {
-        group.rotation.y += 0.0016 + (pointer.x * 0.4 - group.rotation.y) * 0.02 + progress * 0.0004
-        group.rotation.x += (-pointer.y * 0.25 - group.rotation.x) * 0.02
+      const animate = (time) => {
+        frame = 0
+        if (!canAnimate()) return
+        const delta = lastTime ? Math.min((time - lastTime) / 1000, 0.05) : 0
+        lastTime = time
+        elapsed += delta
+        velocity *= Math.exp(-delta * 6)
+        sculpture.rotation.y += delta * (0.13 + velocity)
+        const blend = 1 - Math.exp(-delta * 9)
+        hoverGroup.rotation.x += (hoverX - hoverGroup.rotation.x) * blend
+        hoverGroup.rotation.y += (hoverY - hoverGroup.rotation.y) * blend
+        sculpture.position.y = Math.sin(elapsed * 0.7) * 0.075
+        draw()
+        if (canAnimate()) frame = requestAnimationFrame(animate)
       }
-      camera.position.z = 20 - progress * 4
+      const sync = () => {
+        stop()
+        draw()
+        if (canAnimate()) frame = requestAnimationFrame(animate)
+      }
 
-      renderer.render(scene, camera)
+      const updatePalette = () => {
+        const styles = getComputedStyle(mount)
+        surface.color.set(styles.getPropertyValue('--scene-surface').trim() || '#477eab')
+        wireMaterial.color.set(styles.getPropertyValue('--scene-wire').trim() || '#447e91')
+        draw()
+      }
+      const resize = () => {
+        const width = Math.max(mount.clientWidth, 1)
+        const height = Math.max(mount.clientHeight, 1)
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, mobile.matches ? 1.35 : 1.75))
+        renderer.setSize(width, height, false)
+        camera.aspect = width / height
+        camera.position.z = camera.aspect < 1 ? 10.8 : 9.7
+        camera.updateProjectionMatrix()
+        draw()
+      }
+      const resizeObserver = new ResizeObserver(resize)
+      resizeObserver.observe(mount)
+      cleanups.push(() => resizeObserver.disconnect())
+      if ('IntersectionObserver' in window) {
+        const intersection = new IntersectionObserver(([entry]) => {
+          visible = entry.isIntersecting
+          sync()
+        }, { threshold: 0 })
+        intersection.observe(mount)
+        cleanups.push(() => intersection.disconnect())
+      }
+      const themeObserver = new MutationObserver(updatePalette)
+      themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
+      cleanups.push(() => themeObserver.disconnect())
+      on(media, 'change', (event) => {
+        reduceMotion = event.matches
+        setReducedMotion(event.matches)
+        sculpture.position.y = 0
+        sync()
+      })
+      on(mobile, 'change', resize)
+      on(document, 'visibilitychange', sync)
+      on(renderer.domElement, 'webglcontextlost', (event) => {
+        event.preventDefault()
+        fail()
+      })
+
+      const endDrag = (event) => {
+        if (event.pointerId !== activePointer) return
+        dragging = false
+        activePointer = null
+        mount.classList.remove('is-dragging')
+        if (mount.hasPointerCapture(event.pointerId)) mount.releasePointerCapture(event.pointerId)
+        sync()
+      }
+      on(mount, 'pointerdown', (event) => {
+        if (failed || reduceMotion || event.button !== 0 || activePointer !== null) return
+        activePointer = event.pointerId
+        lastX = event.clientX
+        lastY = event.clientY
+        dragging = true
+        stop()
+        mount.classList.add('is-dragging')
+        mount.setPointerCapture(event.pointerId)
+      })
+      on(mount, 'pointerleave', () => { hoverX = 0; hoverY = 0 })
+      on(mount, 'pointermove', (event) => {
+        if (!dragging && event.pointerType === 'mouse' && !reduceMotion && !manualPause) {
+          const bounds = mount.getBoundingClientRect()
+          hoverX = (event.clientY - bounds.top - bounds.height / 2) / bounds.height * 0.12
+          hoverY = (event.clientX - bounds.left - bounds.width / 2) / bounds.width * 0.18
+        }
+        // Reduced motion disables pointer-driven movement. Discrete keyboard
+        // rotation and the reset button remain available.
+        if (!dragging || event.pointerId !== activePointer || reduceMotion || failed) return
+        velocity = Math.max(-1.5, Math.min(1.5, (event.clientX - lastX) * 0.08))
+        sculpture.rotation.y += (event.clientX - lastX) * 0.009
+        sculpture.rotation.x += (event.clientY - lastY) * 0.007
+        lastX = event.clientX
+        lastY = event.clientY
+        draw()
+      })
+      on(mount, 'pointerup', endDrag)
+      on(mount, 'pointercancel', endDrag)
+      on(mount, 'lostpointercapture', endDrag)
+
+      controllerRef.current = {
+        setMode: (next) => {
+          knot.visible = next === 'form'
+          wire.visible = next === 'mesh'
+          draw()
+        },
+        setPaused: (next) => {
+          manualPause = next
+          sync()
+        },
+        rotate: (key) => {
+          const step = Math.PI / 12
+          if (key === 'ArrowLeft') sculpture.rotation.y -= step
+          if (key === 'ArrowRight') sculpture.rotation.y += step
+          if (key === 'ArrowUp') sculpture.rotation.x -= step
+          if (key === 'ArrowDown') sculpture.rotation.x += step
+          draw()
+        },
+        reset: () => {
+          sculpture.rotation.set(INITIAL_ROTATION.x, INITIAL_ROTATION.y, INITIAL_ROTATION.z)
+          sculpture.position.y = 0
+          elapsed = 0
+          velocity = 0
+          hoverX = 0
+          hoverY = 0
+          hoverGroup.rotation.set(0, 0, 0)
+          draw()
+        },
+      }
+      updatePalette()
+      resize()
+      if (!failed) setStatus('ready')
+      sync()
+    } catch {
+      teardown()
+      setStatus('fallback')
     }
 
-    render()
-
-    // ---------- cleanup ----------
-    return () => {
-      cancelAnimationFrame(raf)
-      window.removeEventListener('pointermove', onPointerMove)
-      window.removeEventListener('scroll', computeScroll)
-      window.removeEventListener('resize', onResize)
-      themeObserver.disconnect()
-      geometry.dispose()
-      material.dispose()
-      sprite.dispose()
-      renderer.dispose()
-      if (renderer.domElement.parentNode === mount) mount.removeChild(renderer.domElement)
-    }
+    return teardown
   }, [])
 
-  return <div ref={mountRef} className="hero-scene" aria-hidden="true" />
+  const chooseMode = (next) => {
+    setMode(next)
+    controllerRef.current?.setMode(next)
+  }
+  const togglePause = () => {
+    const next = !paused
+    setPaused(next)
+    controllerRef.current?.setPaused(next)
+  }
+  const handleKeyDown = (event) => {
+    if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) return
+    event.preventDefault()
+    controllerRef.current?.rotate(event.key)
+  }
+
+  return (
+    <div className={`hero-scene hero-scene--${mode} hero-scene--${status}`}>
+      <div className="hero-scene__topline" aria-hidden="true">
+        <span><i /> {t('scene_label', 'A little creative engineering')}</span>
+        <ArrowUpRight size={17} strokeWidth={1.4} />
+      </div>
+      <div className="hero-scene__coordinates" aria-hidden="true">
+        <span>FIG. 01</span>
+        <span>X / Y / Z</span>
+      </div>
+      <div className="hero-scene__orbit hero-scene__orbit--one" aria-hidden="true" />
+      <div className="hero-scene__orbit hero-scene__orbit--two" aria-hidden="true" />
+      <div className="hero-scene__shadow" aria-hidden="true" />
+      {status !== 'ready' && <SculptureFallback id={id} />}
+      <div
+        ref={mountRef}
+        className="hero-scene__canvas"
+        data-cursor={status === 'ready' && !reducedMotion ? 'drag' : undefined}
+        tabIndex={status === 'ready' ? 0 : -1}
+        role={status === 'fallback' ? 'img' : 'group'}
+        aria-label={status === 'fallback'
+          ? t('scene_preview_label', 'Steel-blue loop sculpture with a silver orbit')
+          : t('scene_accessible_label', 'Interactive steel-blue knot sculpture. Use the arrow keys to rotate.')}
+        aria-describedby={`${id}-hint`}
+        onKeyDown={handleKeyDown}
+      />
+      <div className="hero-scene__bottom">
+        <div className="hero-scene__modes" role="group" aria-label={t('scene_mode_label', 'Sculpture display')}>
+          <button type="button" aria-pressed={mode === 'form'} onClick={() => chooseMode('form')}>
+            {t('scene_form', 'Form')}
+          </button>
+          <button type="button" aria-pressed={mode === 'mesh'} onClick={() => chooseMode('mesh')}>
+            {t('scene_mesh', 'Mesh')}
+          </button>
+        </div>
+        <div className="hero-scene__actions">
+          <button
+            type="button"
+            onClick={togglePause}
+            disabled={reducedMotion || status !== 'ready'}
+            aria-label={paused ? t('scene_resume', 'Resume rotation') : t('scene_pause', 'Pause rotation')}
+            aria-pressed={paused || reducedMotion}
+            title={reducedMotion ? t('scene_motion_off', 'Animation off: reduced motion') : paused ? t('scene_resume', 'Resume rotation') : t('scene_pause', 'Pause rotation')}
+          >
+            {paused || reducedMotion ? <Play size={15} /> : <Pause size={15} />}
+          </button>
+          <button
+            type="button"
+            onClick={() => controllerRef.current?.reset()}
+            disabled={status !== 'ready'}
+            aria-label={t('scene_reset', 'Reset sculpture rotation')}
+            title={t('scene_reset', 'Reset sculpture rotation')}
+          >
+            <RotateCcw size={15} />
+          </button>
+        </div>
+      </div>
+      <p className="hero-scene__hint" id={`${id}-hint`}>
+        <Move size={12} aria-hidden="true" />
+        {status === 'fallback'
+          ? t('scene_fallback', 'Sculpture preview · 3D is unavailable in this browser')
+          : reducedMotion
+            ? t('scene_reduced_hint', 'Use arrow keys to explore · reduced motion')
+            : t('scene_hint', 'Drag to explore · arrow keys work, too')}
+      </p>
+    </div>
+  )
 }

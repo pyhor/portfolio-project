@@ -6,7 +6,17 @@ gsap.registerPlugin(ScrollTrigger)
 
 export function useScrollReveal(deps = []) {
   useEffect(() => {
-    const ctx = gsap.context(() => {
+    const media = gsap.matchMedia()
+
+    media.add({
+      motionAllowed: '(prefers-reduced-motion: no-preference)',
+      reducedMotion: '(prefers-reduced-motion: reduce)',
+    }, (context) => {
+      if (context.conditions.reducedMotion) {
+        gsap.set('.reveal, .timeline-reveal', { opacity: 1, x: 0, y: 0 })
+        return
+      }
+
       gsap.utils.toArray('.reveal').forEach((element) => {
         gsap.fromTo(
           element,
@@ -19,7 +29,8 @@ export function useScrollReveal(deps = []) {
             scrollTrigger: {
               trigger: element,
               start: 'top 90%',
-              toggleActions: 'play none none reverse',
+              toggleActions: 'play none none none',
+              once: true,
             },
           },
         )
@@ -38,13 +49,14 @@ export function useScrollReveal(deps = []) {
             scrollTrigger: {
               trigger: element,
               start: 'top 88%',
-              toggleActions: 'play none none reverse',
+              toggleActions: 'play none none none',
+              once: true,
             },
           },
         )
       })
     })
 
-    return () => ctx.revert()
+    return () => media.revert()
   }, deps)
 }

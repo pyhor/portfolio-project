@@ -1,14 +1,14 @@
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="%BASE_URL%favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="pyhor — cinematic developer portfolio with WebGL, motion design, and live GitHub data. Fully static for GitHub Pages."
+      content="pyhor — business, systems, and frontend development. Explore practical projects, system thinking, quality assurance, and a little creative engineering."
     />
-    <meta name="theme-color" content="#faf8f4" />
+    <meta name="theme-color" content="#101820" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -19,9 +19,9 @@
     <script>
       ;(function () {
         var stored = localStorage.getItem('theme')
-        var theme = stored === 'dark' || stored === 'light' ? stored : 'light'
+        var theme = stored === 'dark' || stored === 'light' ? stored : 'dark'
         document.documentElement.setAttribute('data-theme', theme)
-        document.querySelector('meta[name="theme-color"]').setAttribute('content', theme === 'dark' ? '#1a1918' : '#faf8f4')
+        document.querySelector('meta[name="theme-color"]').setAttribute('content', theme === 'dark' ? '#101820' : '#f5f7fa')
       })()
     </script>
   </head>

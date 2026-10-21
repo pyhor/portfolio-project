@@ -1,4 +1,5 @@
 import { Globe, Sparkles } from 'lucide-react'
+import { WhyMeSummary } from '../components/WhyMeSummary'
 import { PageShell } from '../components/PageShell'
 import { PERSONAL_VALUE_KEYS, ValueHighlights } from '../components/ValueHighlights'
 import { useI18n } from '../context/I18nProvider'
@@ -49,6 +50,8 @@ export function AboutPage() {
           ))}
         </ul>
       </section>
+      <section className="page-section"><WhyMeSummary /></section>
+      <section className="page-section"><p className="eyebrow">{t('matters_kicker', 'Why my work matters')}</p><h2 className="section-title">{t('matters_heading', 'Real proof, not just claims')}</h2><p className="page-lede">{t('matters_lede', '')}</p><div className="proof-grid">{[1, 2, 3, 4, 5, 6].map(index => <article className="glass-panel panel-card" key={index}><h3>{t(`matters_${index}_title`, '')}</h3><p>{t(`matters_${index}_desc`, '')}</p>{index < 3 && <p>{t(`matters_${index}_examples`, '')}</p>}</article>)}</div></section>
     </PageShell>
   )
 }

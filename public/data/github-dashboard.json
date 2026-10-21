@@ -21,18 +21,18 @@
     "site_admin": false,
     "name": "pyhor",
     "company": null,
-    "blog": "",
+    "blog": "https://pyhor.github.io/portfolio-project",
     "location": "Kuala Lumpur, Malaysia 🇲🇾",
     "email": null,
     "hireable": true,
     "bio": "Hi, I'm pyhor.",
     "twitter_username": null,
-    "public_repos": 7,
+    "public_repos": 8,
     "public_gists": 0,
-    "followers": 2,
-    "following": 13,
+    "followers": 3,
+    "following": 14,
     "created_at": "2024-04-01T22:43:50Z",
-    "updated_at": "2026-05-13T15:55:51Z"
+    "updated_at": "2026-10-20T13:09:23Z"
   },
   "repos": [
     {
@@ -49,6 +49,17 @@
       "commitCount": null
     },
     {
+      "id": 1147118241,
+      "name": "pyhor",
+      "description": "hi",
+      "html_url": "https://github.com/pyhor/pyhor",
+      "language": null,
+      "stargazers_count": 1,
+      "forks_count": 0,
+      "languages": {},
+      "commitCount": null
+    },
+    {
       "id": 1178778026,
       "name": "vet-mgmt-system-2024",
       "description": "A full-stack veterinary management system designed to manage pet records, owners, and clinic appointments.",
@@ -62,39 +73,41 @@
       "commitCount": null
     },
     {
-      "id": 1215586584,
-      "name": "hotel-website-2023",
-      "description": "[Archive] 🏨 Hotel Website (2023) | Diploma Frontend Project. • Tech: HTML, CSS, JavaScript. • Features: Multi-page hotel UI & responsive layout. • Goal: Practice frontend web development.",
-      "html_url": "https://github.com/pyhor/hotel-website-2023",
-      "language": "HTML",
-      "stargazers_count": 1,
-      "forks_count": 0,
-      "languages": {
-        "HTML": 1
-      },
-      "commitCount": null
-    },
-    {
-      "id": 1147118241,
-      "name": "pyhor",
-      "description": "hi",
-      "html_url": "https://github.com/pyhor/pyhor",
-      "language": null,
+      "id": 1256061600,
+      "name": "testing-tanstack-app",
+      "description": "A TanStack Start project",
+      "html_url": "https://github.com/pyhor/testing-tanstack-app",
+      "language": "TypeScript",
       "stargazers_count": 0,
       "forks_count": 0,
-      "languages": {},
+      "languages": {
+        "TypeScript": 1
+      },
       "commitCount": null
     },
     {
       "id": 1178461721,
       "name": "cinema-mgmt-system-2020",
-      "description": "[Archive] 🎬 Cinema System (2020) | SPM Sains Komputer Folio. • Context: Form 5 school project. • Tech: PHP & MySQL (WAMP). • Features: Registration, Login, Movie DB & Ticket Booking. • Goal: Fundamental CRUD & Database design.",
+      "description": "[Archive] Cinema System (2020) | SPM Sains Komputer Folio. • Context: Form 5 school project. • Tech: PHP & MySQL (WAMP). • Features: Registration, Login, Movie DB & Ticket Booking. • Goal: Fundamental CRUD & Database design.",
       "html_url": "https://github.com/pyhor/cinema-mgmt-system-2020",
       "language": "PHP",
       "stargazers_count": 1,
       "forks_count": 0,
       "languages": {
         "PHP": 1
+      },
+      "commitCount": null
+    },
+    {
+      "id": 1215586584,
+      "name": "hotel-website-2023",
+      "description": "[Archive] Hotel Website (2023) | Diploma Frontend Project. • Tech: HTML, CSS, JavaScript. • Features: Multi-page hotel UI & responsive layout. • Goal: Practice frontend web development.",
+      "html_url": "https://github.com/pyhor/hotel-website-2023",
+      "language": "HTML",
+      "stargazers_count": 1,
+      "forks_count": 0,
+      "languages": {
+        "HTML": 1
       },
       "commitCount": null
     },
