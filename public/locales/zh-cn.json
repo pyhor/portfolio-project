@@ -1,4 +1,12 @@
 {
+  "home_sections": "本页导航",
+  "hero_studio": "开发者与创意思考者",
+  "hero_scroll": "向下滚动，发现更多",
+  "sculpture_title": "让想法，拥有新的维度。",
+  "sculpture_hint": "拖动探索 · 滚动变换",
+  "sculpture_left": "向左旋转雕塑",
+  "sculpture_right": "向右旋转雕塑",
+  "sculpture_reset": "重置雕塑",
   "nav_home": "首页",
   "nav_about": "关于",
   "nav_trajectory": "历程",

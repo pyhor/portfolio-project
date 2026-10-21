@@ -25,7 +25,7 @@ The production site is emitted to `docs/`, which is ready for GitHub Pages.
 npm run preview
 ```
 
-Preview uses the production `/portfolio-project/` base path; development uses `/`. Generated `docs/` output is intentionally ignored by Git. There are no configured lint, type-check, or automated test scripts. Verify changes with the production build and browser checks across the seven routes, touch and keyboard input, reduced motion, and the WebGL fallback. No additional dependencies are required for the interactions.
+Preview uses the production `/portfolio-project/` base path; development uses `/`. Generated `docs/` output is intentionally ignored by Git. There are no configured lint, type-check, or npm test scripts. The existing tilt helper tests run with `node --test src/lib/motion.test.js`. Verify changes with those tests, the production build, and browser checks across the seven routes, touch and keyboard input, reduced motion, and the WebGL fallback. No additional dependencies are required for the interactions.
 
 ## Configuration
 

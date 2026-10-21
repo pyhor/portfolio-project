@@ -5,6 +5,7 @@ import { Magnetic } from './Magnetic'
 import { MediaLightbox } from './MediaLightbox'
 import { TechStackBadges } from './TechStackBadges'
 import { useI18n } from '../context/I18nProvider'
+import { pointerTilt } from '../lib/motion'
 
 export function FeaturedProjectCard({ project, compact = false, index = 0 }) {
   const { t } = useI18n()
@@ -14,8 +15,9 @@ export function FeaturedProjectCard({ project, compact = false, index = 0 }) {
   const tilt = (event) => {
     if (event.pointerType !== 'mouse' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     const rect = event.currentTarget.getBoundingClientRect()
-    artRef.current?.style.setProperty('--tilt-x', `${((event.clientY - rect.top) / rect.height - 0.5) * -7}deg`)
-    artRef.current?.style.setProperty('--tilt-y', `${((event.clientX - rect.left) / rect.width - 0.5) * 9}deg`)
+    const { x, y } = pointerTilt(event.clientX, event.clientY, rect)
+    artRef.current?.style.setProperty('--tilt-x', `${x}deg`)
+    artRef.current?.style.setProperty('--tilt-y', `${y}deg`)
   }
   const reset = () => { artRef.current?.style.setProperty('--tilt-x', '0deg'); artRef.current?.style.setProperty('--tilt-y', '0deg') }
   return (

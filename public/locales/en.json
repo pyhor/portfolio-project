@@ -1,4 +1,12 @@
 {
+  "home_sections": "On this page",
+  "hero_studio": "Developer & creative thinker",
+  "hero_scroll": "A little further, a lot to discover",
+  "sculpture_title": "Ideas, in a different dimension.",
+  "sculpture_hint": "Drag to explore · scroll to transform",
+  "sculpture_left": "Rotate sculpture left",
+  "sculpture_right": "Rotate sculpture right",
+  "sculpture_reset": "Reset sculpture",
   "nav_home": "Home",
   "nav_about": "About",
   "nav_trajectory": "Trajectory",
