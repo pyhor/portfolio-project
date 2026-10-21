@@ -10,6 +10,7 @@ import {
   Zap,
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { lazy, Suspense } from 'react'
 import { ContactSection } from '../components/ContactSection'
 import { HeroTypography } from '../components/HeroTypography'
 import { HomeProjectsPreview } from '../components/HomeProjectsPreview'
@@ -22,6 +23,7 @@ import { useI18n } from '../context/I18nProvider'
 import { useGithubData } from '../hooks/useGithubData'
 
 const Box = 'd' + 'iv'
+const HeroScene = lazy(() => import('../components/HeroScene').then((module) => ({ default: module.HeroScene })))
 
 const BUILD_CARDS = [
   { icon: Layers, titleKey: 'build_card_1_title', descKey: 'build_card_1_desc' },
@@ -53,6 +55,7 @@ export function HomePage() {
     <PageShell className="home-page">
       <Box className="home-sections">
         <section className="page-section hero" id="home-hero">
+          <Box className="hero-intro"><span className="status-dot" /> pyhor <span className="hero-intro__divider">/</span> {t('hero_studio', 'Developer & creative thinker')}</Box>
           <HeroTypography profileBio={github.profile?.bio}>
             <Box className="hero-badges reveal">
               <span className="hero-badge hero-badge--signal">{t('signal_label', 'Availability')}</span>
@@ -82,6 +85,10 @@ export function HomePage() {
               {t('cta_github', 'GitHub')} <Code2 size={18} />
             </Magnetic>
           </Box>
+          <Suspense fallback={<div className="sculpture-placeholder" aria-hidden="true"><span /><span /><span /></div>}>
+            <HeroScene />
+          </Suspense>
+          <a className="hero-scroll" href="#home-why"><span>↓</span> {t('hero_scroll', 'A little further, a lot to discover')}</a>
         </section>
 
         <section className="page-section" id="home-why">

@@ -4,7 +4,7 @@ import { ContactSection } from '../components/ContactSection'
 export function ContactPage() {
   return (
     <PageShell narrow>
-      <ContactSection id="contact-page" />
+      <ContactSection id="contact-page" headingAs="h1" />
     </PageShell>
   )
 }

@@ -54,8 +54,7 @@
   --shadow-hover: 0 28px 64px rgba(0, 0, 0, 0.48);
 }
 
-html.theme-animate,
-html.theme-animate * {
+:where(html.theme-animate, html.theme-animate *) {
   transition:
     background-color 480ms var(--ease-out),
     color 380ms var(--ease-out),

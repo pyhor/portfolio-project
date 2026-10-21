@@ -17,6 +17,7 @@ export function ThemeProvider({ children }) {
     document.documentElement.setAttribute('data-theme', theme)
     localStorage.setItem(THEME_STORAGE_KEY, theme)
     document.documentElement.style.colorScheme = theme === 'dark' ? 'dark' : 'light'
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#111725' : '#f5f7fa')
   }, [theme])
 
   const value = useMemo(

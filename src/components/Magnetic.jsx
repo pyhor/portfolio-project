@@ -7,8 +7,10 @@ export function Magnetic({ children, className = '', as: Tag = 'a', ...props }) 
   useEffect(() => {
     const element = ref.current
     if (!element) return undefined
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)')
 
     const move = (event) => {
+      if (motion.matches || event.pointerType === 'touch') return
       const rect = element.getBoundingClientRect()
       const x = event.clientX - rect.left - rect.width / 2
       const y = event.clientY - rect.top - rect.height / 2
@@ -21,6 +23,7 @@ export function Magnetic({ children, className = '', as: Tag = 'a', ...props }) 
     return () => {
       element.removeEventListener('pointermove', move)
       element.removeEventListener('pointerleave', leave)
+      gsap.killTweensOf(element)
     }
   }, [])
 

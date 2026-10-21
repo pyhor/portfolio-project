@@ -7,7 +7,7 @@ const Box = 'd' + 'iv'
 export const CONTACT_EMAIL = import.meta.env.VITE_CONTACT_EMAIL || 'pyhor.9657@gmail.com'
 export const LINKEDIN_URL = 'https://www.linkedin.com/in/pei-yu-hor-9b3539265/'
 
-export function ContactSection({ id = 'home-contact', compact = false }) {
+export function ContactSection({ id = 'home-contact', compact = false, headingAs: Heading = 'h2' }) {
   const { t } = useI18n()
   const [copied, setCopied] = useState(false)
   const [form, setForm] = useState({ name: '', email: '', message: '' })
@@ -49,7 +49,7 @@ export function ContactSection({ id = 'home-contact', compact = false }) {
         <MessageCircle size={16} />
         <span>{t('contact_eyebrow', "Let's connect")}</span>
       </Box>
-      <h2 className="section-title reveal">{t('contact_heading', 'Have something in mind?')}</h2>
+      <Heading className="section-title reveal">{t('contact_heading', 'Have something in mind?')}</Heading>
       <p className="page-lede reveal">{t('contact_body', '')}</p>
 
       <form className="contact-form glass-panel float-card reveal" onSubmit={sendMessage}>

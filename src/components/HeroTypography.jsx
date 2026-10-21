@@ -24,11 +24,24 @@ export function HeroTypography({ profileBio, children }) {
   const [deleting, setDeleting] = useState(false)
 
   useEffect(() => {
+    setDisplay('')
+    setPhraseIndex(0)
+    setDeleting(false)
+  }, [phrases])
+
+  useEffect(() => {
     if (!ready) return undefined
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setDisplay(phrases[0])
+      return undefined
+    }
     const phrase = phrases[phraseIndex % phrases.length]
     let timeout
 
-    if (!deleting && display.length < phrase.length) {
+    if (!phrase.startsWith(display)) {
+      // A locale can change while the previous phrase is still being typed.
+      timeout = setTimeout(() => { setDisplay(''); setDeleting(false) }, 0)
+    } else if (!deleting && display.length < phrase.length) {
       timeout = setTimeout(() => setDisplay(phrase.slice(0, display.length + 1)), 58)
     } else if (!deleting && display.length === phrase.length) {
       timeout = setTimeout(() => setDeleting(true), 2200)
@@ -54,9 +67,9 @@ export function HeroTypography({ profileBio, children }) {
           <span
             className="typing-cursor"
             style={{ '--typing-min-ch': `${typingMinCh}ch` }}
-            aria-live="polite"
           >
-            <span className="typing-cursor__text">{display}</span>
+            <span className="visually-hidden">{phrases[phraseIndex % phrases.length]}</span>
+            <span className="typing-cursor__text" aria-hidden="true">{display}</span>
             <span className="caret" aria-hidden="true" />
           </span>
         </span>

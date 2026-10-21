@@ -1,6 +1,7 @@
 import { createRoot } from 'react-dom/client'
 import App from './App'
 import './style.scss'
+import './redesign.scss'
 
 const rootEl = document.getElementById('root')
 if (rootEl) {

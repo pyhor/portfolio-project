@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useI18n } from '../context/I18nProvider'
@@ -16,11 +16,11 @@ export function ProgressNavigation({ pageProgress }) {
   const onHome = isHomePath(location.pathname)
   const homeSpy = useHomeSectionSpy(onHome)
   const [overlayOpen, setOverlayOpen] = useState(false)
-  const [hoverId, setHoverId] = useState(null)
+  const dialogRef = useRef(null)
+  const menuRef = useRef(null)
 
   const items = onHome ? HOME_SECTIONS : ROUTES.map((r) => ({ id: r.id, labelKey: r.labelKey, path: r.path }))
   const activeId = onHome ? homeSpy.activeId : routeIdFromPath(location.pathname)
-  const labelId = hoverId || activeId
   const progress = onHome ? homeSpy.progress : pageProgress
 
   const activeIndex = useMemo(
@@ -37,6 +37,26 @@ export function ProgressNavigation({ pageProgress }) {
     document.body.classList.toggle('nav-overlay-open', overlayOpen)
     return () => document.body.classList.remove('nav-overlay-open')
   }, [overlayOpen])
+
+  useEffect(() => {
+    if (!overlayOpen) return
+    const dialog = dialogRef.current
+    const focusables = () => [...dialog.querySelectorAll('button, a[href], summary')].filter((element) => element.getClientRects().length > 0)
+    focusables()[0]?.focus()
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') setOverlayOpen(false)
+      if (event.key !== 'Tab') return
+      const elements = focusables()
+      const first = elements[0]
+      const last = elements.at(-1)
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus() }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus() }
+    }
+    document.addEventListener('keydown', onKeyDown)
+    return () => { document.removeEventListener('keydown', onKeyDown); menuRef.current?.focus() }
+  }, [overlayOpen])
+
+  useEffect(() => { setOverlayOpen(false) }, [location.pathname])
 
   const displayLabel = (item) => t(item.labelKey, item.id)
 
@@ -56,17 +76,21 @@ export function ProgressNavigation({ pageProgress }) {
           <span className="brand-chip__mark">P</span>
           <span>pyhor</span>
         </NavLink>
-        <p className="nav-dock__section" aria-live="polite">
-          {/* {displayLabel(items.find((i) => i.id === labelId) || items[0])} */}
-        </p>
+        <nav className="nav-links" aria-label="Main navigation">
+          {ROUTES.filter((route) => ['about', 'projects', 'contact'].includes(route.id)).map((route) => (
+            <NavLink key={route.id} to={route.path}>{displayLabel(route)}</NavLink>
+          ))}
+        </nav>
         <Box className="nav-dock__tools">
           <LangSwitcher compact />
           <ThemeToggle compact />
           <button
             type="button"
+            ref={menuRef}
             className="nav-menu-btn"
             onClick={() => setOverlayOpen((open) => !open)}
             aria-expanded={overlayOpen}
+            aria-controls="site-navigation"
             aria-label={t('nav_open', 'Open navigation')}
           >
             {overlayOpen ? <X size={18} /> : <Menu size={18} />}
@@ -93,8 +117,6 @@ export function ProgressNavigation({ pageProgress }) {
                 <Tag
                   {...linkProps}
                   className={`progress-rail__node ${isActive ? 'is-active' : ''} ${isPast ? 'is-past' : ''}`}
-                  onMouseEnter={() => setHoverId(item.id)}
-                  onMouseLeave={() => setHoverId(null)}
                   aria-current={isActive ? (onHome ? 'true' : 'page') : undefined}
                 >
                   <span className="progress-rail__dot" />
@@ -110,6 +132,8 @@ export function ProgressNavigation({ pageProgress }) {
         className={`nav-overlay ${overlayOpen ? 'is-open' : ''}`}
         role="dialog"
         aria-modal="true"
+        aria-labelledby="navigation-title"
+        id="site-navigation"
         hidden={!overlayOpen}
       >
         <button
@@ -118,15 +142,18 @@ export function ProgressNavigation({ pageProgress }) {
           onClick={() => setOverlayOpen(false)}
           aria-label={t('nav_close', 'Close')}
         />
-        <Box className="nav-overlay__panel">
-          <p className="nav-overlay__title">{t('nav_explore', 'Explore')}</p>
+        <Box className="nav-overlay__panel" ref={dialogRef}>
+          <Box className="nav-overlay__heading">
+            <p className="nav-overlay__title" id="navigation-title">{t('nav_explore', 'Explore')}</p>
+            <button type="button" className="nav-overlay__close" onClick={() => setOverlayOpen(false)} aria-label={t('nav_close', 'Close')}><X size={18} /></button>
+          </Box>
           <ul className="nav-overlay__sections">
-            {items.map((item, index) => (
+            {ROUTES.map((item, index) => (
               <li key={item.id}>
                 <button
                   type="button"
-                  className={activeId === item.id ? 'is-active' : ''}
-                  onClick={() => handleSelect(item)}
+                  className={routeIdFromPath(location.pathname) === item.id ? 'is-active' : ''}
+                  onClick={() => { setOverlayOpen(false); navigate(item.path) }}
                 >
                   <span>0{index + 1}</span>
                   <strong>{displayLabel(item)}</strong>
@@ -134,6 +161,20 @@ export function ProgressNavigation({ pageProgress }) {
               </li>
             ))}
           </ul>
+          {onHome && (
+            <details className="nav-overlay__home">
+              <summary>{t('home_sections', 'On this page')}</summary>
+              <ul className="nav-overlay__sections">
+                {HOME_SECTIONS.map((item) => (
+                  <li key={item.id}>
+                    <button type="button" className={activeId === item.id ? 'is-active' : ''} onClick={() => handleSelect(item)}>
+                      {displayLabel(item)}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          )}
         </Box>
       </Box>
     </>

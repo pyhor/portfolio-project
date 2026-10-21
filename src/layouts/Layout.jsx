@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect } from 'react'
+import { useEffect } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import { PageTransition } from '../components/PageTransition'
 import { ProgressNavigation } from '../components/ProgressNavigation'
@@ -6,20 +6,18 @@ import { ScrollToTop } from '../components/ScrollToTop'
 import { isHomePath } from '../routes'
 import { usePageScroll } from '../hooks/usePageScroll'
 import { useScrollReveal } from '../hooks/useScrollReveal'
-
-// Three.js is heavy; load the decorative 3D background in its own chunk so the
-// page content paints first.
-const HeroScene = lazy(() =>
-  import('../components/HeroScene').then((m) => ({ default: m.HeroScene })),
-)
+import { useCardTilt } from '../hooks/useCardTilt'
+import { useI18n } from '../context/I18nProvider'
 
 const Box = 'd' + 'iv'
 
 export function Layout() {
   const location = useLocation()
   const pageProgress = usePageScroll()
+  const { ready, lang } = useI18n()
 
-  useScrollReveal([location.pathname])
+  useScrollReveal([location.pathname, ready, lang])
+  useCardTilt(location.pathname)
 
   useEffect(() => {
     if (!isHomePath(location.pathname)) {
@@ -44,17 +42,11 @@ export function Layout() {
   return (
     <Box className="portfolio">
       <Box className="ambient-grid" aria-hidden="true" />
-      <Suspense fallback={null}>
-        <HeroScene />
-      </Suspense>
-      <Box className="dopa-orbs" aria-hidden="true">
-        <span className="dopa-orb dopa-orb--1" />
-        <span className="dopa-orb dopa-orb--2" />
-        <span className="dopa-orb dopa-orb--3" />
-      </Box>
+      <a className="skip-link" href="#main-content">Skip to content</a>
+      <Box className="reading-progress" style={{ transform: `scaleX(${pageProgress})` }} aria-hidden="true" />
       <ProgressNavigation pageProgress={pageProgress} />
       <ScrollToTop />
-      <main className="portfolio-main">
+      <main className="portfolio-main" id="main-content" tabIndex={-1}>
         <PageTransition>
           <Outlet />
         </PageTransition>

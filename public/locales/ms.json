@@ -1,4 +1,12 @@
 {
+  "home_sections": "Pada halaman ini",
+  "hero_studio": "Pembangun & pemikir kreatif",
+  "hero_scroll": "Teruskan menatal untuk meneroka",
+  "sculpture_title": "Idea dalam dimensi baharu.",
+  "sculpture_hint": "Seret untuk meneroka · tatal untuk mengubah",
+  "sculpture_left": "Putar arca ke kiri",
+  "sculpture_right": "Putar arca ke kanan",
+  "sculpture_reset": "Tetapkan semula arca",
   "nav_home": "Laman Utama",
   "nav_about": "Perihal",
   "nav_trajectory": "Perjalanan",
