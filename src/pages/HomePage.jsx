@@ -10,7 +10,6 @@ import {
   Zap,
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { lazy, Suspense } from 'react'
 import { ContactSection } from '../components/ContactSection'
 import { HeroTypography } from '../components/HeroTypography'
 import { HomeProjectsPreview } from '../components/HomeProjectsPreview'
@@ -23,7 +22,6 @@ import { useI18n } from '../context/I18nProvider'
 import { useGithubData } from '../hooks/useGithubData'
 
 const Box = 'd' + 'iv'
-const HeroScene = lazy(() => import('../components/HeroScene').then((module) => ({ default: module.HeroScene })))
 
 const BUILD_CARDS = [
   { icon: Layers, titleKey: 'build_card_1_title', descKey: 'build_card_1_desc' },
@@ -85,9 +83,10 @@ export function HomePage() {
               {t('cta_github', 'GitHub')} <Code2 size={18} />
             </Magnetic>
           </Box>
-          <Suspense fallback={<div className="sculpture-placeholder" aria-hidden="true"><span /><span /><span /></div>}>
-            <HeroScene />
-          </Suspense>
+          <Box className="hero-art-space" aria-hidden="true">
+            <span className="hero-art-space__spark">✳</span>
+            <span>{t('sculpture_title', 'Ideas, in a different dimension.')}</span>
+          </Box>
           <a className="hero-scroll" href="#home-why"><span>↓</span> {t('hero_scroll', 'A little further, a lot to discover')}</a>
         </section>
 

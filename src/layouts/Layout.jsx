@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import { PageTransition } from '../components/PageTransition'
 import { ProgressNavigation } from '../components/ProgressNavigation'
@@ -10,6 +10,7 @@ import { useCardTilt } from '../hooks/useCardTilt'
 import { useI18n } from '../context/I18nProvider'
 
 const Box = 'd' + 'iv'
+const HeroScene = lazy(() => import('../components/HeroScene').then((module) => ({ default: module.HeroScene })))
 
 export function Layout() {
   const location = useLocation()
@@ -42,6 +43,7 @@ export function Layout() {
   return (
     <Box className="portfolio">
       <Box className="ambient-grid" aria-hidden="true" />
+      <Suspense fallback={null}><HeroScene /></Suspense>
       <a className="skip-link" href="#main-content">Skip to content</a>
       <Box className="reading-progress" style={{ transform: `scaleX(${pageProgress})` }} aria-hidden="true" />
       <ProgressNavigation pageProgress={pageProgress} />
