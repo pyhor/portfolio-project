@@ -1,3 +1,4 @@
+import { useProjectCoverMotion } from '../hooks/useProjectCoverMotion'
 import { CaseStudyTeaser } from '../components/CaseStudyTeaser'
 import { Link } from 'react-router-dom'
 import { ArrowUpRight, Code2, Layers3 } from 'lucide-react'
@@ -23,7 +24,8 @@ const SKILL_KEYS = [
 ]
 
 export function ProjectsPage() {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
+  useProjectCoverMotion(lang)
   const github = useGithubData(12)
 
   return (

@@ -36,14 +36,14 @@ export function SystemOverview() {
     choose(next); tabs.current[next]?.focus()
   }
   const explore = <a href="#home-playground" className="system-explore" aria-label={t('system_explore_label', 'Explore interactive section')} data-cursor="explore"><ArrowUpRight size={18} aria-hidden="true" /></a>
-  return <div className="system-overview" ref={root} data-running={cycle.running}>
+  return <div className="system-overview" ref={root} data-running={cycle.running} style={{ '--lens-duration': `${cycle.duration}ms` }}>
     <div className="system-overview__meta"><span><i /> {t('system_way_i_think')}</span><span className="system-index" key={active}>0{active + 1} — 03</span></div>
-    <div className="system-desk">
-      <div className="system-desk__bar"><span className="window-dots" aria-hidden="true"><i /><i /><i /></span><span>{t('system_people_process')}</span>{explore}</div>
-      <div className="system-desk__header"><span className="system-desk__tag">{t('system_business_tag')}</span><span className="system-desk__status"><span className="status-dot" /> {t('system_connected')}</span></div>
+    <div className="system-desk approach-panel">
+      <div className="system-desk__bar"><span>{t('system_people_process')}</span>{explore}</div>
+      <div className="system-desk__header"><span className="system-desk__tag">{t(`system_${view.id}_tag`, view.tag)}</span><span className="system-desk__status"><span className="status-dot" /> {t('system_connected')}</span></div>
       <div className="system-view-switch" role="tablist" aria-label={t('system_switch')}>{VIEWS.map(({ id, icon: Icon }, i) => <button type="button" role="tab" id={`lens-${id}`} aria-controls="lens-panel" tabIndex={active === i ? 0 : -1} ref={element => { tabs.current[i] = element }} data-cursor="explore" key={id} onClick={() => choose(i)} onKeyDown={event => keyboard(event, i)} aria-selected={active === i}><Icon size={16} aria-hidden="true" /><span>{t(`system_${id}`)}</span>{active === i && <span className="lens-progress" aria-hidden="true" style={{ '--progress': 1 - cycle.remaining / cycle.duration, '--remaining': `${cycle.remaining}ms` }} key={`${active}-${cycle.remaining}-${cycle.running}`} />}</button>)}</div>
-      <div className="system-connections" data-lens={active} aria-hidden="true"><svg viewBox="0 0 300 34" preserveAspectRatio="none"><path d="M50 0V10Q50 17 60 17H150V34" /><path d="M150 0V34" /><path d="M250 0V10Q250 17 240 17H150" /></svg><span>{t('system_business_tag')}</span></div>
-      <div className={`system-desk__content${changing ? ' is-changing' : ''}`} id="lens-panel" role="tabpanel" aria-labelledby={`lens-${VIEWS[active].id}`} tabIndex={0}>
+
+      <div className={`system-desk__content${changing ? ' is-changing' : ''}`} id="lens-panel" role="tabpanel" aria-labelledby={`lens-${view.id}`} tabIndex={0}>
         <div className="system-process" key={view.id}>
           <p className="system-question">{t(`glass_${view.id}_question`)}</p>
           <h2>{t(`system_${view.id}_title`)}</h2>

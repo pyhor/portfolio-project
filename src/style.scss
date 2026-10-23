@@ -796,3 +796,66 @@ button:disabled { cursor: default; opacity: .55; }
   .portfolio-main:has(.projects-page) { padding-top: 64px; }
 }
 .chronology-page .timeline-entry h2 { max-width: none; }
+/* Content-sized contact and language cards. */
+.contact-block .contact-support .contact-card.glass-panel { width: max-content; max-width: 100%; margin-inline: auto; }
+.home-page > .hero { padding-top: 56px; }
+.about-page { --chapter-space: clamp(28px, 3vw, 44px); }
+.portfolio-main:has(.about-page) { padding-top: 80px; }
+.about-page > .back-home { margin-top: 4px; }
+.page-shell.about-page > .page-section:first-of-type { padding-top: 24px; padding-bottom: 32px; }
+.language-showcase { gap: 32px; margin-top: 24px; }
+.language-globe { width: 240px; height: 240px; margin-block: 12px; }
+.language-globe__greeting { width: max-content; max-width: 100%; min-height: 0; padding: 8px 0; border: 0; background: transparent; box-shadow: none; }
+.language-showcase .language-grid { display: flex; flex-wrap: wrap; gap: 12px; max-width: 500px; justify-content: center; }
+.language-showcase .language-chip { width: max-content; max-width: 100%; padding: 12px 16px; gap: 6px; background: transparent; box-shadow: none; }
+.projects-page .skills-grid .skill-panel { padding: 24px; border: 1px solid var(--line); background: transparent; }
+/* A transparent approach panel, with a coordinated stage rhythm. */
+.home-page .approach-panel,
+.home-page .approach-panel .system-desk__bar,
+.home-page .approach-panel .system-view-switch,
+.home-page .approach-panel .system-output { background: transparent; background-image: none; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
+.home-page .approach-panel { border-radius: 8px; border-color: var(--line); }
+.home-page .approach-panel .system-desk__bar { min-height: 38px; padding-inline: 22px 10px; justify-content: space-between; font-family: var(--font-display); font-size: 10px; letter-spacing: .05em; }
+.home-page .approach-panel .system-desk__header { padding: 20px 22px 16px; }
+.home-page .approach-panel .system-view-switch { margin-inline: 22px; padding: 0; gap: 8px; border: 0; }
+.home-page .approach-panel .system-view-switch button { min-height: 44px; border: 1px solid var(--line); border-radius: 4px; background: transparent; box-shadow: none; }
+.home-page .approach-panel .system-view-switch button[aria-selected='true'] { border-color: var(--accent); color: var(--accent); background: transparent; box-shadow: none; }
+.home-page .approach-panel .lens-progress { left: 0; width: 100%; bottom: 0; height: 2px; }
+.home-page .approach-panel .system-desk__content { padding: 22px; min-height: 320px; }
+.home-page .approach-panel .system-desk__content.is-changing { opacity: 0; transform: translateY(6px); }
+.home-page .approach-panel .system-process > h2 { min-height: 2.5em; margin-bottom: 14px; font-size: clamp(24px, 2vw, 30px); }
+.home-page .approach-panel .system-process li { padding: 14px 8px 14px 16px; }
+.home-page .approach-panel .system-process li::after { display: none; }
+.home-page .approach-panel .system-output { min-height: 0; padding: 18px 16px; border: 1px solid var(--line); border-left: 2px solid var(--accent-2); border-radius: 4px; }
+.home-page .approach-panel .system-process li,
+.home-page .approach-panel .system-process > h2,
+.home-page .approach-panel .system-output,
+.home-page .system-index { animation: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .approach-panel .system-process li::before { content: ''; position: absolute; inset: 0 auto 0 0; width: 2px; background: var(--accent); transform-origin: top; animation: approach-signal var(--lens-duration) ease-in-out infinite; animation-delay: calc(var(--step) * .4s); }
+  .system-overview[data-running='false'] .system-process li::before { animation-play-state: paused; }
+}
+@keyframes approach-signal { 0%, 65%, 100% { transform: scaleY(0); opacity: 0; } 15%, 45% { transform: scaleY(1); opacity: .7; } }
+/* Opaque project panels rise over the preceding project. */
+.projects-page .featured-projects-stack { gap: 0; }
+.projects-page .project-presentation { position: relative; z-index: 1; background: var(--bg); padding-top: 32px; }
+.projects-page .project-presentation--reverse { z-index: 2; }
+.projects-page > .project-feature { position: relative; z-index: 3; background: var(--bg); margin-top: 0; }
+.projects-page .github-block .repo-card,
+.projects-page .github-block .profile-chip {
+  background: color-mix(in srgb, var(--bg-elevated) 28%, transparent);
+  -webkit-backdrop-filter: blur(12px) saturate(120%); backdrop-filter: blur(12px) saturate(120%);
+  border: 1px solid var(--line); border-radius: 6px;
+}
+@media (max-width: 760px) {
+  .language-showcase { gap: 20px; }
+  .language-showcase .language-grid { max-width: 100%; }
+  .home-page .approach-panel .system-desk__bar { padding-left: 18px; }
+  .home-page .approach-panel .system-desk__header { padding-inline: 18px; }
+  .home-page .approach-panel .system-view-switch { margin-inline: 18px; }
+  .home-page .approach-panel .system-desk__content { padding: 20px 18px; }
+}
+@media (max-width: 640px) {
+  .home-page > .hero { padding-top: 44px; }
+  .portfolio-main:has(.about-page) { padding-top: 64px; }
+}
