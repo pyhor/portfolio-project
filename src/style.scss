@@ -1116,7 +1116,7 @@ button:disabled { cursor: default; opacity: .55; }
 }
 .projects-page .featured-projects-stack > .case-teaser--featured {
   margin: 56px 0 0;
-  padding-top: 24px;
+  padding-block: 24px 12px;
   align-items: start;
   border: 0;
   border-radius: 0;
@@ -1126,4 +1126,13 @@ button:disabled { cursor: default; opacity: .55; }
 .case-teaser--featured time { display: block; margin-bottom: 20px; }
 @media (prefers-reduced-motion: reduce) {
   .projects-page .featured-projects-stack > article:is(.project-feature, .project-presentation, .case-teaser) { position: relative; top: auto; }
+}
+
+.case-teaser--featured .case-teaser__details { margin: 24px 0; display: grid; gap: 18px; }
+.case-teaser__details h3 { font-size: 16px; font-weight: 500; margin: 0 0 8px; }
+.case-teaser--featured .case-teaser__details p { margin-bottom: 0; max-width: none; }
+.case-teaser--featured .case-teaser__map { align-self: start; margin-top: 68px; }
+.projects-page > .page-section:has(.featured-projects-stack) { padding-bottom: 24px; }
+@media (max-width: 760px) {
+  .case-teaser--featured .case-teaser__map { margin-top: 0; }
 }
