@@ -859,3 +859,35 @@ button:disabled { cursor: default; opacity: .55; }
   .home-page > .hero { padding-top: 44px; }
   .portfolio-main:has(.about-page) { padding-top: 64px; }
 }
+
+/* Keep benefit copy readable in either theme, like a highlighted note. */
+.showcase-project__value mark {
+  background: #f5df83;
+  color: #30280e;
+  padding: .12em .2em;
+  line-height: 1.85;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.home-page > .hero { padding-top: 72px; }
+/* One native stack avoids pin handoff jumps and translucent reveal layers. */
+.projects-page .featured-projects-stack { display: block; }
+.projects-page .featured-projects-stack > .project-presentation {
+  position: sticky;
+  top: var(--project-stick-top, 80px);
+  align-self: start;
+  margin: 0;
+}
+.projects-page .featured-projects-stack > .project-feature {
+  position: relative;
+  z-index: 3;
+  margin: 0;
+  background: var(--bg);
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .projects-page .featured-projects-stack > .project-presentation { position: relative; top: auto; }
+}
+@media (max-width: 640px) {
+  .home-page > .hero { padding-top: 60px; }
+}

@@ -46,42 +46,41 @@ export function ProjectsPage() {
           {FEATURED_PROJECTS.map((project, index) => (
             <FeaturedProjectCard key={project.id} project={project} index={index} />
           ))}
+          <article className="project-feature glass-panel page-section">
+            <span className="project-feature__meta">{t('proj_asean_meta', '')}</span>
+            <h2>{t('proj_asean_title', '')}</h2>
+            <p>{t('proj_asean_desc', '')}</p>
+            <p>{t('proj_asean_desc2', '')}</p>
+            <Box className="project-feature__cols">
+              <Box>
+                <strong>{t('proj_asean_contrib_label', '')}</strong>
+                <ul>
+                  {CONTRIB_KEYS.map((key) => (
+                    <li key={key}>{t(key, '')}</li>
+                  ))}
+                </ul>
+              </Box>
+              <Box>
+                <strong>{t('proj_asean_focus_label', '')}</strong>
+                <ul>
+                  {FOCUS_KEYS.map((key) => (
+                    <li key={key}>{t(key, '')}</li>
+                  ))}
+                </ul>
+              </Box>
+            </Box>
+            <p className="project-feature__impact">{t('proj_asean_impact', '')}</p>
+            <span className="project-feature__tool">
+              {t('proj_asean_tool_label', 'Tool')}: {t('proj_asean_tool', '')}
+            </span>
+            <Box className="project-feature__actions">
+              <Magnetic href={ASEAN_CANVA_URL} target="_blank" rel="noreferrer" className="primary-cta project-canva-btn">
+                {t('proj_asean_canva_cta', 'View Canva Project')} <ArrowUpRight size={18} />
+              </Magnetic>
+            </Box>
+          </article>
         </Box>
       </section>
-
-      <article className="project-feature glass-panel float-card reveal page-section">
-        <span className="project-feature__meta">{t('proj_asean_meta', '')}</span>
-        <h2>{t('proj_asean_title', '')}</h2>
-        <p>{t('proj_asean_desc', '')}</p>
-        <p>{t('proj_asean_desc2', '')}</p>
-        <Box className="project-feature__cols">
-          <Box>
-            <strong>{t('proj_asean_contrib_label', '')}</strong>
-            <ul>
-              {CONTRIB_KEYS.map((key) => (
-                <li key={key}>{t(key, '')}</li>
-              ))}
-            </ul>
-          </Box>
-          <Box>
-            <strong>{t('proj_asean_focus_label', '')}</strong>
-            <ul>
-              {FOCUS_KEYS.map((key) => (
-                <li key={key}>{t(key, '')}</li>
-              ))}
-            </ul>
-          </Box>
-        </Box>
-        <p className="project-feature__impact">{t('proj_asean_impact', '')}</p>
-        <span className="project-feature__tool">
-          {t('proj_asean_tool_label', 'Tool')}: {t('proj_asean_tool', '')}
-        </span>
-        <Box className="project-feature__actions">
-          <Magnetic href={ASEAN_CANVA_URL} target="_blank" rel="noreferrer" className="primary-cta project-canva-btn">
-            {t('proj_asean_canva_cta', 'View Canva Project')} <ArrowUpRight size={18} />
-          </Magnetic>
-        </Box>
-      </article>
 
       <section className="page-section" id="projects-skills">
         <Box className="section-kicker reveal">
