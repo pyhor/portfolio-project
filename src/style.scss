@@ -1111,6 +1111,7 @@ button:disabled { cursor: default; opacity: .55; }
 .projects-page .featured-projects-stack > article:is(.project-feature, .project-presentation, .case-teaser) {
   position: sticky;
   top: var(--project-stick-top, 80px);
+  min-height: calc(100dvh - 80px);
   background: var(--bg);
 }
 .projects-page .featured-projects-stack > .case-teaser--featured { margin: 32px 0 0; }
