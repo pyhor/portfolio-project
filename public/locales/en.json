@@ -1125,5 +1125,6 @@
   "stat_followers": "Followers",
   "stat_following": "Following",
   "connect_error": "Could not load the GitHub profile.",
-  "work_empty": "No public projects found."
+  "work_empty": "No public projects found.",
+  "proj_jomgo_period": "Mar 2026 – Present"
 }

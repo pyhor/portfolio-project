@@ -1125,5 +1125,6 @@
   "stat_followers": "追蹤者",
   "stat_following": "追蹤緊",
   "connect_error": "載入唔到 GitHub 個人資料。",
-  "work_empty": "搵唔到公開項目。"
+  "work_empty": "搵唔到公開項目。",
+  "proj_jomgo_period": "2026年3月 – 至今"
 }

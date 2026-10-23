@@ -41,7 +41,6 @@ export function ProjectsPage() {
       </section>
 
       <section className="page-section">
-        <CaseStudyTeaser />
         <h2 className="section-title reveal">{t('projects_featured_title', 'Featured builds')}</h2>
         <Box className="featured-projects-stack">
           {[...FEATURED_PROJECTS].reverse().map((project, index) => (
@@ -81,6 +80,7 @@ export function ProjectsPage() {
               </Magnetic>
             </Box>
           </article>
+          <CaseStudyTeaser featured />
         </Box>
       </section>
 

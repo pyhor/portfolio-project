@@ -1106,3 +1106,16 @@ button:disabled { cursor: default; opacity: .55; }
 @media (max-width: 420px) {
   .language-showcase--compact .language-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+
+/* Newer featured projects cover the older panels in chronological order. */
+.projects-page .featured-projects-stack > article:is(.project-feature, .project-presentation, .case-teaser) {
+  position: sticky;
+  top: var(--project-stick-top, 80px);
+  background: var(--bg);
+}
+.projects-page .featured-projects-stack > .case-teaser--featured { margin: 32px 0 0; }
+.case-teaser__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; }
+.case-teaser--featured time { display: block; margin-bottom: 20px; }
+@media (prefers-reduced-motion: reduce) {
+  .projects-page .featured-projects-stack > article:is(.project-feature, .project-presentation, .case-teaser) { position: relative; top: auto; }
+}
