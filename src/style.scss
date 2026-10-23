@@ -1073,3 +1073,7 @@ button:disabled { cursor: default; opacity: .55; }
   .home-page .hero-facts { grid-template-columns: .65fr 1.2fr 1fr; }
   .home-page .hero-facts > div:last-child { display: block; }
 }
+/* Extra desktop height belongs above the strip, keeping its lower edge flush. */
+@media (min-width: 1025px) and (min-height: 651px) {
+  .home-page > .hero { align-content: space-between; }
+}
