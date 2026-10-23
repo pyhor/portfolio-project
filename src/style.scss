@@ -1118,6 +1118,8 @@ button:disabled { cursor: default; opacity: .55; }
   margin: 56px 0 0;
   padding-top: 24px;
   align-items: start;
+  border: 0;
+  border-radius: 0;
 }
 .case-teaser--featured .case-teaser__map { align-self: center; }
 .case-teaser__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; }
