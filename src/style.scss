@@ -412,7 +412,7 @@ button:disabled { cursor: default; opacity: .55; }
 @include case-study.styles;
 
 /* Neutral, open surfaces keep the portfolio content in the foreground. */
-:root, [data-theme='light'] {
+:root:not([data-theme='dark']), [data-theme='light'] {
   --bg: #fff;
   --bg-elevated: #fff;
   --panel: transparent;
@@ -425,7 +425,7 @@ button:disabled { cursor: default; opacity: .55; }
 .portfolio::before, .hero-visual::before { background: none; }
 .home-page > .hero, .contact-block { background-image: none; }
 .site-header { border-bottom-color: transparent; background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: none; }
-.site-header.is-scrolled { border-bottom: 0; background: var(--nav-glass-scrolled); backdrop-filter: blur(12px) saturate(110%); -webkit-backdrop-filter: blur(12px) saturate(110%); box-shadow: none; }
+.site-header.is-scrolled { border-bottom: 0; background: transparent; backdrop-filter: blur(12px) saturate(110%); -webkit-backdrop-filter: blur(12px) saturate(110%); box-shadow: none; }
 .site-header__inner { max-width: none; padding-inline: clamp(18px, 2.2vw, 40px); }
 .site-brand { gap: .65rem; margin-right: auto; }
 .hero { align-items: start; }
@@ -457,8 +457,8 @@ button:disabled { cursor: default; opacity: .55; }
 .site-header__progress { display: none; }
 .home-page > section:not(:first-of-type) { margin-top: 0; border-top: 0; }
 .home-page .intro-strip {
-  margin-bottom: clamp(40px, 6vw, 96px);
-  padding-block: 24px 36px;
+  margin-bottom: 0;
+  padding-block: 16px;
   border-bottom: 0;
 }
 .home-page .hero-visual::before { display: none; }
@@ -476,9 +476,8 @@ button:disabled { cursor: default; opacity: .55; }
 .ideas-selector button:focus-visible, .ideas-detail:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
 .ideas-selector button .ideas-selector__action { display: flex; align-items: center; gap: 10px; color: var(--accent); font-size: 11px; letter-spacing: 0; }
 .ideas-selector button .ideas-selector__action svg { position: static; }
-#home-matters { position: relative; z-index: 1; background: #f1f2ee; }
-[data-theme='dark'] #home-matters { background: #1b242c; }
-#home-ideas { position: relative; z-index: 2; background: var(--bg); min-height: calc(100dvh - 80px); }
+#home-matters { position: relative; z-index: 1; background: var(--thinking-bg); }
+#home-ideas { position: relative; z-index: 2; background: var(--bg); min-height: 100dvh; }
 @media (prefers-reduced-motion: no-preference) {
   .home-page .hero-name, .home-page .hero-lede, .home-page .hero-facts,
   .home-page .hero-footnote, .home-page .hero-actions, .home-page .hero-profession,
@@ -507,11 +506,11 @@ button:disabled { cursor: default; opacity: .55; }
 }
 @media (max-width: 760px) {
   .home-page .ideas-detail { padding: 28px 24px; }
-  .home-page .intro-strip { padding-bottom: 28px; }
+  .home-page .intro-strip { padding-block: 14px; }
 }
 
 @media (min-width: 1025px) {
-  .home-page > #home-matters { padding-block: 28px; min-height: calc(100dvh - 80px); }
+  .home-page > #home-matters { padding-block: 112px 48px; min-height: 100dvh; }
   #home-matters .section-heading { margin-bottom: 24px; }
   #home-matters .section-title { font-size: clamp(32px, 2.8vw, 44px); }
   #home-matters .workflow-nodes { padding: 16px 24px; gap: 20px; }
@@ -521,4 +520,87 @@ button:disabled { cursor: default; opacity: .55; }
   #home-matters .workflow-details__copy > p:not(.eyebrow) { font-size: 14px; }
   #home-matters .workflow-artifact { padding: 20px; }
   #home-matters .workflow-artifact h4 { font-size: 21px; }
+}
+
+/* Home chapters stay brief; colored chapters reach behind the transparent nav. */
+:root:not([data-theme='dark']), [data-theme='light'] {
+  --thinking-bg: #eef1e9;
+  --journey-bg: #e9eef5;
+}
+[data-theme='dark'] {
+  --thinking-bg: #1d2924;
+  --journey-bg: #1b2739;
+}
+.home-page { overflow-x: clip; }
+.home-page > .selected-work { padding-top: 36px; }
+.home-page .section-heading { margin-bottom: 32px; }
+.home-page .showcase-project { flex-basis: min(380px, 80vw); width: min(380px, 80vw); background: var(--bg-elevated); }
+.home-page .showcase-project__body { padding: 28px; }
+.home-page .showcase-project h3 { font-size: clamp(25px, 2.4vw, 34px); margin-block: 18px 14px; }
+.home-page .showcase-project__body > p { min-height: 3.5em; font-size: 14px; }
+.home-page .showcase-controls { padding-bottom: 18px; }
+.home-page .showcase-viewport { background-image: none; }
+.home-page .showcase-project__links { gap: 4px 16px; }
+.home-page .showcase-project__links a { font-size: 11px; }
+.home-page .showcase-project .tech-stack { flex-wrap: wrap; gap: 4px 10px; }
+.home-page .showcase-project .tech-badge + .tech-badge::before { margin-right: 10px; }
+.home-page .workflow-artifact { display: flex; flex-direction: column; justify-content: center; }
+.home-page .workflow-artifact .text-link { align-self: flex-start; }
+.home-page .capability-evidence { padding-top: 10px; margin-top: 12px; }
+.home-page .value-card__top { margin-bottom: 24px; }
+.home-page .home-stats { margin-top: 24px; }
+.home-page > #home-matters, .home-page #home-journey {
+  min-height: 100dvh;
+  padding-top: 112px;
+  padding-bottom: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+#home-journey { position: relative; z-index: 3; background: var(--journey-bg); }
+#home-journey .home-preview-card { background: transparent; border-top: 1px solid var(--line); padding: 24px 0; }
+#home-journey .home-preview-card:hover { background: color-mix(in srgb, var(--bg) 30%, transparent); }
+#home-contact { position: relative; z-index: 4; min-height: 100dvh; background: var(--bg); background-image: none; border: 0; }
+.home-page .contact-block--compact .contact-support { align-self: start; }
+.home-page .contact-block--compact .contact-card { margin-top: 0; border: 0; padding: 0; background: transparent; }
+.home-page .contact-block--compact .contact-layout { margin-top: 32px; grid-template-columns: minmax(200px, .65fr) minmax(0, 1.35fr); }
+@media (max-width: 760px) {
+  .home-page > #home-matters, .home-page #home-journey { padding-top: 88px; padding-bottom: 36px; }
+  .home-page .section-heading { margin-bottom: 24px; }
+  .home-page .contact-block--compact .contact-layout { grid-template-columns: 1fr; gap: 24px; }
+  .home-page .workflow-details { grid-template-columns: 1fr; gap: 16px; }
+  .home-page .workflow-nodes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding: 16px; }
+  .home-page .workflow-node { min-height: 76px; padding: 12px; }
+  .home-page .workflow-connector { display: none; }
+  .home-page .workflow-board__footer > span { display: none; }
+  .home-page .workflow-board__footer { justify-content: flex-end; }
+}
+
+.home-page > #home-playground { margin-top: 0; }
+.home-ending { position: relative; z-index: 8; }
+.home-ending__stage > section { width: 100%; margin: 0; padding: var(--chapter-space) var(--gutter); }
+.home-ending__stage > #home-contact { margin-top: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .home-ending__stage { display: grid; align-items: start; }
+  .home-ending__stage > section { grid-area: 1 / 1; min-width: 0; }
+  .home-ending__stage > #home-contact { margin-top: var(--contact-offset, 0px); }
+}
+
+[data-theme='dark'] .project-cover,
+[data-theme='dark'] .featured-project:not(.featured-project--compact) .project-cover {
+  background: color-mix(in srgb, var(--accent) 12%, var(--bg-elevated));
+  color: var(--text);
+}
+[data-theme='dark'] .project-cover--cinema-mgmt-system-2020,
+[data-theme='dark'] .featured-project:not(.featured-project--compact) .project-cover--cinema-mgmt-system-2020 {
+  background: color-mix(in srgb, var(--accent-2) 12%, var(--bg-elevated));
+}
+[data-theme='dark'] .browser-chrome { background: var(--bg-elevated); border-color: var(--line); }
+[data-theme='dark'] .media-lightbox { color: #e9eef5; }
+.home-page { --chapter-space: clamp(40px, 4vw, 64px); }
+.home-page > section { padding-bottom: var(--chapter-space); }
+.home-page > .hero { min-height: 0; padding-bottom: 32px; }
+.home-page > #home-ideas, .home-ending__stage > #home-contact { padding-top: 112px; }
+@media (max-width: 760px) {
+  .home-page > #home-ideas, .home-ending__stage > #home-contact { padding-top: 88px; }
 }

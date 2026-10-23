@@ -85,20 +85,20 @@ export function ContactSection({ id = 'home-contact', compact = false, headingAs
     <section className={`contact-block ${compact ? 'contact-block--compact' : ''}`} id={id}>
       <div className="section-kicker reveal"><MessageCircle size={16} aria-hidden="true" /><span>{t('contact_eyebrow')}</span></div>
       <Heading className="section-title reveal">{t('contact_heading')}</Heading>
-      <p className="page-lede reveal">{t('contact_body')}</p>
+      {!compact && <p className="page-lede reveal">{t('contact_body')}</p>}
 
       <div className="contact-layout">
         <aside className="contact-support reveal">
-          <article className="contact-support__intro">
+          {!compact && <><article className="contact-support__intro">
             <p className="contact-support__eyebrow">{t('contact_support_eyebrow')}</p>
             <h3>{t('contact_support_title')}</h3>
             <p>{t('contact_support_body')}</p>
           </article>
-          <div className="contact-support__note"><ShieldCheck size={20} aria-hidden="true" /><p>{t('contact_privacy_note')}</p></div>
+          <div className="contact-support__note"><ShieldCheck size={20} aria-hidden="true" /><p>{t('contact_privacy_note')}</p></div></>}
           <article className="contact-card glass-panel">
             <div className="contact-card__icon contact-card__icon--linkedin"><Link2 size={22} aria-hidden="true" /></div>
             <h3>{t('contact_linkedin_label')}</h3>
-            <p>{t('contact_linkedin_desc')}</p>
+            {!compact && <p>{t('contact_linkedin_desc')}</p>}
             <Magnetic href={LINKEDIN_URL} target="_blank" rel="noreferrer" className="ghost-cta">
               {t('contact_linkedin_cta')} <ArrowUpRight size={16} aria-hidden="true" />
             </Magnetic>
