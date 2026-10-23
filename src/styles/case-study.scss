@@ -2,6 +2,29 @@
   .theme-preference { position: relative; gap: 5px; }
   .theme-preference select { color: var(--text); background: var(--bg-elevated); border: 0; font: inherit; max-width: 110px; min-height: 32px; cursor: pointer; }
   .theme-preference select:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .case-document { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: clamp(28px, 4vw, 72px); padding-inline: var(--gutter); align-items: start; }
+  .case-document__sidebar { position: sticky; top: 100px; max-height: calc(100dvh - 120px); overflow-y: auto; padding: 18px 20px 24px 0; border-right: 1px solid var(--line); scrollbar-width: thin; }
+  .case-document__identity { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+  .case-document__identity strong { font: 500 28px var(--font-display); letter-spacing: -.04em; }
+  .case-document__identity span { font-size: 11px; line-height: 1.7; color: var(--text-soft); }
+  .case-document .case-nav { position: static; display: flex; flex-direction: column; padding: 0; border: 0; background: transparent; overflow: visible; gap: 4px; }
+  .case-document .case-nav a { white-space: normal; min-height: 44px; display: flex; align-items: center; line-height: 1.6; padding: 10px 12px; border-left: 2px solid transparent; border-radius: 0; }
+  .case-document .case-nav a:hover, .case-document .case-nav a:focus-visible { border-left-color: var(--accent); }
+  .case-document__content > .page-section { padding: 48px 0; }
+  .case-document__content .case-hero { padding-top: 18px; }
+  .case-document__content .case-hero .page-title { font-size: clamp(36px, 4.4vw, 72px); }
+  .case-document__content :is([id], details) { scroll-margin-top: 100px; }
+  @media (max-width: 1024px) {
+    .case-document { grid-template-columns: 210px minmax(0, 1fr); gap: 24px; }
+    .case-document__content .case-grid--three { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 760px) {
+    .case-document { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+    .case-document__sidebar { position: static; max-height: 280px; border-right: 0; border-bottom: 1px solid var(--line); padding: 16px 0; }
+    .case-document__identity { margin-bottom: 16px; }
+    .case-document .case-nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .case-document__content > .page-section { padding-block: 32px; }
+  }
   .case-loading { padding: 15vh var(--gutter); color: var(--text-soft); }
   .case-study { --case-accent: var(--accent-2); }
   .case-study :is(article, div, details) { min-width: 0; }

@@ -13,8 +13,14 @@ const evidence = ['process','requirements','stories','systems','verification','l
 export function JomGoCaseStudy() {
   useArtifactNavigation()
   const { t } = useI18n()
-  return <PageShell className="case-study">
-    <section className="page-section case-hero">
+  return <PageShell className="case-study case-study--document">
+    <div className="case-document">
+      <aside className="case-document__sidebar">
+        <a className="case-document__identity" href="#case-introduction"><strong>JomGo</strong><span>{t('bsa_primary')}</span></a>
+        <nav className="case-nav" aria-label={t('bsa_nav_label')}>{chapters.map(id => <a key={id} href={`#${id}`}>{t(`bsa_${id}`)}</a>)}</nav>
+      </aside>
+      <div className="case-document__content">
+    <section className="page-section case-hero" id="case-introduction">
       <Link to="/projects" className="text-link">← {t('bsa_back')}</Link><p className="eyebrow">{t('bsa_primary')}</p>
       <h1 className="page-title">{t('bsa_jomgo_title')}</h1><p className="page-lede">{t('bsa_jomgo_desc')}</p>
       <div className="case-hero__actions"><a href="#lifecycle" className="primary-cta">{t('bsa_lifecycle_title')}<ArrowDown size={17} /></a><a href="https://jomgo.pages.dev/" target="_blank" rel="noreferrer" className="text-link">{t('bsa_live')}<ArrowUpRight size={17} /></a><a href="https://github.com/pyhor/JomGo-web" target="_blank" rel="noreferrer" className="text-link">GitHub<ArrowUpRight size={17} /></a></div>
@@ -22,7 +28,6 @@ export function JomGoCaseStudy() {
       <details className="case-disclosure"><summary>{t('bsa_role')}</summary><p>{t('bsa_role_body')}</p><SourceLink path="README.md" /></details>
       <div className="case-overview"><h2>{t('bsa_evidence_title')}</h2><p>{t('bsa_evidence_intro')}</p><div>{evidence.map(id => <a key={id} href={`#${id}`} data-cursor="explore">{t(`bsa_overview_${id}`)}<ArrowUpRight size={16} aria-hidden="true" /></a>)}</div></div>
     </section>
-    <nav className="case-nav" aria-label={t('bsa_nav_label')}>{chapters.map(id => <a key={id} href={`#${id}`}>{t(`bsa_${id}`)}</a>)}</nav>
     <CaseSection id="problem"><Status value="proposed" /><p className="case-label">{t('bsa_hypothesis')}</p><p className="case-lead">{t('bsa_problem_body')}</p><div className="case-grid case-grid--three">{['affected','why','opportunity'].map(id => <article className="case-card" key={id}><h3>{t(`bsa_${id}`)}</h3><p>{t(`bsa_${id}_body`)}</p></article>)}</div><div className="case-reasoning">{['observation','assumption','evidence','requirement','solution'].map(id => <article key={id}><h3>{t(`bsa_${id}`)}</h3><p>{t(`bsa_${id}_body`)}</p></article>)}</div><SourceLink path="src/routes/search.tsx" /></CaseSection>
     <CaseSection id="stakeholders" introKey="bsa_stakeholders_note"><div className="case-grid">{study.stakeholders.map(item => <article className="case-card" key={item.id}><span className="eyebrow">{t(item.role)}</span><h3>{t(item.title)}</h3><Metadata rows={['need','pain','interaction'].map(label => [label,t(item[label])])} /></article>)}</div></CaseSection>
     <CaseSection id="process" introKey="bsa_process_note"><div className="case-grid"><article className="case-card"><h3>{t('bsa_asis')}</h3><Flow steps={study.asis} label={t('bsa_asis')} /></article><article className="case-card case-card--accent"><h3>{t('bsa_tobe')}</h3><Flow steps={study.tobe} label={t('bsa_tobe')} /><SourceLink path="src/routes/search.tsx" /></article></div><h3 className="case-subtitle">{t('bsa_gap_title')}</h3><div className="case-grid">{study.gaps.map(item => <article className="case-card" key={item.id}><Status value={item.status} /><Metadata rows={['current','gap','desired'].map(label => [label,t(item[label])]).concat([['solution',t(item.response)]])} /></article>)}</div></CaseSection>
@@ -35,5 +40,7 @@ export function JomGoCaseStudy() {
     <CaseSection id="lifecycle" titleKey="bsa_lifecycle_title" introKey="bsa_lifecycle_note"><RequirementLifecycle /></CaseSection>
     <CaseSection id="decisions" introKey="bsa_decisions_note"><div className="case-grid case-grid--three">{study.decisions.map(item => <article className="case-card" key={item.id}><h3>{t(item.title)}</h3><Metadata rows={['why','alternative','tradeoff'].map(label => [label,t(item[label])])} /><SourceLink path={item.source} /></article>)}</div><h3 className="case-subtitle">{t('bsa_scope')}</h3><div className="case-grid">{['inscope','outscope'].map(id => <article className="case-card" key={id}><h4>{t(`bsa_${id}`)}</h4><p>{t(id === 'inscope' ? 'bsa_inscope_body' : 'bsa_wont_body')}</p></article>)}</div><h3 className="case-subtitle">{t('bsa_risks')}</h3><div className="case-grid">{study.risks.map(item => <article className="case-card" key={item.id}><h4>{t(item.title)}</h4><Metadata rows={['impact','mitigation'].map(label => [label,t(item[label])])} /></article>)}</div></CaseSection>
     <CaseSection id="value" titleKey="bsa_value_title" introKey="bsa_value_note"><div className="case-grid case-grid--three">{study.values.map(item => <article className="case-card" key={item.id}><h3>{t(item.title)}</h3><Metadata rows={['output','outcome'].map(label => [label,t(item[label])]).concat([['product_value',t(item.value)]])} /></article>)}</div><h3 className="case-subtitle">{t('bsa_future')}</h3><div className="case-grid">{study.future.map(item => <article className="case-card" key={item.id}><div className="case-card__top"><Status value={item.status} /><span className="case-note">{t(`bsa_${item.priority}`)}</span></div><h4>{t(item.title)}</h4><p>{t(item.body)}</p></article>)}</div><div className="case-learning"><h3>{t('bsa_learning')}</h3><p>{t('bsa_learning_body')}</p><Link to="/projects" className="text-link">{t('bsa_back')} <ArrowUpRight size={17} /></Link></div></CaseSection>
+      </div>
+    </div>
   </PageShell>
 }
