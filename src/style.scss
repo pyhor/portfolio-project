@@ -979,7 +979,7 @@ button:disabled { cursor: default; opacity: .55; }
 
 /* Let the first screen's color continue underneath the fixed navigation. */
 .portfolio-main:has(.home-page) { padding-top: 0; }
-.home-page > .hero { min-height: 100dvh; padding-top: 224px; }
+.home-page > .hero { min-height: calc(100dvh - 92px); padding-top: clamp(104px, 17dvh, 160px); }
 .projects-page .featured-projects-stack > .project-presentation--reverse,
 .projects-page .featured-projects-stack > .project-feature { margin-top: 32px; }
 /* Keep the two About paragraphs on separate rows across the whole section. */
@@ -995,9 +995,21 @@ button:disabled { cursor: default; opacity: .55; }
 .trajectory-page .timeline-node__category { font-size: 16px; }
 .trajectory-page .timeline-node__meta time { font-size: 15px; line-height: 1.6; font-weight: 500; }
 @media (max-width: 640px) {
-  .home-page > .hero { padding-top: 180px; }
+  .home-page > .hero { padding-top: 164px; }
   .home-page .about-editorial { grid-template-columns: 1fr; }
   .home-page .about-editorial__disciplines { grid-column: 1; grid-row: 4; }
   .projects-page .featured-projects-stack > .project-presentation--reverse,
   .projects-page .featured-projects-stack > .project-feature { margin-top: 24px; }
+}
+/* Keep the strip in view on shorter desktop screens without shrinking text. */
+@media (min-width: 1025px) and (max-height: 800px) {
+  .home-page > .hero { padding-top: 104px; padding-bottom: 20px; }
+  .home-page .system-overview__meta { padding-bottom: 12px; }
+  .home-page .approach-panel .system-desk__header { padding-block: 12px 10px; }
+  .home-page .approach-panel .system-view-switch button { min-height: 40px; }
+  .home-page .approach-panel .system-desk__content { padding: 16px 22px; min-height: 0; }
+  .home-page .approach-panel .system-process > h2 { min-height: 2.15em; margin-bottom: 10px; }
+  .home-page .approach-panel .system-process li { padding-block: 10px; }
+  .home-page .approach-panel .system-output { padding-block: 12px; margin-top: 14px; }
+  .home-page .system-overview__foot { margin-top: 0; padding-top: 0; }
 }
