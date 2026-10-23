@@ -1013,3 +1013,63 @@ button:disabled { cursor: default; opacity: .55; }
   .home-page .approach-panel .system-output { padding-block: 12px; margin-top: 14px; }
   .home-page .system-overview__foot { margin-top: 0; padding-top: 0; }
 }
+
+/* The strip belongs to the hero grid so it can precede supporting content. */
+.home-page > .hero { grid-template-areas: 'intro visual' 'strip strip'; grid-template-rows: auto auto; row-gap: 0; align-content: start; min-height: 100svh; padding-bottom: 0; }
+.home-page .hero-editorial { grid-area: intro; }
+.home-page .hero-visual { grid-area: visual; }
+.home-page .hero .intro-strip { grid-area: strip; margin: 28px calc(-1 * var(--gutter)) 0; width: calc(100% + 2 * var(--gutter)); }
+@media (min-width: 1025px) and (max-height: 800px) {
+  .home-page .hero .intro-strip { margin-top: 20px; }
+}
+@media (max-width: 1024px), (max-height: 650px) {
+  .home-page > .hero { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'eyebrow' 'intro' 'strip' 'facts' 'availability' 'visual'; grid-template-rows: auto; min-height: 0; padding-top: 142px; }
+  .home-page .hero-editorial { display: contents; }
+  .home-page .hero-editorial > .eyebrow { grid-area: eyebrow; margin-bottom: 12px; }
+  .home-page .hero-copy { grid-area: intro; }
+  .home-page .hero-facts { grid-area: facts; margin-top: 24px; }
+  .home-page .hero-facts > div:last-child { display: block; }
+  .home-page .hero-footnote { grid-area: availability; margin-block: 20px 28px; }
+  .home-page .hero-visual { padding-bottom: 28px; }
+  .home-page .hero .intro-strip { margin-top: 20px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px 16px; }
+  .home-page .intro-strip__location { grid-column: 1; }
+  .home-page .intro-strip__stack { grid-column: 1; grid-row: 2; flex-wrap: wrap; gap: 8px; }
+  .home-page .intro-strip .scroll-cue { grid-column: 2; grid-row: 1 / span 2; }
+}
+@media (max-width: 400px) and (max-height: 740px) {
+  .home-page .hero-name { font-size: 44px; margin-bottom: 10px; }
+  .home-page .hero-profession { font-size: 12px; margin-bottom: 10px; }
+  .home-page .hero-title { font-size: 26px; margin-bottom: 12px; }
+  .home-page .hero-lede { font-size: 13px; line-height: 1.6; margin-bottom: 14px; }
+  .home-page .hero-actions { gap: 12px; }
+  .home-page .hero-actions .primary-cta, .home-page .hero-actions .text-link { font-size: 11px; }
+  .home-page .hero .intro-strip { margin-top: 16px; padding-block: 12px; }
+}
+@media (min-width: 600px) and (max-height: 650px) {
+  .home-page > .hero { padding-top: 124px; }
+  .home-page .hero-copy { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 28px; align-items: start; }
+  .home-page .hero-name, .home-page .hero-profession, .home-page .hero-title { grid-column: 1; margin: 0; }
+  .home-page .hero-name { font-size: 44px; }
+  .home-page .hero-title { font-size: 28px; }
+  .home-page .hero-lede { grid-column: 2; grid-row: 1 / span 2; margin: 0; font-size: 13px; line-height: 1.6; }
+  .home-page .hero-actions { grid-column: 2; grid-row: 3; gap: 12px; }
+  .home-page .hero .intro-strip { margin-top: 16px; padding-block: 10px; }
+}
+@media (max-width: 350px) and (max-height: 740px) {
+  .home-page .hero-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+  .home-page .hero-actions .primary-cta, .home-page .hero-actions .text-link { min-width: 0; padding-inline: 6px; justify-content: center; gap: 4px; font-size: 10.5px; }
+  .home-page .hero-actions svg { width: 13px; flex-shrink: 0; }
+}
+@media (min-width: 600px) and (max-height: 450px) {
+  .home-page > .hero { padding-top: 104px; }
+  .home-page .hero-title { font-size: 24px; }
+  .home-page .hero-profession { font-size: 12px; }
+  .home-page .hero-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+  .home-page .hero-actions .primary-cta, .home-page .hero-actions .text-link { min-width: 0; padding-inline: 6px; justify-content: center; gap: 4px; font-size: 10.5px; }
+  .home-page .hero-actions svg { width: 13px; flex-shrink: 0; }
+  .home-page .hero .intro-strip { padding-block: 8px; }
+}
+@media (min-width: 1025px) and (min-height: 651px) {
+  .home-page .hero-facts { grid-template-columns: .65fr 1.2fr 1fr; }
+  .home-page .hero-facts > div:last-child { display: block; }
+}
