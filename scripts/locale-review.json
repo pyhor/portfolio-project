@@ -1,0 +1,10 @@
+{
+  "reviewedOn": "2026-10-23",
+  "note": "Source revisions record a meaning-level review, not just key coverage. Re-review all translations when English wording changes.",
+  "sourceRevisions": {
+    "zh-cn": "3a23e29803ecf6da7a3413e80a14ccbd05d72c405540147f2fcff21f6cd9d29f",
+    "zh-tw": "3a23e29803ecf6da7a3413e80a14ccbd05d72c405540147f2fcff21f6cd9d29f",
+    "yue-hk": "3a23e29803ecf6da7a3413e80a14ccbd05d72c405540147f2fcff21f6cd9d29f",
+    "ms": "3a23e29803ecf6da7a3413e80a14ccbd05d72c405540147f2fcff21f6cd9d29f"
+  }
+}

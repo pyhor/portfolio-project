@@ -1,18 +1,10 @@
 import { useMemo, useState } from 'react'
 import { Code2, GitFork, Star } from 'lucide-react'
 import { useI18n } from '../context/I18nProvider'
+import { REPO_DESCRIPTION_KEYS, repoDescription } from '../lib/repoDescriptions'
 import { TechStackBadges } from './TechStackBadges'
 
 const Box = 'd' + 'iv'
-const REPO_DESCRIPTION_KEYS = {
-  'hotel-website-2023': 'repo_hotel_desc',
-  'cinema-mgmt-system-2020': 'repo_cinema_desc',
-  'vet-mgmt-system-2024': 'repo_vet_desc',
-  'portfolio-project': 'repo_portfolio_desc',
-  pyhor: 'repo_profile_desc',
-  'testing-tanstack-app': 'repo_tanstack_desc',
-}
-
 
 function RepoCard({ repo }) {
   const { t, lang } = useI18n()
@@ -25,8 +17,8 @@ function RepoCard({ repo }) {
         <Code2 size={18} />
         <span>{repo.name}</span>
       </Box>
-      <p>{descriptionKey ? t(descriptionKey) : lang === 'zh-cn' ? t('repo_fallback_desc', '') : repo.description || t('repo_fallback_desc', '')}</p>
-      {!descriptionKey && repo.description && lang !== 'zh-cn' && <small>{t('github_original_description', 'Original description from GitHub')}</small>}
+      <p>{repoDescription(repo, t, lang)}</p>
+      {!descriptionKey && repo.description && lang === 'en' && <small>{t('github_original_description', 'Original description from GitHub')}</small>}
       <TechStackBadges
         techString={(languages.length ? languages : [repo.language || t('stat_code', 'Code')]).join(', ')}
         className="language-row"

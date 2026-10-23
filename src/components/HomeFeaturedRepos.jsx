@@ -2,13 +2,14 @@ import { ArrowUpRight, ExternalLink } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Magnetic } from './Magnetic'
 import { TechStackBadges } from './TechStackBadges'
+import { repoDescription } from '../lib/repoDescriptions'
 import { useI18n } from '../context/I18nProvider'
 import { REPO_LIVE_URLS, pickFeaturedRepos, repoLanguageList } from '../lib/featuredRepos'
 
 const Box = 'd' + 'iv'
 
 function FeaturedRepoCard({ repo }) {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
   const languages = repoLanguageList(repo)
   const techLine = languages.join(', ')
   const liveUrl = REPO_LIVE_URLS[repo.name]
@@ -16,7 +17,7 @@ function FeaturedRepoCard({ repo }) {
   return (
     <article className="featured-repo-card panel-card glass-panel reveal">
       <h3 className="featured-repo-card__title">{repo.name}</h3>
-      <p className="featured-repo-card__desc">{repo.description || t('repo_fallback_desc', '')}</p>
+      <p className="featured-repo-card__desc">{repoDescription(repo, t, lang)}</p>
       {techLine && (
         <p className="featured-repo-card__tech">
           <strong>{t('proj_tech_label', 'Tech')}:</strong>{' '}

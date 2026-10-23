@@ -1,3 +1,4 @@
+import { repoDescription } from './lib/repoDescriptions.js'
 import { t } from './i18n.js'
 import { enrichRepo, fetchGitHubRepos } from './lib/githubApi.js'
 
@@ -30,7 +31,7 @@ export async function loadGitHubProjects() {
         return `
         <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer" class="project-card">
           <h3>${repo.name}</h3>
-          <p>${repo.description || 'No description provided.'}</p>
+          <p>${repoDescription(repo, t, document.documentElement.lang)}</p>
           <footer>
             <span>${languages}</span>
             <span>⭐ ${repo.stargazers_count}</span>

@@ -1109,5 +1109,21 @@
   "traj_work_2_period": "Jun 2025 – Present",
   "traj_work_2_title": "Frontend Developer",
   "traj_work_2_company": "S9S SDN BHD",
-  "traj_work_2_location": "Kuala Lumpur, Malaysia"
+  "traj_work_2_location": "Kuala Lumpur, Malaysia",
+  "site_description": "pyhor — business, systems, and frontend development. Explore practical projects, system thinking, quality assurance, and a little creative engineering.",
+  "github_contributions": "GitHub contributions",
+  "contributions_updating": "Updating…",
+  "contributions_less": "Less",
+  "contributions_more": "More",
+  "contributions_chart_label": "{{name}}’s GitHub contributions",
+  "contributions_year_label": "Contribution year",
+  "counter_value": "Count: {{count}}",
+  "bsa_implementation_short": "DEV",
+  "bsa_value_short": "VALUE",
+  "contributions_error": "Unable to load contribution data.",
+  "stat_repos": "Repositories",
+  "stat_followers": "Followers",
+  "stat_following": "Following",
+  "connect_error": "Could not load the GitHub profile.",
+  "work_empty": "No public projects found."
 }

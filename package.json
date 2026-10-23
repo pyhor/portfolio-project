@@ -10,7 +10,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d docs"
+    "deploy": "gh-pages -d docs",
+    "audit:locales": "node scripts/audit-locales.mjs"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^6.0.1",

@@ -1,6 +1,6 @@
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
-import english from '../../public/locales/en.json'
-import simplifiedChinese from '../../public/locales/zh-cn.json'
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { CATALOGS } from '../i18n/catalogs'
+const english = CATALOGS.en
 
 const LANGS = [
   { id: 'en', label: 'EN' },
@@ -9,9 +9,8 @@ const LANGS = [
   { id: 'yue-hk', label: '粵' },
   { id: 'ms', label: 'MS' },
 ]
-const BUNDLED = { en: english, 'zh-cn': simplifiedChinese }
+const BUNDLED = CATALOGS
 const I18nContext = createContext(null)
-const localeBase = `${import.meta.env.BASE_URL}locales/`
 
 function savedLanguage() {
   try {
@@ -24,34 +23,18 @@ function savedLanguage() {
 
 export function I18nProvider({ children }) {
   const [lang, setLang] = useState(savedLanguage)
-  // The two primary languages are ready before the first render, including the intro.
+  // All supported languages are ready before the first render, including the intro.
   const [dict, setDict] = useState(() => BUNDLED[savedLanguage()] || english)
-  const [ready, setReady] = useState(() => Boolean(BUNDLED[savedLanguage()]))
-  const requestId = useRef(0)
 
-  const loadLanguage = useCallback(async (requestedLang) => {
+  const loadLanguage = useCallback((requestedLang) => {
     const nextLang = LANGS.some(({ id }) => id === requestedLang) ? requestedLang : 'en'
-    const request = ++requestId.current
-    let data = BUNDLED[nextLang]
-    let resolvedLang = nextLang
-    if (!data) {
-      try {
-        const response = await fetch(`${localeBase}${nextLang}.json`)
-        if (!response.ok) throw new Error('Locale not found')
-        data = await response.json()
-      } catch {
-        data = english
-        resolvedLang = 'en'
-      }
-    }
-    // A slow earlier request must not overwrite a more recent language selection.
-    if (request !== requestId.current) return
+    const data = BUNDLED[nextLang]
     setDict(data)
-    setLang(resolvedLang)
-    try { localStorage.setItem('lang', resolvedLang) } catch { /* Storage may be unavailable. */ }
-    document.documentElement.setAttribute('lang', resolvedLang)
-    document.title = data.site_title || english.site_title
-    setReady(true)
+    setLang(nextLang)
+    try { localStorage.setItem('lang', nextLang) } catch { /* Storage may be unavailable. */ }
+    document.documentElement.setAttribute('lang', nextLang)
+    document.title = data.site_title
+    document.querySelector('meta[name="description"]')?.setAttribute('content', data.site_description)
   }, [])
 
   useEffect(() => { loadLanguage(savedLanguage()) }, [loadLanguage])
@@ -61,7 +44,7 @@ export function I18nProvider({ children }) {
     return value == null || value === '' ? fallback : value
   }, [dict])
 
-  const value = useMemo(() => ({ lang, langs: LANGS, ready, setLang: loadLanguage, t }), [lang, ready, loadLanguage, t])
+  const value = useMemo(() => ({ lang, langs: LANGS, ready: true, setLang: loadLanguage, t }), [lang, loadLanguage, t])
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>
 }
 

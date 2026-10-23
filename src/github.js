@@ -28,7 +28,7 @@ export async function loadGitHubProfile() {
       <a href="${data.html_url}" target="_blank" rel="noopener noreferrer">
         <img src="${data.avatar_url}" alt="${data.name}" class="github-avatar" />
         ${wrap('github-name', data.name || data.login)}
-        <p class="github-bio">${data.bio || ''}</p>
+        <p class="github-bio">${t('github_profile_description')}</p>
         ${wrap('github-stats', stats)}
       </a>
     `

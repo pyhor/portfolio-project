@@ -22,9 +22,9 @@ export async function loadGitHubContributions(year = currentContributionYear) {
         container.innerHTML = `
             <div class="contributions-card story-text">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-                    <h3 style="margin: 0; font-size: 1.2rem; font-weight: 600; letter-spacing: -0.5px;">GitHub Contributions</h3>
+                    <h3 style="margin: 0; font-size: 1.2rem; font-weight: 600; letter-spacing: -0.5px;">${t('github_contributions')}</h3>
                     <div class="year-selector-wrapper">
-                        <select id="contribution-year-select" class="year-select">
+                        <select id="contribution-year-select" class="year-select" aria-label="${t('contributions_year_label')}">
                             ${yearOptions}
                         </select>
                     </div>
@@ -32,16 +32,16 @@ export async function loadGitHubContributions(year = currentContributionYear) {
                 
                 <div class="calendar-wrapper" style="width: 100%; overflow-x: auto; padding-bottom: 10px;">
                     <div class="chart-loading-overlay" id="chart-loader" style="display:none; position:absolute; inset:0; background:var(--glass-bg); backdrop-filter:blur(4px); align-items:center; justify-content:center; border-radius:12px; z-index:5;">
-                        <span style="font-size:0.9rem; font-weight:600; opacity:0.7;">Updating...</span>
+                        <span style="font-size:0.9rem; font-weight:600; opacity:0.7;">${t('contributions_updating')}</span>
                     </div>
-                    <img id="contribution-chart" src="${chartUrl}" alt="${username}'s GitHub Contributions" 
+                    <img id="contribution-chart" src="${chartUrl}" alt="${t('contributions_chart_label').replace('{{name}}', username)}"
                          style="width: 100%; min-width: 700px; transition: opacity 0.3s ease;" 
                          onload="document.getElementById('chart-loader').style.display='none'; this.style.opacity='1';" />
                 </div>
                 
                 <div style="margin-top: 15px; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; opacity: 0.6;">
                     <div style="display: flex; align-items: center; gap: 8px;">
-                        <span>Less</span>
+                        <span>${t('contributions_less')}</span>
                         <div style="display: flex; gap: 3px;">
                             <div style="width: 10px; height: 10px; background: #ebedf0; border-radius: 2px;"></div>
                             <div style="width: 10px; height: 10px; background: #9be9a8; border-radius: 2px;"></div>
@@ -49,7 +49,7 @@ export async function loadGitHubContributions(year = currentContributionYear) {
                             <div style="width: 10px; height: 10px; background: #30a14e; border-radius: 2px;"></div>
                             <div style="width: 10px; height: 10px; background: #216e39; border-radius: 2px;"></div>
                         </div>
-                        <span>More</span>
+                        <span>${t('contributions_more')}</span>
                     </div>
                     <a href="https://github.com/pyhor" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px solid currentColor;">@pyhor &rarr;</a>
                 </div>
@@ -85,7 +85,7 @@ export function initClock() {
 
     function updateClock() {
         const now = new Date();
-        const timeString = now.toLocaleTimeString([], {
+        const timeString = now.toLocaleTimeString(document.documentElement.lang || 'en', {
             hour: '2-digit',
             minute: '2-digit',
             second: '2-digit',

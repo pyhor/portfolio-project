@@ -1,16 +1,7 @@
 import React from 'react'
-import english from '../../public/locales/en.json'
-import simplifiedChinese from '../../public/locales/zh-cn.json'
+import { CATALOGS } from '../i18n/catalogs'
 
-// Crash recovery must remain usable even when the React i18n provider fails.
-const ERROR_COPY = {
-  en: { title: english.error_title, hint: english.error_hint, reload: english.error_reload },
-  'zh-cn': { title: simplifiedChinese.error_title, hint: simplifiedChinese.error_hint, reload: simplifiedChinese.error_reload },
-  ms: { title: 'Sesuatu tidak kena', hint: 'Halaman ini tidak dapat dipaparkan. Sila cuba muat semula.', reload: 'Muat semula halaman' },
-  'zh-tw': { title: '頁面出了點問題', hint: '目前無法顯示此頁面，請重新載入後再試。', reload: '重新載入頁面' },
-  'yue-hk': { title: '頁面出咗啲問題', hint: '暫時未能顯示呢個頁面，請重新載入再試。', reload: '重新載入頁面' },
-}
-
+// Crash recovery uses the same complete catalogs even if the provider fails.
 export class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props)
@@ -23,7 +14,8 @@ export class ErrorBoundary extends React.Component {
     if (this.state.error) {
       let lang = 'en'
       try { lang = localStorage.getItem('lang') || 'en' } catch { /* Recovery also works without storage. */ }
-      const copy = ERROR_COPY[lang] || ERROR_COPY.en
+      const catalog = CATALOGS[lang] || CATALOGS.en
+      const copy = { title: catalog.error_title, hint: catalog.error_hint, reload: catalog.error_reload }
       return (
         <div lang={lang} role="alert" style={{ padding: '2rem', fontFamily: 'system-ui, sans-serif', color: '#0a0a0a', background: '#fff5f5', minHeight: '100vh' }}>
           <h1 style={{ marginTop: 0 }}>{copy.title}</h1>

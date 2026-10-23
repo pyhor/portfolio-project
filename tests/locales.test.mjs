@@ -2,11 +2,14 @@ import assert from 'node:assert/strict'
 import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { resolve } from 'node:path'
 import test from 'node:test'
+import { auditProjectLocales } from '../scripts/audit-locales.mjs'
 
 const root = resolve(import.meta.dirname, '..')
 const read = (file) => readFileSync(resolve(root, file), 'utf8')
 const en = JSON.parse(read('public/locales/en.json'))
 const zh = JSON.parse(read('public/locales/zh-cn.json'))
+const localeIds = ['en', 'zh-cn', 'zh-tw', 'yue-hk', 'ms']
+const catalogs = Object.fromEntries(localeIds.map(id => [id, JSON.parse(read(`public/locales/${id}.json`))]))
 const placeholders = (value) => [...value.matchAll(/\{\{([^}]+)\}\}/g)].map((match) => match[1]).sort()
 function sources(dir) {
   return readdirSync(resolve(root, dir)).flatMap((name) => {
@@ -14,6 +17,21 @@ function sources(dir) {
     return statSync(resolve(root, file)).isDirectory() ? sources(file) : /\.(jsx|js)$/.test(name) ? [file] : []
   })
 }
+
+test('all five languages have complete, nonempty catalogs with matching tokens and markup', () => {
+  for (const [id, catalog] of Object.entries(catalogs)) {
+    assert.deepEqual(Object.keys(catalog).sort(), Object.keys(en).sort(), `Incomplete catalog: ${id}`)
+    for (const [key, source] of Object.entries(en)) {
+      assert.equal(typeof catalog[key], 'string', `${id}: ${key}`)
+      assert.ok(catalog[key].trim(), `Empty ${id}: ${key}`)
+      assert.deepEqual(placeholders(catalog[key]), placeholders(source), `Interpolation mismatch ${id}: ${key}`)
+      const tags = value => [...value.matchAll(/<\/?[a-z][^>]*>/gi)].map(match => match[0])
+      assert.deepEqual(tags(catalog[key]), tags(source), `Markup mismatch ${id}: ${key}`)
+    }
+    const keys = [...read(`public/locales/${id}.json`).matchAll(/^\s*"([^"\n]+)":/gm)].map(match => match[1])
+    assert.equal(new Set(keys).size, keys.length, `Duplicate JSON keys: ${id}`)
+  }
+})
 
 test('English and Simplified Chinese have matching, nonempty entries and interpolation tokens', () => {
   assert.deepEqual(Object.keys(en).sort(), Object.keys(zh).sort())
@@ -87,4 +105,11 @@ test('interactive engineering and project reflection states are fully translated
     assert.ok(en[key], `Missing English ${key}`)
     assert.ok(zh[key], `Missing Chinese ${key}`)
   }
+})
+
+// Covers all JSX text, accessibility attributes, literal calls in legacy JS,
+// and every translation reference inside the case-study data model.
+test('project-wide source and catalog audit has no unlocalized interface text', () => {
+  const result = auditProjectLocales()
+  assert.deepEqual(result.failures, [])
 })
