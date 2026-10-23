@@ -23,3 +23,16 @@ test('full-width gutters do not make a partially visible card recycle early', ()
   assert.equal(loopPosition(0, 675, 600, 4, 75), -675)
   assert.equal(loopPosition(0, 676, 600, 4, 75), 1724)
 })
+
+test('a complete loop covers wide viewports at every recycling boundary', async () => {
+  const { loopCardWidth } = await import('./showcase.js')
+  for (const viewport of [1280, 1440, 1920, 2560]) {
+    const count = 5, gap = 24, gutter = 120
+    const width = loopCardWidth(viewport, count)
+    const stride = width + gap
+    for (let phase = 0; phase < stride * count; phase += 17) {
+      const edges = Array.from({ length: count }, (_, i) => gutter + loopPosition(i, phase, stride, count, gutter) + width)
+      assert.ok(Math.max(...edges) >= viewport, `empty right edge at width ${viewport}, phase ${phase}`)
+    }
+  }
+})

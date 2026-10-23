@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom'
+import { ArrowUpRight } from 'lucide-react'
 import { useI18n } from '../context/I18nProvider'
 import { ROUTES } from '../routes'
 import { LangSwitcher } from './LangSwitcher'
@@ -18,7 +19,7 @@ export function ProgressNavigation({ pageProgress = 0 }) {
       <nav className="desktop-nav" aria-label={t('nav_explore', 'Explore')}>
         {NAV_ROUTES.map(id => {
           const route = ROUTES.find(item => item.id === id)
-          return <NavLink key={id} to={route.path} end={id === 'home'} className={({ isActive }) => `desktop-nav__link${isActive ? ' is-active' : ''}`}>{t(route.labelKey, id)}</NavLink>
+          return <NavLink key={id} to={route.path} end={id === 'home'} className={({ isActive }) => `desktop-nav__link${id === 'contact' ? ' header-contact' : ''}${isActive ? ' is-active' : ''}`}>{t(route.labelKey, id)}{id === 'contact' && <ArrowUpRight size={16} aria-hidden="true" />}</NavLink>
         })}
       </nav>
       <div className="site-header__tools"><LangSwitcher compact /><ThemeToggle compact /></div>

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { SHOWCASE_PROJECTS } from '../data/showcaseProjects'
 import { useI18n } from '../context/I18nProvider'
 import { TechStackBadges } from './TechStackBadges'
-import { loopPosition } from '../lib/showcase'
+import { loopCardWidth, loopPosition } from '../lib/showcase'
 
 export function ProjectShowcase() {
   const { t, lang } = useI18n()
@@ -32,14 +32,17 @@ export function ProjectShowcase() {
       frame = requestAnimationFrame(animate)
     }
     const sync = () => {
-      stop()
       if (media.matches && visible && !paused && !focused && !document.hidden) {
         viewport.dataset.running = 'true'
-        frame = requestAnimationFrame(animate)
-      }
+        if (!frame) frame = requestAnimationFrame(animate)
+      } else stop()
     }
     const measure = () => {
       viewport.classList.toggle('is-looping', media.matches)
+      cards.forEach(card => {
+        if (media.matches) card.style.width = `${loopCardWidth(viewport.clientWidth, cards.length)}px`
+        else card.style.removeProperty('width')
+      })
       cards.forEach(card => { card.style.height = '' })
       const height = Math.ceil(Math.max(...cards.map(card => card.getBoundingClientRect().height)))
       cards.forEach(card => { card.style.height = `${height}px` })
@@ -90,7 +93,7 @@ export function ProjectShowcase() {
     return () => {
       stop(); resize.disconnect(); intersection.disconnect(); controlsRef.current = null
       viewport.classList.remove('is-looping'); track.style.removeProperty('height')
-      cards.forEach(card => { card.style.removeProperty('transform'); card.style.removeProperty('height') })
+      cards.forEach(card => { card.style.removeProperty('transform'); card.style.removeProperty('height'); card.style.removeProperty('width') })
       root.removeEventListener('pointerdown', pointer); document.removeEventListener('keydown', keyboardFocus)
       root.removeEventListener('focusin', focus); root.removeEventListener('focusout', blur); viewport.removeEventListener('keydown', keyboard)
       media.removeEventListener('change', measure); document.removeEventListener('visibilitychange', sync)
