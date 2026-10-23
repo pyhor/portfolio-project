@@ -1,0 +1,536 @@
+{
+  "sourceCommit": "0757591",
+  "sourceBase": "https://github.com/pyhor/JomGo-web/blob/0757591/",
+  "requirements": [
+    {
+      "id": "BR-01",
+      "type": "business",
+      "priority": "must",
+      "status": "proposed",
+      "description": "bsa_BR-01_description",
+      "reason": "bsa_BR-01_reason",
+      "source": "README.md",
+      "story": null,
+      "uat": null
+    },
+    {
+      "id": "FR-01",
+      "type": "functional_type",
+      "priority": "must",
+      "status": "implemented",
+      "description": "bsa_FR-01_description",
+      "reason": "bsa_FR-01_reason",
+      "source": "src/routes/search.tsx",
+      "story": "US-01",
+      "uat": "UAT-01"
+    },
+    {
+      "id": "FR-02",
+      "type": "functional_type",
+      "priority": "should",
+      "status": "implemented",
+      "description": "bsa_FR-02_description",
+      "reason": "bsa_FR-02_reason",
+      "source": "src/lib/trip-store.ts",
+      "story": "US-03",
+      "uat": "UAT-03"
+    },
+    {
+      "id": "FR-03",
+      "type": "functional_type",
+      "priority": "should",
+      "status": "implemented",
+      "description": "bsa_FR-03_description",
+      "reason": "bsa_FR-03_reason",
+      "source": "src/routes/trip.tsx",
+      "story": "US-03",
+      "uat": "UAT-04"
+    },
+    {
+      "id": "IR-01",
+      "type": "integration",
+      "priority": "should",
+      "status": "implemented",
+      "description": "bsa_IR-01_description",
+      "reason": "bsa_IR-01_reason",
+      "source": "src/hooks/use-vehicle-positions.ts",
+      "story": "US-02",
+      "uat": "UAT-02"
+    },
+    {
+      "id": "DR-01",
+      "type": "data",
+      "priority": "must",
+      "status": "implemented",
+      "description": "bsa_DR-01_description",
+      "reason": "bsa_DR-01_reason",
+      "source": "src/hooks/use-stations.ts",
+      "story": "US-01",
+      "uat": "UAT-01"
+    },
+    {
+      "id": "NFR-01",
+      "type": "nonfunctional_type",
+      "priority": "must",
+      "status": "implemented",
+      "description": "bsa_NFR-01_description",
+      "reason": "bsa_NFR-01_reason",
+      "source": "src/components/AppShell.tsx",
+      "story": "US-01",
+      "uat": "UAT-05"
+    },
+    {
+      "id": "NFR-02",
+      "type": "nonfunctional_type",
+      "priority": "must",
+      "status": "proposed",
+      "description": "bsa_NFR-02_description",
+      "reason": "bsa_NFR-02_reason",
+      "source": "src/lib/transit/realtime-client.ts",
+      "story": "US-02",
+      "uat": "UAT-06"
+    },
+    {
+      "id": "FR-04",
+      "type": "functional_type",
+      "priority": "could",
+      "status": "proposed",
+      "description": "bsa_FR-04_description",
+      "reason": "bsa_FR-04_reason",
+      "source": "README.md",
+      "story": null,
+      "uat": null
+    }
+  ],
+  "stories": [
+    {
+      "id": "US-01",
+      "requirement": "FR-01",
+      "uat": "UAT-01",
+      "title": "bsa_US-01_title",
+      "body": "bsa_US-01_body",
+      "given": "bsa_US-01_given",
+      "when": "bsa_US-01_when",
+      "then": "bsa_US-01_then",
+      "source": "src/routes/search.tsx"
+    },
+    {
+      "id": "US-02",
+      "requirement": "IR-01",
+      "uat": "UAT-02",
+      "title": "bsa_US-02_title",
+      "body": "bsa_US-02_body",
+      "given": "bsa_US-02_given",
+      "when": "bsa_US-02_when",
+      "then": "bsa_US-02_then",
+      "source": "src/hooks/use-vehicle-positions.ts"
+    },
+    {
+      "id": "US-03",
+      "requirement": "FR-02",
+      "uat": "UAT-03",
+      "title": "bsa_US-03_title",
+      "body": "bsa_US-03_body",
+      "given": "bsa_US-03_given",
+      "when": "bsa_US-03_when",
+      "then": "bsa_US-03_then",
+      "source": "src/routes/trip.tsx"
+    }
+  ],
+  "stakeholders": [
+    {
+      "id": "commuter",
+      "title": "bsa_commuter_title",
+      "role": "bsa_commuter_role",
+      "need": "bsa_commuter_need",
+      "pain": "bsa_commuter_pain",
+      "interaction": "bsa_commuter_interaction"
+    },
+    {
+      "id": "provider",
+      "title": "bsa_provider_title",
+      "role": "bsa_provider_role",
+      "need": "bsa_provider_need",
+      "pain": "bsa_provider_pain",
+      "interaction": "bsa_provider_interaction"
+    },
+    {
+      "id": "maintainer",
+      "title": "bsa_maintainer_title",
+      "role": "bsa_maintainer_role",
+      "need": "bsa_maintainer_need",
+      "pain": "bsa_maintainer_pain",
+      "interaction": "bsa_maintainer_interaction"
+    },
+    {
+      "id": "contributor",
+      "title": "bsa_contributor_title",
+      "role": "bsa_contributor_role",
+      "need": "bsa_contributor_need",
+      "pain": "bsa_contributor_pain",
+      "interaction": "bsa_contributor_interaction"
+    }
+  ],
+  "gaps": [
+    {
+      "id": "gap1",
+      "current": "bsa_gap1_current",
+      "gap": "bsa_gap1_gap",
+      "desired": "bsa_gap1_desired",
+      "response": "bsa_gap1_response",
+      "status": "implemented"
+    },
+    {
+      "id": "gap2",
+      "current": "bsa_gap2_current",
+      "gap": "bsa_gap2_gap",
+      "desired": "bsa_gap2_desired",
+      "response": "bsa_gap2_response",
+      "status": "implemented"
+    },
+    {
+      "id": "gap3",
+      "current": "bsa_gap3_current",
+      "gap": "bsa_gap3_gap",
+      "desired": "bsa_gap3_desired",
+      "response": "bsa_gap3_response",
+      "status": "proposed"
+    },
+    {
+      "id": "gap4",
+      "current": "bsa_gap4_current",
+      "gap": "bsa_gap4_gap",
+      "desired": "bsa_gap4_desired",
+      "response": "bsa_gap4_response",
+      "status": "proposed"
+    }
+  ],
+  "rules": [
+    {
+      "id": "RULE-01",
+      "description": "bsa_RULE-01_description",
+      "source": "src/lib/transit/planner.ts"
+    },
+    {
+      "id": "RULE-02",
+      "description": "bsa_RULE-02_description",
+      "source": "src/lib/transit/planner.ts"
+    },
+    {
+      "id": "RULE-03",
+      "description": "bsa_RULE-03_description",
+      "source": "src/routes/trip.tsx"
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge1",
+      "title": "bsa_edge1_title",
+      "body": "bsa_edge1_body"
+    },
+    {
+      "id": "edge2",
+      "title": "bsa_edge2_title",
+      "body": "bsa_edge2_body"
+    },
+    {
+      "id": "edge3",
+      "title": "bsa_edge3_title",
+      "body": "bsa_edge3_body"
+    },
+    {
+      "id": "edge4",
+      "title": "bsa_edge4_title",
+      "body": "bsa_edge4_body"
+    },
+    {
+      "id": "edge5",
+      "title": "bsa_edge5_title",
+      "body": "bsa_edge5_body"
+    }
+  ],
+  "decisions": [
+    {
+      "id": "decision1",
+      "title": "bsa_decision1_title",
+      "why": "bsa_decision1_why",
+      "alternative": "bsa_decision1_alternative",
+      "tradeoff": "bsa_decision1_tradeoff",
+      "source": "src/lib/transit/realtime-client.ts"
+    },
+    {
+      "id": "decision2",
+      "title": "bsa_decision2_title",
+      "why": "bsa_decision2_why",
+      "alternative": "bsa_decision2_alternative",
+      "tradeoff": "bsa_decision2_tradeoff",
+      "source": "src/lib/trip-store.ts"
+    },
+    {
+      "id": "decision3",
+      "title": "bsa_decision3_title",
+      "why": "bsa_decision3_why",
+      "alternative": "bsa_decision3_alternative",
+      "tradeoff": "bsa_decision3_tradeoff",
+      "source": "src/lib/transit/planner.ts"
+    }
+  ],
+  "risks": [
+    {
+      "id": "risk1",
+      "title": "bsa_risk1_title",
+      "impact": "bsa_risk1_impact",
+      "mitigation": "bsa_risk1_mitigation"
+    },
+    {
+      "id": "risk2",
+      "title": "bsa_risk2_title",
+      "impact": "bsa_risk2_impact",
+      "mitigation": "bsa_risk2_mitigation"
+    },
+    {
+      "id": "risk3",
+      "title": "bsa_risk3_title",
+      "impact": "bsa_risk3_impact",
+      "mitigation": "bsa_risk3_mitigation"
+    },
+    {
+      "id": "risk4",
+      "title": "bsa_risk4_title",
+      "impact": "bsa_risk4_impact",
+      "mitigation": "bsa_risk4_mitigation"
+    }
+  ],
+  "values": [
+    {
+      "id": "value1",
+      "title": "bsa_value1_title",
+      "output": "bsa_value1_output",
+      "outcome": "bsa_value1_outcome",
+      "value": "bsa_value1_value"
+    },
+    {
+      "id": "value2",
+      "title": "bsa_value2_title",
+      "output": "bsa_value2_output",
+      "outcome": "bsa_value2_outcome",
+      "value": "bsa_value2_value"
+    },
+    {
+      "id": "value3",
+      "title": "bsa_value3_title",
+      "output": "bsa_value3_output",
+      "outcome": "bsa_value3_outcome",
+      "value": "bsa_value3_value"
+    }
+  ],
+  "future": [
+    {
+      "id": "future1",
+      "title": "bsa_future1_title",
+      "body": "bsa_future1_body",
+      "priority": "must",
+      "status": "proposed"
+    },
+    {
+      "id": "future2",
+      "title": "bsa_future2_title",
+      "body": "bsa_future2_body",
+      "priority": "must",
+      "status": "proposed"
+    },
+    {
+      "id": "future3",
+      "title": "bsa_future3_title",
+      "body": "bsa_future3_body",
+      "priority": "should",
+      "status": "proposed"
+    },
+    {
+      "id": "future4",
+      "title": "bsa_future4_title",
+      "body": "bsa_future4_body",
+      "priority": "could",
+      "status": "proposed"
+    }
+  ],
+  "integrations": [
+    {
+      "id": "api1",
+      "title": "bsa_api1_title",
+      "input": "bsa_api1_input",
+      "output": "bsa_api1_output",
+      "validation": "bsa_api1_validation",
+      "failure": "bsa_api1_failure",
+      "dependency": "bsa_api1_dependency",
+      "source": "src/lib/transit/realtime-client.ts"
+    },
+    {
+      "id": "api2",
+      "title": "bsa_api2_title",
+      "input": "bsa_api2_input",
+      "output": "bsa_api2_output",
+      "validation": "bsa_api2_validation",
+      "failure": "bsa_api2_failure",
+      "dependency": "bsa_api2_dependency",
+      "source": "src/hooks/use-stations.ts"
+    }
+  ],
+  "layers": [
+    {
+      "id": "layer1",
+      "title": "bsa_layer1_title",
+      "body": "bsa_layer1_body",
+      "source": "src/routes/search.tsx"
+    },
+    {
+      "id": "layer2",
+      "title": "bsa_layer2_title",
+      "body": "bsa_layer2_body",
+      "source": "src/lib/transit/planner.ts"
+    },
+    {
+      "id": "layer3",
+      "title": "bsa_layer3_title",
+      "body": "bsa_layer3_body",
+      "source": "src/lib/transit/realtime-client.ts"
+    },
+    {
+      "id": "layer4",
+      "title": "bsa_layer4_title",
+      "body": "bsa_layer4_body",
+      "source": "vite.config.ts"
+    },
+    {
+      "id": "layer5",
+      "title": "bsa_layer5_title",
+      "body": "bsa_layer5_body",
+      "source": "src/lib/history.ts"
+    }
+  ],
+  "actors": [
+    {
+      "id": "actor1",
+      "title": "bsa_actor1_title",
+      "body": "bsa_actor1_body"
+    },
+    {
+      "id": "actor2",
+      "title": "bsa_actor2_title",
+      "body": "bsa_actor2_body"
+    },
+    {
+      "id": "actor3",
+      "title": "bsa_actor3_title",
+      "body": "bsa_actor3_body"
+    },
+    {
+      "id": "actor4",
+      "title": "bsa_actor4_title",
+      "body": "bsa_actor4_body"
+    },
+    {
+      "id": "actor5",
+      "title": "bsa_actor5_title",
+      "body": "bsa_actor5_body"
+    }
+  ],
+  "uat": [
+    {
+      "id": "UAT-01",
+      "requirement": "FR-01",
+      "scenario": "bsa_UAT-01_scenario",
+      "expected": "bsa_UAT-01_expected",
+      "status": "notrun"
+    },
+    {
+      "id": "UAT-02",
+      "requirement": "IR-01",
+      "scenario": "bsa_UAT-02_scenario",
+      "expected": "bsa_UAT-02_expected",
+      "status": "notrun"
+    },
+    {
+      "id": "UAT-03",
+      "requirement": "FR-02",
+      "scenario": "bsa_UAT-03_scenario",
+      "expected": "bsa_UAT-03_expected",
+      "status": "notrun"
+    },
+    {
+      "id": "UAT-04",
+      "requirement": "FR-03",
+      "scenario": "bsa_UAT-04_scenario",
+      "expected": "bsa_UAT-04_expected",
+      "status": "notrun"
+    },
+    {
+      "id": "UAT-05",
+      "requirement": "NFR-01",
+      "scenario": "bsa_UAT-05_scenario",
+      "expected": "bsa_UAT-05_expected",
+      "status": "notrun"
+    },
+    {
+      "id": "UAT-06",
+      "requirement": "NFR-02",
+      "scenario": "bsa_UAT-06_scenario",
+      "expected": "bsa_UAT-06_expected",
+      "status": "notrun"
+    }
+  ],
+  "asis": [
+    "bsa_asis_0",
+    "bsa_asis_1",
+    "bsa_asis_2",
+    "bsa_asis_3",
+    "bsa_asis_4"
+  ],
+  "tobe": [
+    "bsa_tobe_0",
+    "bsa_tobe_1",
+    "bsa_tobe_2",
+    "bsa_tobe_3",
+    "bsa_tobe_4"
+  ],
+  "flow": [
+    "bsa_flow_start",
+    "bsa_flow_0",
+    "bsa_flow_1",
+    "bsa_flow_2",
+    "bsa_flow_3",
+    "bsa_flow_4"
+  ],
+  "paths": [
+    {
+      "id": "route",
+      "business": "BR-01",
+      "requirement": "FR-01",
+      "story": "US-01",
+      "uat": "UAT-01",
+      "feature": "bsa_route_feature",
+      "source": "src/routes/search.tsx",
+      "value": "bsa_route_value"
+    },
+    {
+      "id": "live",
+      "business": "BR-01",
+      "requirement": "IR-01",
+      "story": "US-02",
+      "uat": "UAT-02",
+      "feature": "bsa_live_feature",
+      "source": "src/hooks/use-vehicle-positions.ts",
+      "value": "bsa_live_value"
+    },
+    {
+      "id": "trip",
+      "business": "BR-01",
+      "requirement": "FR-02",
+      "story": "US-03",
+      "uat": "UAT-03",
+      "feature": "bsa_trip_feature",
+      "source": "src/lib/trip-store.ts",
+      "value": "bsa_trip_value"
+    }
+  ]
+}

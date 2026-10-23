@@ -22,6 +22,7 @@ export const HOME_SECTIONS = [
 
 export function routeIdFromPath(pathname) {
   const normalized = pathname.replace(/\/$/, '') || '/'
+  if (normalized.startsWith('/projects/')) return 'projects'
   const match = ROUTES.find((route) => route.path === normalized)
   return match?.id ?? 'home'
 }

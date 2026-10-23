@@ -14,8 +14,10 @@
     <title>pyhor | Portfolio</title>
     <script>
       ;(function () {
-        var stored = localStorage.getItem('theme')
-        var theme = stored === 'dark' || stored === 'light' ? stored : 'dark'
+        var stored
+        try { stored = localStorage.getItem('theme') } catch (e) {}
+        var theme = stored === 'dark' || stored === 'light' ? stored : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+        document.documentElement.style.colorScheme = theme
         document.documentElement.setAttribute('data-theme', theme)
         document.querySelector('meta[name="theme-color"]').setAttribute('content', theme === 'dark' ? '#101820' : '#f5f7fa')
       })()

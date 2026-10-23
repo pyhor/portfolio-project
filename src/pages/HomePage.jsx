@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import { ArrowDown, ArrowUpRight, Code2, GraduationCap, HeartHandshake, Layers, Route, ShieldCheck, Wrench } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { HeroTypography } from '../components/HeroTypography'
+import { CaseStudyTeaser } from '../components/CaseStudyTeaser'
 import { ProjectShowcase } from '../components/ProjectShowcase'
 import { AccentText } from '../components/AccentText'
 import { useChapterMotion } from '../hooks/useChapterMotion'
@@ -55,12 +56,13 @@ export function HomePage() {
 
       <section className="page-section selected-work" id="home-projects">
         <div className="section-heading"><div><p className="eyebrow">01 — {t('studio_selected', 'SELECTED WORK')}</p><h2 className="section-title"><AccentText>{t('studio_work_heading', 'Real projects. Useful outcomes.')}</AccentText></h2></div><div className="section-heading__aside"><p>{t('ref_projects_intro', 'Independent systems and team-built interfaces. Each project offers a different view of how I connect requirements, implementation, and usability.')}</p><Link to="/projects" className="text-link">{t('studio_all_projects', 'All projects')} <ArrowUpRight size={18} /></Link></div></div>
+        <CaseStudyTeaser />
         <ProjectShowcase />
       </section>
       <BusinessWorkflow />
       <InnovationSection />
 
-      <section className="page-section capabilities-chapter" id="home-build"><div className="section-heading"><div><p className="eyebrow">04 — {t('studio_capabilities', 'WHAT I BRING')}</p><h2 className="section-title"><AccentText>{t('ref_capabilities_heading', 'From a clear requirement to a usable result.')}</AccentText></h2></div><p className="section-heading__note">{t('ref_capabilities_intro', 'A mix of implementation, analysis, and testing — grounded in the projects and experience documented here.')}</p></div><div className="value-grid">{CAPABILITIES.map(({ icon: Icon, id, titleKey, descKey }, i) => <article key={id} className="value-card"><div className="value-card__top"><Icon size={25} strokeWidth={1.4} /><span>0{i + 1}</span></div><h3>{t(titleKey, '')}</h3><p>{t(descKey, '')}</p><div className="capability-evidence"><span>{t('ref_evidence_label', 'IN PRACTICE')}</span><strong>{t(`ref_evidence_${id}`, '')}</strong></div></article>)}</div></section>
+      <section className="page-section capabilities-chapter" id="home-build"><div className="section-heading"><div><p className="eyebrow">04 — {t('studio_capabilities', 'WHAT I BRING')}</p><h2 className="section-title"><AccentText>{t('ref_capabilities_heading', 'From a clear requirement to a usable result.')}</AccentText></h2></div><p className="section-heading__note">{t('ref_capabilities_intro', 'A mix of implementation, analysis, and testing — grounded in the projects and experience documented here.')}</p></div><div className="value-grid">{CAPABILITIES.map(({ icon: Icon, id, titleKey, descKey }, i) => <article key={id} className="value-card"><div className="value-card__top"><Icon size={25} strokeWidth={1.4} /><span>0{i + 1}</span></div><h3>{t(titleKey, '')}</h3><p>{t(descKey, '')}</p><div className="capability-evidence"><span>{t('ref_evidence_label', 'IN PRACTICE')}</span><strong>{t(`ref_evidence_${id}`, '')}</strong><Link to={id === 'quality' ? '/trajectory' : '/projects/jomgo'} className="text-link">{t('bsa_evidence')} <ArrowUpRight size={14} /></Link></div></article>)}</div></section>
 
       <EngineeringStudy />
       <section className="page-section home-about" id="home-why">

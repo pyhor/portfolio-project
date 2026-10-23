@@ -2,8 +2,15 @@ import { FEATURED_PROJECTS } from './featuredProjects'
 
 // Only documented work. Text-led previews are not fabricated product screenshots.
 export const SHOWCASE_PROJECTS = [
+  {
+    id: 'jomgo', titleKey: 'bsa_jomgo_title', metaKey: 'bsa_primary', descKey: 'bsa_jomgo_desc',
+    roleKey: 'bsa_role_body', problemKey: 'bsa_problem_body', contribKey: 'bsa_evidence_intro',
+    techKey: 'bsa_jomgo_tech', statusKey: 'bsa_implemented', categoryKey: 'showcase_system',
+    githubUrl: 'https://github.com/pyhor/JomGo-web', liveUrl: 'https://jomgo.pages.dev/',
+    casePath: '/projects/jomgo', previewKey: 'bsa_evidence_title', previewLabel: 'JOMGO / GTFS',
+  },
   ...FEATURED_PROJECTS.map((project, index) => ({
-    ...project, roleKey: `ref_${index ? 'cinema' : 'hotel'}_role`,
+    ...project, casePath: `/projects/${project.id}`, roleKey: `ref_${index ? 'cinema' : 'hotel'}_role`,
     problemKey: `ref_${index ? 'cinema' : 'hotel'}_problem`,
     statusKey: index ? 'showcase_source_available' : 'showcase_live_available',
     categoryKey: index ? 'showcase_system' : 'showcase_interface',

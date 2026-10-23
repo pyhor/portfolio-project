@@ -4,6 +4,10 @@
   "outputDirectory": "docs",
   "rewrites": [
     {
+      "source": "/projects/:slug",
+      "destination": "/index.html"
+    },
+    {
       "source": "/about",
       "destination": "/index.html"
     },

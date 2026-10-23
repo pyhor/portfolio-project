@@ -1,3 +1,5 @@
+import { CaseStudyTeaser } from '../components/CaseStudyTeaser'
+import { Link } from 'react-router-dom'
 import { ArrowUpRight, Code2, Layers3 } from 'lucide-react'
 import { FeaturedProjectCard } from '../components/FeaturedProjectCard'
 import { GitHubRepos } from '../components/GitHubRepos'
@@ -14,10 +16,10 @@ const FOCUS_KEYS = ['proj_asean_f1', 'proj_asean_f2', 'proj_asean_f3', 'proj_ase
 const CONTRIB_KEYS = ['proj_asean_c1', 'proj_asean_c2', 'proj_asean_c3', 'proj_asean_c4']
 
 const SKILL_KEYS = [
-  ['skill_frontend', 'skill_frontend_stack'],
-  ['skill_product', 'skill_product_stack'],
-  ['skill_motion', 'skill_motion_stack'],
-  ['skill_creative', 'skill_creative_stack'],
+  ['bsa_cap_analysis', 'bsa_cap_analysis_body'],
+  ['bsa_cap_systems', 'bsa_cap_systems_body'],
+  ['bsa_cap_delivery', 'bsa_cap_delivery_body'],
+  ['bsa_cap_tools', 'bsa_cap_tools_body'],
 ]
 
 export function ProjectsPage() {
@@ -36,6 +38,7 @@ export function ProjectsPage() {
       </section>
 
       <section className="page-section">
+        <CaseStudyTeaser />
         <h2 className="section-title reveal">{t('projects_featured_title', 'Featured builds')}</h2>
         <Box className="featured-projects-stack">
           {FEATURED_PROJECTS.map((project, index) => (
@@ -83,13 +86,13 @@ export function ProjectsPage() {
           <Code2 size={16} />
           <span>{t('skills_kicker', 'Skills')}</span>
         </Box>
-        <h2 className="section-title reveal">{t('projects_skills_heading', '')}</h2>
+        <h2 className="section-title reveal">{t('bsa_capabilities')}</h2>
         <p className="page-lede reveal">{t('projects_skills_lede', '')}</p>
         <Box className="skills-grid">
           {SKILL_KEYS.map(([nameKey, stackKey]) => (
             <article key={nameKey} className="skill-panel panel-card glass-panel reveal">
               <h3>{t(nameKey, '')}</h3>
-              <p>{t(stackKey, '')}</p>
+              <p>{t(stackKey, '')}</p><Link className="text-link" to={nameKey === 'bsa_cap_delivery' ? '/trajectory' : '/projects/jomgo'}>{t('bsa_evidence')} <ArrowUpRight size={14} /></Link>
             </article>
           ))}
         </Box>

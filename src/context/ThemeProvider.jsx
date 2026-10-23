@@ -1,38 +1,30 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import { readThemePreference, resolveTheme } from '../lib/theme'
 
 const ThemeContext = createContext(null)
-const THEME_STORAGE_KEY = 'theme'
-const DEFAULT_THEME = 'dark'
-
-function readStoredTheme() {
-  if (typeof window === 'undefined') return DEFAULT_THEME
-  const stored = localStorage.getItem(THEME_STORAGE_KEY)
-  return stored === 'dark' || stored === 'light' ? stored : DEFAULT_THEME
-}
+const systemQuery = '(prefers-color-scheme: dark)'
 
 export function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState(readStoredTheme)
+  const [theme, setTheme] = useState(() => readThemePreference({ getItem: key => localStorage.getItem(key) }))
+  const [prefersDark, setPrefersDark] = useState(() => matchMedia(systemQuery).matches)
+  const resolvedTheme = resolveTheme(theme, prefersDark)
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme)
-    localStorage.setItem(THEME_STORAGE_KEY, theme)
-    document.documentElement.style.colorScheme = theme === 'dark' ? 'dark' : 'light'
-    document.querySelector('meta[name="theme-color"]')?.setAttribute(
-      'content',
-      theme === 'dark' ? '#101820' : '#f5f7fa',
-    )
-  }, [theme])
+    const media = matchMedia(systemQuery)
+    const update = () => setPrefersDark(media.matches)
+    update()
+    media.addEventListener('change', update)
+    return () => media.removeEventListener('change', update)
+  }, [])
 
-  const value = useMemo(
-    () => ({
-      theme,
-      isDark: theme === 'dark',
-      toggleTheme: () => setTheme((current) => (current === 'light' ? 'dark' : 'light')),
-      setTheme,
-    }),
-    [theme],
-  )
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', resolvedTheme)
+    document.documentElement.style.colorScheme = resolvedTheme
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', resolvedTheme === 'dark' ? '#101820' : '#f5f7fa')
+    try { localStorage.setItem('theme', theme) } catch { /* OS preference still works without storage. */ }
+  }, [theme, resolvedTheme])
 
+  const value = useMemo(() => ({ theme, resolvedTheme, isDark: resolvedTheme === 'dark', setTheme }), [theme, resolvedTheme])
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
 }
 

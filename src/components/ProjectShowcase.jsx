@@ -103,15 +103,15 @@ export function ProjectShowcase() {
     <div className="showcase-viewport" id="project-rail" ref={viewportRef} tabIndex={0} role="region" aria-label={t('showcase_label')} aria-describedby="showcase-help">
       <div className="showcase-track">
         {SHOWCASE_PROJECTS.map((project, index) => <article className="showcase-project" key={project.id} data-project={project.id}>
-          <a href={project.liveUrl || project.githubUrl} target="_blank" rel="noreferrer" className={`showcase-visual showcase-visual--${index}`} data-cursor="open" aria-label={`${t('studio_open_project')}: ${t(project.titleKey)}`}>
+          <Link to={project.casePath || '/projects'} className={`showcase-visual showcase-visual--${index}`} data-cursor="view" aria-label={`${t('studio_open_project')}: ${t(project.titleKey)}`}>
             <span className="showcase-visual__meta"><span>0{index + 1} / {t(project.categoryKey)}</span><ArrowUpRight size={20} /></span>
-            {project.media ? <img src={project.media[0]} alt={t(project.titleKey)} loading="lazy" draggable="false" /> : <div className="showcase-document">{index === 2 ? <Code2 size={42} strokeWidth={1} /> : <FileChartColumn size={42} strokeWidth={1} />}<strong>{index === 2 ? 'PHP / JavaScript' : 'ASEAN / 2024'}</strong><span>{t(index === 2 ? 'showcase_vet_preview' : 'showcase_asean_preview')}</span><small>{t('showcase_text_preview')}</small></div>}
-          </a>
+            {project.media ? <img src={project.media[0]} alt={t(project.titleKey)} loading="lazy" draggable="false" /> : <div className="showcase-document">{project.id === 'vet-mgmt-system-2024' ? <Code2 size={42} strokeWidth={1} /> : <FileChartColumn size={42} strokeWidth={1} />}<strong>{project.previewLabel || (project.id === 'vet-mgmt-system-2024' ? 'PHP / JavaScript' : 'ASEAN / 2024')}</strong><span>{t(project.previewKey || (project.id === 'vet-mgmt-system-2024' ? 'showcase_vet_preview' : 'showcase_asean_preview'))}</span><small>{t('showcase_text_preview')}</small></div>}
+          </Link>
           <div className="showcase-project__body"><div className="showcase-project__meta"><span>{t(project.metaKey)}</span><span>{t(project.statusKey)}</span></div>
-            <h3><a href={project.liveUrl || project.githubUrl} target="_blank" rel="noreferrer" data-cursor="open">{t(project.titleKey)}</a></h3><p>{t(project.descKey)}</p>
+            <h3><Link to={project.casePath || '/projects'} data-cursor="view">{t(project.titleKey)}</Link></h3><p>{t(project.descKey)}</p>
             <dl><div><dt>{t('ref_project_role')}</dt><dd>{t(project.roleKey)}</dd></div><div><dt>{t('ref_project_problem')}</dt><dd>{t(project.problemKey)}</dd></div><div><dt>{t('showcase_contribution')}</dt><dd>{t(project.contribKey)}</dd></div></dl>
             <TechStackBadges techString={t(project.techKey)} />
-            <div className="showcase-project__links">{project.githubUrl && <a href={project.githubUrl} target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={14} /></a>}{project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noreferrer">{t(index === 3 ? 'proj_asean_canva_cta' : 'btn_view_live')} <ArrowUpRight size={14} /></a>}<Link to="/projects" data-cursor="open">{t('studio_project_details')}<ArrowUpRight size={14} /></Link></div>
+            <div className="showcase-project__links">{project.githubUrl && <a href={project.githubUrl} target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={14} /></a>}{project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noreferrer">{t(project.id === 'asean-data-2024' ? 'proj_asean_canva_cta' : 'btn_view_live')} <ArrowUpRight size={14} /></a>}<Link to={project.casePath || '/projects'} data-cursor="view">{t('studio_project_details')}<ArrowUpRight size={14} /></Link></div>
           </div>
         </article>)}
       </div>

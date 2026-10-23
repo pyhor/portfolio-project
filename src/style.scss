@@ -3,6 +3,7 @@
 @use './styles/experience';
 @use './styles/refinement';
 @use './styles/showcase';
+@use './styles/case-study';
 @use './styles/glass';
 
 @font-face { font-family: 'Outfit'; font-style: normal; font-weight: 400 800; font-display: swap; src: url('/fonts/outfit-latin.woff2') format('woff2'); }
@@ -407,3 +408,5 @@ button:disabled { cursor: default; opacity: .55; }
 @include showcase.styles;
 
 @include glass.styles;
+
+@include case-study.styles;
