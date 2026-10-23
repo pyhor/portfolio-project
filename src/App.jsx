@@ -7,13 +7,11 @@ import { AboutPage } from './pages/AboutPage'
 import { ContactPage } from './pages/ContactPage'
 import { EducationPage } from './pages/EducationPage'
 import { HomePage } from './pages/HomePage'
-import { lazy, Suspense } from 'react'
+import { JomGoEntry } from './components/JomGoEntry'
 import { ProjectCaseStudy } from './pages/ProjectCaseStudy'
 import { ProjectsPage } from './pages/ProjectsPage'
 import { TrajectoryPage } from './pages/TrajectoryPage'
 import { VolunteeringPage } from './pages/VolunteeringPage'
-
-const JomGoCaseStudy = lazy(() => import('./pages/JomGoCaseStudy').then(module => ({ default: module.JomGoCaseStudy })))
 
 const basename = import.meta.env.BASE_URL.replace(/\/$/, '') || '/'
 
@@ -31,7 +29,7 @@ export default function App() {
                 <Route path="trajectory" element={<TrajectoryPage />} />
                 <Route path="education" element={<EducationPage />} />
                 <Route path="projects" element={<ProjectsPage />} />
-                <Route path="projects/jomgo" element={<Suspense fallback={<div className="case-loading" role="status" aria-busy="true">JomGo…</div>}><JomGoCaseStudy /></Suspense>} />
+                <Route path="projects/jomgo" element={<JomGoEntry />} />
                 <Route path="projects/:slug" element={<ProjectCaseStudy />} />
                 <Route path="volunteering" element={<VolunteeringPage />} />
                 <Route path="contact" element={<ContactPage />} />

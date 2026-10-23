@@ -891,3 +891,67 @@ button:disabled { cursor: default; opacity: .55; }
 @media (max-width: 640px) {
   .home-page > .hero { padding-top: 60px; }
 }
+
+/* Direct page navigation at every size, with preferences kept alongside it. */
+.site-header__inner { gap: 18px; }
+.desktop-nav { display: flex; gap: 0; }
+.desktop-nav__link { padding-inline: clamp(8px, 1vw, 16px); }
+.home-page > .hero { padding-top: 112px; }
+/* Social links form the first row; the message form uses the entire next row. */
+.contact-block .contact-layout,
+.home-page .contact-block--compact .contact-layout { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+.contact-block .contact-support { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; padding-top: 0; }
+.contact-block .contact-support .contact-card.glass-panel { width: 100%; max-width: none; margin: 0; padding: 24px; }
+.contact-block .contact-form { width: 100%; }
+.trajectory-page .timeline-node__category { font-size: 14px; font-weight: 600; }
+.trajectory-page .timeline-node__latest { font-size: 13px; font-weight: 600; }
+.timeline-company { margin-top: 12px; }
+.project-business-value { margin-block: 24px; padding: 18px 20px; background: #f5df83; border-left: 3px solid #b78b15; border-radius: 4px; color: #30280e; }
+.project-business-value p, .project-business-value .eyebrow { color: #30280e; }
+.project-business-value p { font-size: 14px; line-height: 1.8; margin: 10px 0 0; }
+.project-business-value .eyebrow { margin: 0; font-size: 10px; }
+.project-business-value mark { color: inherit; background: transparent; }
+.jomgo-entry { position: fixed; inset: 0; z-index: 2100; display: flex; flex-direction: column; justify-content: space-between; padding: clamp(24px, 4vw, 64px); background: var(--bg); color: var(--text); }
+.jomgo-entry__identity { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; }
+.jomgo-entry__identity strong { font-size: 24px; }
+.jomgo-entry__identity > span { font-size: 10px; letter-spacing: .1em; color: var(--text-soft); }
+.jomgo-entry__center { width: min(100%, 900px); margin: auto; }
+.jomgo-entry__center h1 { font: 500 clamp(40px, 7vw, 92px)/1.1 var(--font-display); letter-spacing: -.055em; margin-block: 22px; }
+.jomgo-entry__center > p:not(.eyebrow) { color: var(--text-soft); max-width: 52ch; line-height: 1.8; }
+.jomgo-entry__route { display: flex; align-items: center; width: min(100%, 380px); margin-block: 36px; }
+.jomgo-entry__route i { width: 12px; height: 12px; border: 2px solid var(--accent); border-radius: 50%; }
+.jomgo-entry__route span { flex: 1; height: 1px; background: var(--line); position: relative; overflow: hidden; }
+.jomgo-entry__route span::after { content: ''; position: absolute; inset: 0; background: var(--accent); transform-origin: left; animation: jomgo-route 1.4s ease-in-out infinite; }
+.jomgo-entry__route span:nth-of-type(2)::after { animation-delay: .3s; }
+.jomgo-entry__status { font-size: 12px; }
+.jomgo-entry > a { display: flex; align-items: center; gap: 12px; width: fit-content; font-size: 13px; }
+@keyframes jomgo-route { 0% { transform: scaleX(0); } 65%, 100% { transform: scaleX(1); } }
+@media (max-width: 1150px) {
+  .site-header__inner { display: grid; grid-template-columns: 1fr auto; gap: 0 16px; padding-block: 10px 4px; }
+  .desktop-nav { grid-column: 1 / -1; grid-row: 2; justify-content: center; margin: 0; }
+  .site-header__tools { grid-column: 2; grid-row: 1; }
+  .portfolio-main, .portfolio-main:has(.about-page), .portfolio-main:has(.case-study--document) { padding-top: 126px; }
+  .case-study--document .case-document__sidebar { top: 136px; max-height: calc(100dvh - 152px); }
+}
+@media (max-width: 640px) {
+  .home-page > .hero { padding-top: 84px; }
+  .desktop-nav { flex-wrap: wrap; }
+  .desktop-nav__link { min-height: 34px; padding-inline: 10px; font-size: 12px; }
+  .site-header__tools { margin-left: 0; }
+  .portfolio-main, .portfolio-main:has(.about-page), .portfolio-main:has(.case-study--document) { padding-top: 156px; }
+  .contact-block .contact-support { gap: 12px; }
+  .contact-block .contact-support .contact-card.glass-panel { padding: 18px 10px; }
+  .contact-block .contact-card h3 { font-size: 20px; }
+  .contact-block .contact-card .ghost-cta { padding: 10px 8px; font-size: 11px; gap: 6px; }
+  .contact-block .contact-card p { font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .jomgo-entry__route span::after { animation: none; transform: none; }
+}
+@media (max-width: 640px) {
+  .site-header .theme-toggle, .site-header .language-select { display: inline-flex; }
+  .site-header .theme-toggle { gap: 5px; }
+  .site-header .theme-toggle select { max-width: 82px; }
+}
+.jomgo-entry { width: 100vw; max-width: none; height: 100dvh; max-height: none; margin: 0; border: 0; overflow-y: auto; }
+.jomgo-entry::backdrop { background: var(--bg); }

@@ -2,6 +2,16 @@
 // year-only; the internship is documented to month precision.
 export const JOURNEY_ITEMS = [
   {
+    id: 's9s-frontend',
+    category: 'work',
+    startDate: '2025-06',
+    ongoing: true,
+    periodKey: 'traj_work_2_period',
+    titleKey: 'traj_work_2_title',
+    companyKey: 'traj_work_2_company',
+    detailKeys: ['traj_work_2_location'],
+  },
+  {
     id: 'cinema-project',
     category: 'coding',
     startDate: '2019',
@@ -45,6 +55,7 @@ export const JOURNEY_ITEMS = [
   },
   {
     id: 'qa-internship',
+    companyKey: 'traj_work_1_company',
     category: 'work',
     startDate: '2022-11',
     endDate: '2023-01',

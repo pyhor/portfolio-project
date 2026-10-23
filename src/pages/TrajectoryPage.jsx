@@ -24,11 +24,12 @@ function TimelineTrack({ items }) {
               <Box className="timeline-node__meta">
                 <Icon size={16} aria-hidden="true" />
                 <span className="timeline-node__category">{t(item.category === 'work' ? 'traj_category_work' : 'traj_category_coding', '')}</span>
-                {(item.endDate.length > 4 || item.startDate !== item.endDate) && <time dateTime={item.endDate}>{t(item.periodKey, '')}</time>}
+                {(item.ongoing || item.endDate?.length > 4 || item.startDate !== item.endDate) && <time dateTime={item.ongoing ? item.startDate : item.endDate}>{t(item.periodKey, '')}</time>}
                 {item.id === SORTED_JOURNEY[0]?.id && <span className="timeline-node__latest">{t('traj_most_recent', '')}</span>}
               </Box>
               <div className="timeline-node__content">
               <h3>{t(item.titleKey, '')}</h3>
+              {item.companyKey && <p className="timeline-company"><strong>{t(item.companyKey)}</strong></p>}
               {item.projectKey && (
                 <p>
                   <strong>{t('traj_project_label', 'Project')}:</strong>{' '}

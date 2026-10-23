@@ -1,5 +1,6 @@
 import { ArrowDown, ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { ProjectBusinessValue } from '../components/ProjectBusinessValue'
 import { PageShell } from '../components/PageShell'
 import { CaseSection, Flow, Metadata, SourceLink, Status } from '../components/CaseStudyParts'
 import { RequirementLifecycle } from '../components/RequirementLifecycle'
@@ -39,6 +40,7 @@ export function JomGoCaseStudy() {
     <section className="page-section case-hero" id="case-introduction">
       <Link to="/projects" className="text-link">← {t('bsa_back')}</Link><p className="eyebrow">{t('bsa_primary')}</p>
       <h1 className="page-title">{t('bsa_jomgo_title')}</h1><p className="page-lede">{t('bsa_jomgo_desc')}</p>
+      <ProjectBusinessValue project="jomgo" />
       <div className="case-hero__actions"><a href="#lifecycle" className="primary-cta">{t('bsa_lifecycle_title')}<ArrowDown size={17} /></a><a href="https://jomgo.pages.dev/" target="_blank" rel="noreferrer" className="text-link">{t('bsa_live')}<ArrowUpRight size={17} /></a><a href="https://github.com/pyhor/JomGo-web" target="_blank" rel="noreferrer" className="text-link">GitHub<ArrowUpRight size={17} /></a></div>
       <aside className="case-evidence-note">{t('bsa_evidence_note')}</aside>
       <details className="case-disclosure"><summary>{t('bsa_role')}</summary><p>{t('bsa_role_body')}</p><SourceLink path="README.md" /></details>

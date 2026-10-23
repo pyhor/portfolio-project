@@ -5,6 +5,7 @@ import { ArrowUpRight, Code2, Layers3 } from 'lucide-react'
 import { FeaturedProjectCard } from '../components/FeaturedProjectCard'
 import { GitHubRepos } from '../components/GitHubRepos'
 import { Magnetic } from '../components/Magnetic'
+import { ProjectBusinessValue } from '../components/ProjectBusinessValue'
 import { PageShell } from '../components/PageShell'
 import { FEATURED_PROJECTS } from '../data/featuredProjects'
 import { useI18n } from '../context/I18nProvider'
@@ -51,6 +52,7 @@ export function ProjectsPage() {
             <h2>{t('proj_asean_title', '')}</h2>
             <p>{t('proj_asean_desc', '')}</p>
             <p>{t('proj_asean_desc2', '')}</p>
+            <ProjectBusinessValue project="asean" />
             <Box className="project-feature__cols">
               <Box>
                 <strong>{t('proj_asean_contrib_label', '')}</strong>

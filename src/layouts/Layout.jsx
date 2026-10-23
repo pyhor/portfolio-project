@@ -12,7 +12,7 @@ import { PortfolioIntro, hasSeenIntro } from '../components/PortfolioIntro'
 export function Layout() {
   const { t, lang } = useI18n()
   const location = useLocation()
-  const [introVisible, setIntroVisible] = useState(() => !hasSeenIntro())
+  const [introVisible, setIntroVisible] = useState(() => !hasSeenIntro() && location.pathname !== '/projects/jomgo')
   const finishIntro = useCallback(() => {
     try { sessionStorage.setItem('pyhor-intro', 'seen') } catch { /* Storage may be unavailable. */ }
     setIntroVisible(false)

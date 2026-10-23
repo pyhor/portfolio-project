@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import { ProjectBusinessValue } from './ProjectBusinessValue'
 import { ArrowUpRight, ExternalLink, ZoomIn } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Magnetic } from './Magnetic'
@@ -30,6 +31,7 @@ export function FeaturedProjectCard({ project, compact = false, index = 0 }) {
       </button>
       <div className="featured-project__body"><div className="featured-project__head"><div><span className="featured-project__meta">{t(project.metaKey, '')}</span><h3>{title}</h3></div><a href={project.liveUrl || project.githubUrl} target="_blank" rel="noreferrer" className="project-open" aria-label={`${t('studio_open_project', 'Open project')}: ${title}`}><ArrowUpRight size={23} /></a></div>
         <p>{t(project.descKey, '')}</p>
+        <ProjectBusinessValue project={prefix} />
         <dl className="project-metadata"><div><dt>{t('ref_project_role', 'ROLE')}</dt><dd>{t(`ref_${prefix}_role`, '')}</dd></div><div><dt>{t('ref_project_focus', 'FOCUS')}</dt><dd>{t(`ref_${prefix}_focus`, '')}</dd></div></dl>
         <p className="featured-project__contrib">{t(project.contribKey, '')}</p>
         <details className="project-reasoning"><summary data-cursor="explore">{t('ref_project_reasoning', 'Explore the thinking')} <ArrowUpRight size={14} /></summary><div><span className="eyebrow">{t('ref_project_problem', 'THE PROBLEM')}</span><p>{t(`ref_${prefix}_problem`, '')}</p><span className="eyebrow">{t('ref_project_value', 'PRACTICAL VALUE')}</span><p>{t(`ref_${prefix}_value`, '')}</p></div></details>

@@ -3,7 +3,7 @@ import { ContactSection } from '../components/ContactSection'
 
 export function ContactPage() {
   return (
-    <PageShell narrow>
+    <PageShell className="contact-page">
       <ContactSection id="contact-page" headingAs="h1" />
     </PageShell>
   )

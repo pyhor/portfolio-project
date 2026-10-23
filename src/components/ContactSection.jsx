@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState } from 'react'
-import { ArrowUpRight, CheckCircle2, Link2, Mail, MessageCircle, Send, ShieldCheck } from 'lucide-react'
+import { ArrowUpRight, CheckCircle2, Link2, Mail, MessageCircle, Send } from 'lucide-react'
 import { Magnetic } from './Magnetic'
 import { useI18n } from '../context/I18nProvider'
 import { submitContact, validateContactForm } from '../lib/contact'
@@ -89,12 +89,6 @@ export function ContactSection({ id = 'home-contact', compact = false, headingAs
 
       <div className="contact-layout">
         <aside className="contact-support reveal">
-          {!compact && <><article className="contact-support__intro">
-            <p className="contact-support__eyebrow">{t('contact_support_eyebrow')}</p>
-            <h3>{t('contact_support_title')}</h3>
-            <p>{t('contact_support_body')}</p>
-          </article>
-          <div className="contact-support__note"><ShieldCheck size={20} aria-hidden="true" /><p>{t('contact_privacy_note')}</p></div></>}
           <article className="contact-card glass-panel">
             <div className="contact-card__icon contact-card__icon--linkedin"><Link2 size={22} aria-hidden="true" /></div>
             <h3>{t('contact_linkedin_label')}</h3>
