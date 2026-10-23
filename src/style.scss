@@ -976,3 +976,28 @@ button:disabled { cursor: default; opacity: .55; }
   .home-page > .hero { padding-top: 100px; }
   .desktop-nav .header-contact { min-height: 34px; margin-left: 4px; padding: 5px 10px; font-size: 12px; }
 }
+
+/* Let the first screen's color continue underneath the fixed navigation. */
+.portfolio-main:has(.home-page) { padding-top: 0; }
+.home-page > .hero { min-height: 100dvh; padding-top: 224px; }
+.projects-page .featured-projects-stack > .project-presentation--reverse,
+.projects-page .featured-projects-stack > .project-feature { margin-top: 32px; }
+/* Keep the two About paragraphs on separate rows across the whole section. */
+.home-page #home-why { grid-template-columns: minmax(0, 1fr); gap: 36px; }
+.home-page .about-editorial { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 40px; }
+.home-page .about-editorial > .eyebrow { grid-column: 1 / -1; }
+.home-page .about-editorial__name { grid-column: 1; grid-row: 2; }
+.home-page .about-editorial > p:not(.eyebrow) { grid-column: 1; grid-row: 3; max-width: none; }
+.home-page .about-editorial__disciplines { grid-column: 2; grid-row: 2 / span 2; max-width: none; margin-top: 0; }
+.home-page .home-about__copy { width: 100%; min-width: 0; }
+.home-page .home-about__copy .section-title,
+.home-page .home-about__copy > p { max-width: none; }
+.trajectory-page .timeline-node__category { font-size: 16px; }
+.trajectory-page .timeline-node__meta time { font-size: 15px; line-height: 1.6; font-weight: 500; }
+@media (max-width: 640px) {
+  .home-page > .hero { padding-top: 180px; }
+  .home-page .about-editorial { grid-template-columns: 1fr; }
+  .home-page .about-editorial__disciplines { grid-column: 1; grid-row: 4; }
+  .projects-page .featured-projects-stack > .project-presentation--reverse,
+  .projects-page .featured-projects-stack > .project-feature { margin-top: 24px; }
+}
