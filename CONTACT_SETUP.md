@@ -1,5 +1,21 @@
 # Contact delivery setup
 
+## Current portfolio connection
+
+The GitHub Pages production build points to `https://py-portfolio-project.vercel.app/api/contact` by default. A repository variable named `VITE_CONTACT_API_URL` can override it. The existing Vercel project is `portfolio-project` under `pyhor9657gmailcoms-projects`.
+
+The production receiving inbox and allowed portfolio origins are configured in Vercel. To activate real delivery, add `RESEND_API_KEY` and `CONTACT_FROM_EMAIL` to that project's **Production** environment settings, using a verified Resend sender, then redeploy production. Do not put the private key in GitHub source or any `VITE_*` variable. Finally submit one test message and confirm receipt in the inbox; configuration alone does not prove delivery.
+
+### First-time Resend setup
+
+1. Create a Resend account and verify your email address.
+2. For production, add a domain you own in Resend's Domains dashboard, copy its required DNS records to your domain provider, and wait for verification. A Gmail address is a receiving inbox, not a sending domain you can verify.
+3. Create an API key with sending access in Resend's API Keys dashboard. Store it as `RESEND_API_KEY` in the Vercel project's Production environment settings.
+4. Add `CONTACT_FROM_EMAIL` with a sender on the verified domain, such as `Portfolio <contact@your-domain.example>`.
+5. Redeploy the Vercel production project after saving environment changes. Submit a test message from the portfolio and verify the inbox and Resend delivery events.
+
+For an initial test before verifying a domain, Resend permits its `onboarding@resend.dev` sender only when delivering to the Resend account owner's email address. Sign up with the same inbox configured as `CONTACT_TO_EMAIL`, set `CONTACT_FROM_EMAIL=Portfolio <onboarding@resend.dev>`, and keep this restriction in mind. Replace this test sender with a verified-domain sender for production. See [Resend's test-domain restriction](https://resend.com/docs/knowledge-base/403-error-resend-dev-domain).
+
 The form posts JSON to `/api/contact`. The shared Node handler in `server/contact.cjs` validates the submission and sends a plain-text email using the [Resend HTTP API](https://resend.com/docs/api-reference/emails/send-email). `api/contact.js` deploys that handler as a Vercel function; `server/index.js` exposes the same handler in the existing Express server. No email SDK or new runtime dependency is needed. Use Node 20 or newer.
 
 ## Recommended deployment: Vercel

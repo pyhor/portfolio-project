@@ -32,3 +32,4 @@ dist-ssr
 # Private environment variants; examples contain names and placeholders only.
 .env.*
 !.env.example
+.vercel
