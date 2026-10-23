@@ -4,9 +4,9 @@ export function useProjectCoverMotion(dependency) {
   useLayoutEffect(() => {
     const page = document.querySelector('.projects-page')
     if (!page) return
-    const projects = [...page.querySelectorAll('.featured-projects-stack > .project-presentation')]
-    const research = page.querySelector('.project-feature')
-    const incoming = [projects[1], research]
+    const projects = [...page.querySelectorAll('.featured-projects-stack > article')]
+    const incoming = projects.slice(1)
+    projects.forEach((project, index) => { project.style.zIndex = String(index + 1) })
     let frame = 0
     const update = () => {
       frame = 0
@@ -31,6 +31,7 @@ export function useProjectCoverMotion(dependency) {
       window.removeEventListener('scroll', schedule)
       projects.forEach(project => {
         project.inert = false
+        project.style.removeProperty('z-index')
         project.style.removeProperty('--project-stick-top')
       })
     }

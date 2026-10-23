@@ -1,7 +1,7 @@
 import { FEATURED_PROJECTS } from './featuredProjects'
 
 // Only documented work. Text-led previews are not fabricated product screenshots.
-export const SHOWCASE_PROJECTS = [
+const projects = [
   {
     id: 'jomgo', titleKey: 'bsa_jomgo_title', metaKey: 'bsa_primary', descKey: 'bsa_jomgo_desc',
     roleKey: 'bsa_role_body', problemKey: 'bsa_problem_body', contribKey: 'bsa_evidence_intro',
@@ -32,3 +32,7 @@ export const SHOWCASE_PROJECTS = [
     liveUrl: 'https://aseandata2024.my.canva.site/',
   },
 ]
+
+// Current systems case first, then documented project years (newest first).
+const chronologicalOrder = ['jomgo', 'vet-mgmt-system-2024', 'asean-data-2024', 'hotel-website-2023', 'cinema-mgmt-system-2020']
+export const SHOWCASE_PROJECTS = [...projects].sort((a, b) => chronologicalOrder.indexOf(a.id) - chronologicalOrder.indexOf(b.id))

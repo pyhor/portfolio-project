@@ -30,7 +30,7 @@ export function AboutPage() {
         </Box>
       </section>
 
-      <section className="page-section">
+      <section className="page-section about-languages">
         <Box className="section-kicker reveal">
           <Globe size={16} />
           <span>{t('languages_kicker', 'Languages')}</span>

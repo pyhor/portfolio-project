@@ -1077,3 +1077,32 @@ button:disabled { cursor: default; opacity: .55; }
 @media (min-width: 1025px) and (min-height: 651px) {
   .home-page > .hero { align-content: space-between; }
 }
+
+/* Compact greeting strip: all five languages remain readable while the accent cycles. */
+.page-shell.about-page > .about-languages { padding-block: 28px; }
+.about-languages .section-title { margin-bottom: 16px; }
+.language-showcase.language-showcase--compact { grid-template-columns: 96px minmax(0, 1fr); gap: 20px; margin-top: 0; }
+.language-showcase--compact .language-globe { width: 80px; height: 80px; margin: 8px; }
+.language-showcase--compact .language-globe::before,
+.language-showcase--compact .language-globe::after { inset: -4px; }
+.language-showcase--compact .language-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; max-width: none; }
+.language-showcase--compact .language-chip { width: 100%; padding: 12px 8px; gap: 4px; border: 1px solid var(--line); border-radius: 8px; background: transparent; }
+.language-showcase--compact .language-chip:last-child { grid-column: auto; }
+.language-showcase--compact .language-chip strong { font-size: 24px; }
+@media (prefers-reduced-motion: no-preference) {
+  .language-showcase--compact .language-chip { animation: greeting-cycle 15s linear infinite; animation-delay: calc(var(--language-index) * 3s - 15s); }
+  .language-showcase--compact .language-chip:hover { animation-play-state: running; }
+}
+@keyframes greeting-cycle {
+  0%, 16% { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 9%, transparent); transform: translateY(-3px); }
+  20%, 96% { border-color: var(--line); background: transparent; transform: translateY(0); }
+  100% { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 9%, transparent); transform: translateY(-3px); }
+}
+@media (max-width: 760px) {
+  .language-showcase.language-showcase--compact { grid-template-columns: 1fr; gap: 12px; }
+  .language-showcase--compact .language-globe { display: none; }
+  .language-showcase--compact .language-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 420px) {
+  .language-showcase--compact .language-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
