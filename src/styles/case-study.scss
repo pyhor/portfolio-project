@@ -11,7 +11,7 @@
   .case-document .case-nav a { white-space: normal; min-height: 44px; display: flex; align-items: center; line-height: 1.6; padding: 10px 12px; border-left: 2px solid transparent; border-radius: 0; }
   .case-document .case-nav a:hover, .case-document .case-nav a:focus-visible { border-left-color: var(--accent); }
   .case-document__content > .page-section {
-    padding: 48px 0 48px clamp(24px, 4vw, 64px);
+    padding: 48px clamp(24px, 4vw, 64px);
   }
   .case-document__content .case-section-heading > p:not(.eyebrow),
   .case-document__content .case-section > p:not(.case-label) {
