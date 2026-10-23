@@ -1027,5 +1027,7 @@
   "bsa_arch_cloud_detail": "已配置账户资料 / 历史记录；本地回退",
   "bsa_userflow": "用户流程 / 从选择到行程",
   "bsa_flow_start": "打开地图 / 开始查询",
-  "bsa_catalog_feature": "关联源码的实现"
+  "bsa_catalog_feature": "关联源码的实现",
+  "home_reflection_explore": "探索项目思考",
+  "home_showcase_hint": "探索项目。使用箭头浏览，或暂停动画。"
 }

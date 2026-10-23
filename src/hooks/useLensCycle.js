@@ -13,32 +13,28 @@ export function useLensCycle(ref) {
   useEffect(() => {
     const root = ref.current
     const media = matchMedia('(prefers-reduced-motion: reduce)')
-    let visible = false, hovering = false, focused = root.contains(document.activeElement), pointerInput = false
+    let visible = false, focused = root.contains(document.activeElement), pointerInput = false
     const cycle = createLensCycle({ duration: matchMedia('(pointer: coarse)').matches ? 6500 : 4500, onChange: setState })
     clock.current = cycle
     const sync = (grace = 0) => {
-      if (visible && !document.hidden && !media.matches && !pausedRef.current) cycle.resume(grace)
+      if (visible && !document.hidden && !media.matches && !focused && !pausedRef.current) cycle.resume(grace)
       else cycle.pause()
     }
     syncRef.current = sync
-    const enter = event => { if (event.pointerType === 'mouse') { hovering = true; sync() } }
-    const leave = event => { if (event.pointerType === 'mouse') { hovering = false; sync(1500) } }
     const pointer = () => { pointerInput = true; focused = false; sync() }
-    const key = () => { pointerInput = false; if (root.contains(document.activeElement)) { focused = true; sync() } }
+    const keyboard = () => { pointerInput = false; focused = root.contains(document.activeElement); sync() }
     const focus = () => { focused = !pointerInput; sync() }
-    const blur = event => { focused = !pointerInput && root.contains(event.relatedTarget); sync(1500) }
+    const blur = event => { focused = !pointerInput && root.contains(event.relatedTarget); sync() }
     const motion = () => { setReduced(media.matches); sync() }
     const visibility = () => sync(1500)
     const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; sync(1500) }, { threshold: .35 })
     observer.observe(root)
-    root.addEventListener('pointerenter', enter); root.addEventListener('pointerleave', leave)
-    root.addEventListener('pointerdown', pointer); document.addEventListener('keydown', key)
+    root.addEventListener('pointerdown', pointer); document.addEventListener('keydown', keyboard)
     root.addEventListener('focusin', focus); root.addEventListener('focusout', blur)
     media.addEventListener('change', motion); document.addEventListener('visibilitychange', visibility)
     return () => {
       cycle.destroy(); clock.current = null; syncRef.current = null; observer.disconnect()
-      root.removeEventListener('pointerenter', enter); root.removeEventListener('pointerleave', leave)
-      root.removeEventListener('pointerdown', pointer); document.removeEventListener('keydown', key)
+      root.removeEventListener('pointerdown', pointer); document.removeEventListener('keydown', keyboard)
       root.removeEventListener('focusin', focus); root.removeEventListener('focusout', blur)
       media.removeEventListener('change', motion); document.removeEventListener('visibilitychange', visibility)
     }

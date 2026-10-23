@@ -1027,5 +1027,7 @@
   "bsa_arch_cloud_detail": "Configured account profiles / history; local fallback",
   "bsa_userflow": "User flow / from selection to trip",
   "bsa_flow_start": "Open the map / query starts",
-  "bsa_catalog_feature": "Source-linked implementation"
+  "bsa_catalog_feature": "Source-linked implementation",
+  "home_reflection_explore": "Explore reflection",
+  "home_showcase_hint": "Explore the projects. Use the arrows to browse or pause the motion."
 }

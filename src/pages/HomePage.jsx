@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { ArrowDown, ArrowUpRight, Code2, GraduationCap, HeartHandshake, Layers, Route, ShieldCheck, Wrench } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { HeroTypography } from '../components/HeroTypography'
@@ -16,7 +15,6 @@ import { BusinessWorkflow } from '../components/BusinessWorkflow'
 import { ContactSection } from '../components/ContactSection'
 import { EngineeringStudy } from '../components/EngineeringStudy'
 import { InnovationSection } from '../components/InnovationSection'
-import { OptionalStudy } from '../components/OptionalStudy'
 
 const CAPABILITIES = [
   { icon: Layers, id: 'systems', titleKey: 'build_card_1_title', descKey: 'build_card_1_desc' },
@@ -27,7 +25,6 @@ const CAPABILITIES = [
 
 export function HomePage() {
   const { t, lang } = useI18n()
-  const [studyOpen, setStudyOpen] = useState(false)
   useChapterMotion(lang)
   const github = useGithubData(12)
   return (
@@ -44,7 +41,7 @@ export function HomePage() {
           <dl className="hero-facts"><div><dt>{t('ref_based_label', 'BASED IN')}</dt><dd>{t('metric_location', 'Malaysia')}</dd></div><div><dt>{t('ref_background_label', 'BACKGROUND')}</dt><dd>{t('ref_background', 'Enterprise Information Systems')}</dd></div><div><dt>{t('ref_approach_label', 'APPROACH')}</dt><dd>{t('ref_approach', 'Understand → build → verify')}</dd></div></dl>
           <div className="hero-footnote"><span className="status-dot" />{t('ref_availability', 'Open to technology roles, project discussions, and collaboration.')}</div>
         </div>
-        <div className="hero-visual"><SystemOverview /><OptionalStudy open={studyOpen} onOpenChange={setStudyOpen} /></div>
+        <div className="hero-visual"><SystemOverview /></div>
       </section>
       <div className="intro-strip"><span className="intro-strip__location">{t('ref_working_with', 'Working across interfaces, workflows, and quality.')}</span><span className="intro-strip__stack">React <span>/</span> PHP <span>/</span> JavaScript <span>/</span> XAMPP</span><a href="#home-projects" className="scroll-cue" aria-label={t('studio_scroll', 'Scroll to selected work')}><ArrowDown size={18} /></a></div>
 

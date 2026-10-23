@@ -452,26 +452,73 @@ button:disabled { cursor: default; opacity: .55; }
   .hero-profession::after { display: none; }
 }
 
-/* Chapter rhythm and continuously repeating, low-amplitude motion. */
+/* A quieter home page, with full-width chapter surfaces. */
+.site-header, .site-header.is-scrolled { border: 0; box-shadow: none; }
 .site-header__progress { display: none; }
-.intro-strip { margin-bottom: clamp(24px, 4vw, 64px); padding-bottom: 32px; }
-.ideas-detail { padding: clamp(20px, 3vw, 42px); }
-.ideas-selector button[data-reflection='research'] { background: color-mix(in srgb, var(--text) 4%, var(--bg)); }
-.ideas-selector button[aria-pressed='true'] { border-left-color: var(--accent); background: color-mix(in srgb, var(--accent) 8%, var(--bg)); }
-.ideas-selector button:hover { border-left-color: var(--accent); }
-#home-matters { position: relative; z-index: 1; background: #f3f3f0; }
-[data-theme='dark'] #home-matters { background: #1b242c; }
-#home-ideas { position: relative; z-index: 2; background: var(--bg); min-height: calc(100dvh - 80px); box-shadow: 0 -24px 48px -40px #0003; }
-@media (prefers-reduced-motion: no-preference) {
-  .hero-name, .hero-lede, .hero-facts, .hero-footnote { animation: quiet-terminal 10s ease-in-out infinite; }
-  .hero-name { animation-delay: 1s; }
-  .hero-lede { animation-delay: 3s; }
-  .hero-facts { animation-delay: 5s; }
-  .hero-footnote { animation-delay: 7s; }
-  .home-page .word-accent.is-revealed::after { animation: quiet-terminal 6s ease-in-out infinite; }
-  .home-page .system-connections[data-lens] path { animation-iteration-count: infinite; animation-duration: 3s; }
-  .home-page .system-process li::after { animation-iteration-count: infinite; animation-duration: 3s; }
-  .ideas-detail > .eyebrow { animation: quiet-terminal 8s ease-in-out infinite; }
+.home-page > section:not(:first-of-type) { margin-top: 0; border-top: 0; }
+.home-page .intro-strip {
+  margin-bottom: clamp(40px, 6vw, 96px);
+  padding-block: 24px 36px;
+  border-bottom: 0;
 }
-@keyframes quiet-terminal { 0%, 12%, 100% { opacity: 1; transform: translateY(0); } 6% { opacity: .82; transform: translateY(-1px); } }
-@media (max-width: 760px) { .ideas-detail { padding: 22px 18px; } }
+.home-page .hero-visual::before { display: none; }
+.home-page .system-desk, .home-page .workflow-board,
+.home-page .showcase-project, .home-page .ideas-detail { box-shadow: none; border-radius: 4px; }
+.home-page .system-connections { display: none; }
+.home-page .system-desk__content { min-height: 340px; }
+.home-page .ideas-composition { gap: clamp(28px, 4vw, 72px); }
+.home-page .ideas-detail { padding: clamp(28px, 3.5vw, 56px); border: 0; }
+.home-page .ideas-detail[data-reflection='hotel'] { background: color-mix(in srgb, var(--accent) 3%, var(--bg)); }
+.home-page .ideas-detail[data-reflection='research'] { background: color-mix(in srgb, var(--accent-2) 8%, var(--bg)); }
+.ideas-selector button[data-reflection='research'] { background: color-mix(in srgb, var(--accent-2) 6%, var(--bg)); }
+.ideas-selector button[aria-selected='true'] { border-left-color: var(--accent); background: color-mix(in srgb, var(--accent) 7%, var(--bg)); }
+.ideas-selector button:hover { border-left-color: var(--accent); }
+.ideas-selector button:focus-visible, .ideas-detail:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
+.ideas-selector button .ideas-selector__action { display: flex; align-items: center; gap: 10px; color: var(--accent); font-size: 11px; letter-spacing: 0; }
+.ideas-selector button .ideas-selector__action svg { position: static; }
+#home-matters { position: relative; z-index: 1; background: #f1f2ee; }
+[data-theme='dark'] #home-matters { background: #1b242c; }
+#home-ideas { position: relative; z-index: 2; background: var(--bg); min-height: calc(100dvh - 80px); }
+@media (prefers-reduced-motion: no-preference) {
+  .home-page .hero-name, .home-page .hero-lede, .home-page .hero-facts,
+  .home-page .hero-footnote, .home-page .hero-actions, .home-page .hero-profession,
+  .home-page .section-heading, .home-page .ideas-detail > .eyebrow,
+  .home-page .intro-strip__stack, .home-page .intro-strip__location { animation: quiet-terminal 8s ease-in-out infinite; }
+  .home-page .hero-name { animation-delay: -1s; }
+  .home-page .hero-lede { animation-delay: -3s; }
+  .home-page .hero-facts { animation-delay: -5s; }
+  .home-page .hero-footnote { animation-delay: -7s; }
+  .home-page .word-accent::after { animation: accent-breathe 5s ease-in-out infinite; }
+  .home-page .system-connections[data-lens] path,
+  .home-page .system-process li::after { animation-iteration-count: infinite; animation-duration: 3s; }
+  .home-page .system-process li, .home-page .system-process > h2, .home-page .system-index, .home-page .system-output,
+  .home-page .workflow-board, .home-page .value-card,
+  .home-page .engineering-node, .home-page .home-preview-card,
+  .home-page .ideas-steps article { animation: quiet-terminal 9s ease-in-out infinite; }
+  .home-page .ideas-steps article:nth-child(even), .home-page .value-card:nth-child(even) { animation-delay: -4.5s; }
+}
+@keyframes quiet-terminal {
+  0%, 100% { opacity: 1; transform: translateY(0); }
+  50% { opacity: .88; transform: translateY(-2px); }
+}
+@keyframes accent-breathe {
+  0%, 100% { transform: scaleX(.4); opacity: .25; }
+  50% { transform: scaleX(1); opacity: .65; }
+}
+@media (max-width: 760px) {
+  .home-page .ideas-detail { padding: 28px 24px; }
+  .home-page .intro-strip { padding-bottom: 28px; }
+}
+
+@media (min-width: 1025px) {
+  .home-page > #home-matters { padding-block: 28px; min-height: calc(100dvh - 80px); }
+  #home-matters .section-heading { margin-bottom: 24px; }
+  #home-matters .section-title { font-size: clamp(32px, 2.8vw, 44px); }
+  #home-matters .workflow-nodes { padding: 16px 24px; gap: 20px; }
+  #home-matters .workflow-node { min-height: 96px; padding: 14px; }
+  #home-matters .workflow-details { padding: 24px; gap: 40px; min-height: 0; }
+  #home-matters .workflow-details h3 { font-size: 32px; }
+  #home-matters .workflow-details__copy > p:not(.eyebrow) { font-size: 14px; }
+  #home-matters .workflow-artifact { padding: 20px; }
+  #home-matters .workflow-artifact h4 { font-size: 21px; }
+}

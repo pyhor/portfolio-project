@@ -20,7 +20,7 @@ export function ProjectShowcase() {
     const cards = [...track.children]
     const media = matchMedia('(min-width: 1025px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)')
     let frame = 0, last = 0, stride = 1, gutter = 0, visible = false
-    let hovering = root.matches(':hover'), focused = root.contains(document.activeElement)
+    let focused = root.contains(document.activeElement), pointerInput = false
     const paint = () => cards.forEach((card, index) => {
       card.style.transform = `translate3d(${loopPosition(index, phaseRef.current, stride, cards.length, gutter)}px,0,0)`
     })
@@ -33,7 +33,7 @@ export function ProjectShowcase() {
     }
     const sync = () => {
       stop()
-      if (media.matches && visible && !paused && !hovering && !focused && !document.hidden) {
+      if (media.matches && visible && !paused && !focused && !document.hidden) {
         viewport.dataset.running = 'true'
         frame = requestAnimationFrame(animate)
       }
@@ -51,17 +51,17 @@ export function ProjectShowcase() {
       }
       sync()
     }
-    const enter = () => { hovering = true; sync() }
-    const leave = () => { hovering = false; sync() }
     const focus = (event) => {
-      focused = true
+      focused = !pointerInput
       if (media.matches) {
         const index = cards.findIndex(card => card.contains(event.target))
         if (index >= 0) { phaseRef.current = index * stride; viewport.scrollLeft = 0; paint() }
       }
       sync()
     }
-    const blur = (event) => { focused = root.contains(event.relatedTarget); sync() }
+    const blur = (event) => { focused = !pointerInput && root.contains(event.relatedTarget); sync() }
+    const pointer = () => { pointerInput = true; focused = false; sync() }
+    const keyboardFocus = () => { pointerInput = false; focused = root.contains(document.activeElement); sync() }
     const browse = (direction) => {
       if (media.matches) { phaseRef.current += direction * stride; paint() }
       else viewport.scrollBy({ left: direction * (cards[0].offsetWidth + 24), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' })
@@ -76,8 +76,8 @@ export function ProjectShowcase() {
     resize.observe(viewport)
     const intersection = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; sync() }, { threshold: .05 })
     intersection.observe(viewport)
-    root.addEventListener('mouseenter', enter)
-    root.addEventListener('mouseleave', leave)
+    root.addEventListener('pointerdown', pointer)
+    document.addEventListener('keydown', keyboardFocus)
     root.addEventListener('focusin', focus)
     root.addEventListener('focusout', blur)
     viewport.addEventListener('keydown', keyboard)
@@ -88,14 +88,14 @@ export function ProjectShowcase() {
       stop(); resize.disconnect(); intersection.disconnect(); controlsRef.current = null
       viewport.classList.remove('is-looping'); track.style.removeProperty('height')
       cards.forEach(card => card.style.removeProperty('transform'))
-      root.removeEventListener('mouseenter', enter); root.removeEventListener('mouseleave', leave)
+      root.removeEventListener('pointerdown', pointer); document.removeEventListener('keydown', keyboardFocus)
       root.removeEventListener('focusin', focus); root.removeEventListener('focusout', blur); viewport.removeEventListener('keydown', keyboard)
       media.removeEventListener('change', measure); document.removeEventListener('visibilitychange', sync)
     }
   }, [lang, paused])
 
   return <div className="project-showcase">
-    <div className="showcase-controls"><p id="showcase-help">{t('showcase_hint')}</p><div>
+    <div className="showcase-controls"><p id="showcase-help">{t('home_showcase_hint', 'Explore the projects. Use the arrows to browse or pause the motion.')}</p><div>
       <button type="button" onClick={() => controlsRef.current?.(-1)} aria-label={t('showcase_previous')} aria-controls="project-rail"><ArrowLeft size={17} /></button>
       <button type="button" className="showcase-pause" onClick={() => setPaused(value => !value)} aria-pressed={paused} aria-controls="project-rail">{paused ? <Play size={15} /> : <Pause size={15} />}<span>{t(paused ? 'showcase_resume' : 'showcase_pause')}</span></button>
       <button type="button" onClick={() => controlsRef.current?.(1)} aria-label={t('showcase_next')} aria-controls="project-rail"><ArrowRight size={17} /></button>
