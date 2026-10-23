@@ -410,3 +410,36 @@ button:disabled { cursor: default; opacity: .55; }
 @include glass.styles;
 
 @include case-study.styles;
+
+/* Neutral, open surfaces keep the portfolio content in the foreground. */
+:root, [data-theme='light'] {
+  --bg: #fff;
+  --bg-elevated: #fff;
+  --panel: transparent;
+  --panel-strong: transparent;
+  --glass-1: rgba(255, 255, 255, .12);
+  --glass-2: rgba(255, 255, 255, .2);
+  --glass-3: rgba(255, 255, 255, .3);
+  --nav-glass-scrolled: rgba(255, 255, 255, .66);
+}
+.portfolio::before, .hero-visual::before { background: none; }
+.home-page > .hero, .contact-block { background-image: none; }
+.site-header { background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: none; }
+.site-header.is-scrolled { background: var(--nav-glass-scrolled); backdrop-filter: blur(12px) saturate(110%); -webkit-backdrop-filter: blur(12px) saturate(110%); box-shadow: inset 0 -1px var(--glass-border); }
+.site-brand { gap: 1.25rem; }
+.site-header .language-select, .site-header .theme-preference { border: 0; background: transparent; box-shadow: none; }
+.site-header .theme-preference { gap: 8px; padding: 0 8px; min-height: 44px; border-radius: 10px; }
+.site-header .theme-preference select { background: transparent; border: 0; min-height: 44px; padding: 0 4px; font: inherit; font-size: .8rem; }
+.glass-panel, .system-desk, .system-desk__bar, .system-view-switch, .workflow-board, .workflow-board__bar, .workflow-node, .workflow-artifact, .ideas-detail, .engineering-board, .engineering-toolbar, .value-card, .profile-chip, .showcase-project, .contact-form, .optional-study, .hero-facts > div { background-color: transparent; background-image: none; }
+.hero-profession { position: relative; }
+.hero-profession::after { content: ''; display: inline-block; height: 1em; width: 2px; margin-left: 6px; vertical-align: -.1em; background: currentColor; animation: terminal-caret 1.2s steps(1) infinite; }
+.hero-editorial > .eyebrow { animation: terminal-status 8s ease-in-out infinite; }
+.hero-copy .hero-title > span { animation: terminal-reveal 9s ease-in-out infinite; }
+.hero-copy .hero-title > span:nth-child(2) { animation-delay: 1.2s; }
+@keyframes terminal-caret { 0%, 45% { opacity: 1; } 46%, 100% { opacity: 0; } }
+@keyframes terminal-status { 0%, 75%, 100% { opacity: 1; } 82% { opacity: .55; } }
+@keyframes terminal-reveal { 0%, 8%, 100% { opacity: 1; transform: translateY(0); } 3% { opacity: .55; transform: translateY(2px); } }
+@media (prefers-reduced-motion: reduce) {
+  .hero-profession::after, .hero-editorial > .eyebrow, .hero-copy .hero-title > span { animation: none; }
+  .hero-profession::after { display: none; }
+}

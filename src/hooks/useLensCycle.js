@@ -17,7 +17,7 @@ export function useLensCycle(ref) {
     const cycle = createLensCycle({ duration: matchMedia('(pointer: coarse)').matches ? 6500 : 4500, onChange: setState })
     clock.current = cycle
     const sync = (grace = 0) => {
-      if (visible && !hovering && !focused && !document.hidden && !media.matches && !pausedRef.current) cycle.resume(grace)
+      if (visible && !document.hidden && !media.matches && !pausedRef.current) cycle.resume(grace)
       else cycle.pause()
     }
     syncRef.current = sync
