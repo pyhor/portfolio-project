@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState } from 'react'
-import { ArrowUpRight, CheckCircle2, Link2, MessageCircle, Send, ShieldCheck } from 'lucide-react'
+import { ArrowUpRight, CheckCircle2, Link2, Mail, MessageCircle, Send, ShieldCheck } from 'lucide-react'
 import { Magnetic } from './Magnetic'
 import { useI18n } from '../context/I18nProvider'
 import { submitContact, validateContactForm } from '../lib/contact'
@@ -101,6 +101,13 @@ export function ContactSection({ id = 'home-contact', compact = false, headingAs
             {!compact && <p>{t('contact_linkedin_desc')}</p>}
             <Magnetic href={LINKEDIN_URL} target="_blank" rel="noreferrer" className="ghost-cta">
               {t('contact_linkedin_cta')} <ArrowUpRight size={16} aria-hidden="true" />
+            </Magnetic>
+          </article>
+          <article className="contact-card glass-panel">
+            <div className="contact-card__icon"><Mail size={22} aria-hidden="true" /></div>
+            <h3>Gmail</h3>
+            <Magnetic href="https://mail.google.com/mail/u/1/#inbox" target="_blank" rel="noreferrer" className="ghost-cta">
+              {t('contact_gmail_cta')} <ArrowUpRight size={16} aria-hidden="true" />
             </Magnetic>
           </article>
         </aside>

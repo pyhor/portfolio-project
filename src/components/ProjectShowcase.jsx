@@ -40,6 +40,9 @@ export function ProjectShowcase() {
     }
     const measure = () => {
       viewport.classList.toggle('is-looping', media.matches)
+      cards.forEach(card => { card.style.height = '' })
+      const height = Math.ceil(Math.max(...cards.map(card => card.getBoundingClientRect().height)))
+      cards.forEach(card => { card.style.height = `${height}px` })
       if (media.matches) {
         stride = cards[0].offsetWidth + 24
         gutter = parseFloat(getComputedStyle(viewport).paddingLeft) || 0
@@ -87,7 +90,7 @@ export function ProjectShowcase() {
     return () => {
       stop(); resize.disconnect(); intersection.disconnect(); controlsRef.current = null
       viewport.classList.remove('is-looping'); track.style.removeProperty('height')
-      cards.forEach(card => card.style.removeProperty('transform'))
+      cards.forEach(card => { card.style.removeProperty('transform'); card.style.removeProperty('height') })
       root.removeEventListener('pointerdown', pointer); document.removeEventListener('keydown', keyboardFocus)
       root.removeEventListener('focusin', focus); root.removeEventListener('focusout', blur); viewport.removeEventListener('keydown', keyboard)
       media.removeEventListener('change', measure); document.removeEventListener('visibilitychange', sync)
@@ -107,6 +110,7 @@ export function ProjectShowcase() {
             <span className="eyebrow">0{index + 1} / {t(project.categoryKey)}</span>
             <h3><Link to={project.casePath || '/projects'} data-cursor="view">{t(project.id === 'jomgo' ? 'home_jomgo_title' : project.id === 'asean-data-2024' ? 'home_asean_title' : project.titleKey)}</Link></h3>
             <p>{t(`home_${['jomgo', 'hotel', 'cinema', 'vet', 'asean'][index]}_intro`)}</p>
+            <p className="showcase-project__value">{t(`home_${['jomgo', 'hotel', 'cinema', 'vet', 'asean'][index]}_benefit`)}</p>
             <TechStackBadges techString={t(project.techKey)} />
             <div className="showcase-project__links">{project.githubUrl && <a href={project.githubUrl} target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={14} /></a>}{project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noreferrer">{t(project.id === 'asean-data-2024' ? 'proj_asean_canva_cta' : 'btn_view_live')} <ArrowUpRight size={14} /></a>}<Link to={project.casePath || '/projects'} data-cursor="view">{t('studio_project_details')}<ArrowUpRight size={14} /></Link></div>
           </div>

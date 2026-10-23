@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { ArrowDown, ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { PageShell } from '../components/PageShell'
@@ -7,17 +8,34 @@ import { useArtifactNavigation } from '../hooks/useArtifactNavigation'
 import { useI18n } from '../context/I18nProvider'
 import study from '../data/jomgoCaseStudy.json'
 
-const chapters = ['problem','stakeholders','process','requirements','stories','systems','verification','lifecycle','decisions','value']
+const chapterGroups = [
+  { titleKey: 'case_menu_understand', chapters: ['problem', 'stakeholders', 'process'] },
+  { titleKey: 'case_menu_define', chapters: ['requirements', 'stories', 'systems'] },
+  { titleKey: 'case_menu_verify', chapters: ['verification', 'lifecycle', 'decisions', 'value'] },
+]
 const evidence = ['process','requirements','stories','systems','verification','lifecycle']
 
 export function JomGoCaseStudy() {
   useArtifactNavigation()
   const { t } = useI18n()
+  const [menuOpen, setMenuOpen] = useState(() => matchMedia('(min-width: 761px)').matches)
   return <PageShell className="case-study case-study--document">
     <div className="case-document">
       <aside className="case-document__sidebar">
         <a className="case-document__identity" href="#case-introduction"><strong>JomGo</strong><span>{t('bsa_primary')}</span></a>
-        <nav className="case-nav" aria-label={t('bsa_nav_label')}>{chapters.map(id => <a key={id} href={`#${id}`}>{t(`bsa_${id}`)}</a>)}</nav>
+        <details className="case-document__menu" open={menuOpen} onToggle={event => setMenuOpen(event.currentTarget.open)}>
+          <summary>{t('bsa_nav_label')}</summary>
+          <nav className="case-nav" aria-label={t('bsa_nav_label')}>
+            {chapterGroups.map(group => <div className="case-menu-group" key={group.titleKey}>
+              <h2>{t(group.titleKey)}</h2>
+              {group.chapters.map(id => {
+                const label = t(`bsa_${id}`)
+                const slash = label.indexOf('/')
+                return <a key={id} href={`#${id}`}><span className="case-menu-number">{label.slice(0, slash).trim()}</span><span>{label.slice(slash + 1).trim()}</span></a>
+              })}
+            </div>)}
+          </nav>
+        </details>
       </aside>
       <div className="case-document__content">
     <section className="page-section case-hero" id="case-introduction">
