@@ -10,12 +10,12 @@
   .case-document .case-nav { position: static; display: flex; flex-direction: column; padding: 0; border: 0; background: transparent; overflow: visible; gap: 4px; }
   .case-document .case-nav a { white-space: normal; min-height: 44px; display: flex; align-items: center; line-height: 1.6; padding: 10px 12px; border-left: 2px solid transparent; border-radius: 0; }
   .case-document .case-nav a:hover, .case-document .case-nav a:focus-visible { border-left-color: var(--accent); }
-  .case-document__content > .page-section { padding: 48px clamp(14px, 2vw, 28px); }
+  .case-document__content { padding-inline-start: clamp(14px, 2vw, 28px); }
+  .case-document__content > .page-section { padding: 48px 0; }
   .case-document__content .case-section-heading > p:not(.eyebrow),
   .case-document__content .case-section > p:not(.case-label) {
     text-align: justify;
     text-align-last: start;
-    hyphens: auto;
     overflow-wrap: break-word;
   }
   .case-document__content .case-hero { padding-top: 18px; }
