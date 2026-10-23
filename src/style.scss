@@ -425,7 +425,7 @@ button:disabled { cursor: default; opacity: .55; }
 .portfolio::before, .hero-visual::before { background: none; }
 .home-page > .hero, .contact-block { background-image: none; }
 .site-header { border-bottom-color: transparent; background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: none; }
-.site-header.is-scrolled { background: var(--nav-glass-scrolled); backdrop-filter: blur(12px) saturate(110%); -webkit-backdrop-filter: blur(12px) saturate(110%); box-shadow: inset 0 -1px var(--glass-border); }
+.site-header.is-scrolled { border-bottom: 0; background: var(--nav-glass-scrolled); backdrop-filter: blur(12px) saturate(110%); -webkit-backdrop-filter: blur(12px) saturate(110%); box-shadow: none; }
 .site-header__inner { max-width: none; padding-inline: clamp(18px, 2.2vw, 40px); }
 .site-brand { gap: .65rem; margin-right: auto; }
 .hero { align-items: start; }
@@ -451,3 +451,27 @@ button:disabled { cursor: default; opacity: .55; }
   .hero-profession::after, .hero-editorial > .eyebrow, .hero-copy .hero-title > span { animation: none; }
   .hero-profession::after { display: none; }
 }
+
+/* Chapter rhythm and continuously repeating, low-amplitude motion. */
+.site-header__progress { display: none; }
+.intro-strip { margin-bottom: clamp(24px, 4vw, 64px); padding-bottom: 32px; }
+.ideas-detail { padding: clamp(20px, 3vw, 42px); }
+.ideas-selector button[data-reflection='research'] { background: color-mix(in srgb, var(--text) 4%, var(--bg)); }
+.ideas-selector button[aria-pressed='true'] { border-left-color: var(--accent); background: color-mix(in srgb, var(--accent) 8%, var(--bg)); }
+.ideas-selector button:hover { border-left-color: var(--accent); }
+#home-matters { position: relative; z-index: 1; background: #f3f3f0; }
+[data-theme='dark'] #home-matters { background: #1b242c; }
+#home-ideas { position: relative; z-index: 2; background: var(--bg); min-height: calc(100dvh - 80px); box-shadow: 0 -24px 48px -40px #0003; }
+@media (prefers-reduced-motion: no-preference) {
+  .hero-name, .hero-lede, .hero-facts, .hero-footnote { animation: quiet-terminal 10s ease-in-out infinite; }
+  .hero-name { animation-delay: 1s; }
+  .hero-lede { animation-delay: 3s; }
+  .hero-facts { animation-delay: 5s; }
+  .hero-footnote { animation-delay: 7s; }
+  .home-page .word-accent.is-revealed::after { animation: quiet-terminal 6s ease-in-out infinite; }
+  .home-page .system-connections[data-lens] path { animation-iteration-count: infinite; animation-duration: 3s; }
+  .home-page .system-process li::after { animation-iteration-count: infinite; animation-duration: 3s; }
+  .ideas-detail > .eyebrow { animation: quiet-terminal 8s ease-in-out infinite; }
+}
+@keyframes quiet-terminal { 0%, 12%, 100% { opacity: 1; transform: translateY(0); } 6% { opacity: .82; transform: translateY(-1px); } }
+@media (max-width: 760px) { .ideas-detail { padding: 22px 18px; } }
