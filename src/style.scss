@@ -3,6 +3,7 @@
 @use './styles/experience';
 @use './styles/refinement';
 @use './styles/showcase';
+@use './styles/glass';
 
 @font-face { font-family: 'Outfit'; font-style: normal; font-weight: 400 800; font-display: swap; src: url('/fonts/outfit-latin.woff2') format('woff2'); }
 @font-face { font-family: 'Space Grotesk'; font-style: normal; font-weight: 400 700; font-display: swap; src: url('/fonts/space-grotesk-latin.woff2') format('woff2'); }
@@ -404,3 +405,5 @@ button:disabled { cursor: default; opacity: .55; }
 @include refinement.styles;
 
 @include showcase.styles;
+
+@include glass.styles;

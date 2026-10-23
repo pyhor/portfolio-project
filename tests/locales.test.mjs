@@ -37,6 +37,7 @@ test('literal React translation calls exist in both primary locales', () => {
 test('dynamic system and workflow content is complete in both primary locales', () => {
   const keys = []
   for (const view of ['business', 'build', 'quality']) {
+    keys.push(`glass_${view}_question`)
     for (const suffix of ['', '_tag', '_title', '_output', '_row_0', '_row_1', '_row_2']) keys.push(`system_${view}${suffix}`)
   }
   for (const stage of ['requirements', 'analysis', 'design', 'development', 'testing', 'release']) {

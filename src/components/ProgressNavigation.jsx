@@ -42,7 +42,7 @@ export function ProgressNavigation({ pageProgress = 0 }) {
 
   return (
     <>
-      <header className="site-header">
+      <header className={`site-header${progress > .005 ? ' is-scrolled' : ''}`}>
         <div className="site-header__inner">
           <NavLink to="/" end className="site-brand" aria-label={`pyhor — ${t('nav_home', 'Home')}`}>
             <span className="site-brand__mark" aria-hidden="true">p.</span>

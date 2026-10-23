@@ -649,5 +649,10 @@
   "showcase_vet_preview": "客户端界面 + 管理端界面",
   "showcase_asean_preview": "交通 · 碳排放 · 电动车",
   "showcase_text_preview": "项目概要 / 文字预览",
-  "motion_keywords": "构建|项目|思考|好奇|需求|细节|功能|前行|想法|探索|理解"
+  "motion_keywords": "构建|项目|思考|好奇|需求|细节|功能|前行|想法|探索|理解",
+  "glass_business_question": "我们应该解决什么问题？",
+  "glass_build_question": "我们应该如何实现？",
+  "glass_quality_question": "如何确认它符合预期？",
+  "glass_pause": "暂停自动切换视角",
+  "glass_resume": "继续自动切换视角"
 }
