@@ -542,6 +542,7 @@
   "ref_copyright": "© {{year}} Pei Yu Hor.",
   "optional_study": "A small interaction experiment",
   "optional_study_action": "Discover 3D",
+  "system_explore_label": "Explore interactive section",
   "optional_study_note": "An optional study in responsive feedback. Drag horizontally to rotate; scroll vertically as usual. The portfolio works fully without it.",
   "scene_figure": "FIG. 01",
   "engineering_intro": "A system can be functional without being forgettable. The interesting part is how clearly it responds to people.",

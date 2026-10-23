@@ -9,7 +9,7 @@ const VIEWS = [
   { id: 'quality', icon: ShieldCheck, title: 'Make the outcome reliable', output: 'A tested, usable experience', rows: ['Check the happy path', 'Test edge cases and devices', 'Verify against requirements'], tag: 'QUALITY ASSURANCE' },
 ]
 
-export function SystemOverview({ onExplore, studyOpen }) {
+export function SystemOverview() {
   const { t } = useI18n()
   const root = useRef(null)
   const tabs = useRef([])
@@ -35,7 +35,7 @@ export function SystemOverview({ onExplore, studyOpen }) {
     const next = keys[event.key]
     choose(next); tabs.current[next]?.focus()
   }
-  const explore = <button type="button" className="system-explore" onClick={onExplore} aria-label={t('optional_study_action')} aria-controls="approach-experiment" aria-expanded={studyOpen} data-cursor="explore"><ArrowUpRight size={18} aria-hidden="true" /></button>
+  const explore = <a href="#home-playground" className="system-explore" aria-label={t('system_explore_label', 'Explore interactive section')} data-cursor="explore"><ArrowUpRight size={18} aria-hidden="true" /></a>
   return <div className="system-overview" ref={root} data-running={cycle.running}>
     <div className="system-overview__meta"><span><i /> {t('system_way_i_think')}</span><span className="system-index" key={active}>0{active + 1} — 03</span></div>
     <div className="system-desk">

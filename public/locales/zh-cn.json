@@ -542,6 +542,7 @@
   "ref_copyright": "© {{year}} Pei Yu Hor。",
   "optional_study": "一个小型交互实验",
   "optional_study_action": "探索 3D",
+  "system_explore_label": "探索互动区域",
   "optional_study_note": "这是一项可选的交互反馈实验。水平拖动可旋转，垂直滑动可正常滚动页面。不打开它，也能完整浏览作品集。",
   "scene_figure": "图 01",
   "engineering_intro": "系统可以实用，也可以令人印象深刻。关键在于，它能否清楚地回应用户的每一步操作。",
