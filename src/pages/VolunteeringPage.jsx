@@ -1,3 +1,4 @@
+import { YearTimeline } from '../components/YearTimeline'
 import { HeartHandshake } from 'lucide-react'
 import { PageShell } from '../components/PageShell'
 import { useI18n } from '../context/I18nProvider'
@@ -6,6 +7,7 @@ const Box = 'd' + 'iv'
 
 const ROLES = [
   {
+    id: 'volunteer-education', endDate: '2024-02',
     titleKey: 'vol_1_title',
     orgKey: 'vol_1_org',
     periodKey: 'vol_1_period',
@@ -13,6 +15,7 @@ const ROLES = [
     bullets: ['vol_1_b1', 'vol_1_b2', 'vol_1_b3', 'vol_1_b4'],
   },
   {
+    id: 'volunteer-community', endDate: '2024-07',
     titleKey: 'vol_2_title',
     orgKey: 'vol_2_org',
     periodKey: 'vol_2_period',
@@ -25,7 +28,7 @@ export function VolunteeringPage() {
   const { t } = useI18n()
 
   return (
-    <PageShell>
+    <PageShell className="volunteering-page chronology-page">
       <section className="page-section">
         <Box className="section-kicker reveal">
           <HeartHandshake size={16} />
@@ -35,9 +38,9 @@ export function VolunteeringPage() {
         <p className="page-lede reveal">{t('volunteering_lede', '')}</p>
       </section>
 
-      <Box className="vol-grid">
-        {ROLES.map((role) => (
-          <article key={role.titleKey} className="vol-card glass-panel float-card reveal">
+      <section className="page-section chronology-section">
+        <YearTimeline items={ROLES} idPrefix="volunteer-year" renderItem={role => (
+          <article key={role.titleKey} className="vol-card timeline-entry glass-panel">
             <span className="vol-card__category">{t(role.categoryKey, '')}</span>
             <h2>{t(role.titleKey, '')}</h2>
             <p className="vol-card__org">{t(role.orgKey, '')}</p>
@@ -48,8 +51,8 @@ export function VolunteeringPage() {
               ))}
             </ul>
           </article>
-        ))}
-      </Box>
+        )} />
+      </section>
     </PageShell>
   )
 }

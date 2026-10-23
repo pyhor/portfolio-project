@@ -38,11 +38,11 @@ export function WhyMeSummary() {
         <span>{t('why_me_kicker', 'Why me')}</span>
       </Box>
       <article className="why-me__card panel-card glass-panel reveal">
-        <h2 className="why-me__title">{t('why_me_heading', 'About me, in one breath')}</h2>
-        <p className="why-me__lead">{t('why_me_p1', '')}</p>
-        <p className="why-me__lead">{t('why_me_p2', '')}</p>
-        <p className="why-me__lead">{t('why_me_qa', '')}</p>
-        <p className="why-me__lead">{t('why_me_p3', '')}</p>
+        <h2 className="why-me__title">{t('about_choose_heading')}</h2>
+        <p className="why-me__lead">{t('about_choose_intro')}</p>
+        <div className="about-benefit-grid">{['business', 'quality', 'team'].map(id => <article key={id}>
+          <h3>{t(`about_benefit_${id}_title`)}</h3><p>{t(`about_benefit_${id}_body`)}</p>
+        </article>)}</div>
         <ValueHighlights keys={PERSONAL_VALUE_KEYS} className="value-highlights--compact" />
         {!loading && (
           <Box className="why-me__stats" aria-label={t('github_highlights', 'GitHub highlights')}>

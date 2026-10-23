@@ -1,3 +1,4 @@
+import { YearTimeline } from '../components/YearTimeline'
 import { GraduationCap } from 'lucide-react'
 import { PageShell } from '../components/PageShell'
 import { useI18n } from '../context/I18nProvider'
@@ -6,6 +7,7 @@ const Box = 'd' + 'iv'
 
 const DEGREES = [
   {
+    id: 'bachelors', endDate: '2025-07',
     schoolKey: 'edu_1_school',
     degreeKey: 'edu_1_degree',
     periodKey: 'edu_1_period',
@@ -15,6 +17,7 @@ const DEGREES = [
     subjectKeys: ['edu_1_s1'],
   },
   {
+    id: 'diploma', endDate: '2023-06',
     schoolKey: 'edu_2_school',
     degreeKey: 'edu_2_degree',
     periodKey: 'edu_2_period',
@@ -27,7 +30,7 @@ export function EducationPage() {
   const { t } = useI18n()
 
   return (
-    <PageShell>
+    <PageShell className="education-page chronology-page">
       <section className="page-section">
         <Box className="section-kicker reveal">
           <GraduationCap size={16} />
@@ -37,9 +40,9 @@ export function EducationPage() {
         <p className="page-lede reveal">{t('education_lede', '')}</p>
       </section>
 
-      <Box className="edu-grid">
-        {DEGREES.map((degree) => (
-          <article key={degree.schoolKey} className="edu-card glass-panel float-card reveal">
+      <section className="page-section chronology-section">
+        <YearTimeline items={DEGREES} idPrefix="education-year" renderItem={degree => (
+          <article key={degree.schoolKey} className="edu-card timeline-entry glass-panel">
             <h2>{t(degree.schoolKey, '')}</h2>
             <p className="edu-card__degree">{t(degree.degreeKey, '')}</p>
             <p className="edu-card__period">{t(degree.periodKey, '')}</p>
@@ -62,8 +65,8 @@ export function EducationPage() {
               </Box>
             )}
           </article>
-        ))}
-      </Box>
+        )} />
+      </section>
     </PageShell>
   )
 }

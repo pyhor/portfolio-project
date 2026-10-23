@@ -1,3 +1,4 @@
+import { LanguageGreetings } from '../components/LanguageGreetings'
 import { Globe, Sparkles } from 'lucide-react'
 import { WhyMeSummary } from '../components/WhyMeSummary'
 import { PageShell } from '../components/PageShell'
@@ -6,19 +7,12 @@ import { useI18n } from '../context/I18nProvider'
 
 const Box = 'd' + 'iv'
 
-const LANGUAGE_KEYS = [
-  'lang_english',
-  'lang_malay',
-  'lang_zh_cn',
-  'lang_zh_tw',
-  'lang_cantonese',
-]
 
 export function AboutPage() {
   const { t } = useI18n()
 
   return (
-    <PageShell>
+    <PageShell className="about-page">
       <section className="page-section">
         <Box className="section-kicker reveal">
           <Sparkles size={16} />
@@ -42,16 +36,10 @@ export function AboutPage() {
           <span>{t('languages_kicker', 'Languages')}</span>
         </Box>
         <h2 className="section-title reveal">{t('languages_heading', 'Languages I know')}</h2>
-        <ul className="language-grid">
-          {LANGUAGE_KEYS.map((key) => (
-            <li key={key} className="language-chip glass-panel float-card reveal">
-              {t(key, key)}
-            </li>
-          ))}
-        </ul>
+        <LanguageGreetings />
       </section>
       <section className="page-section"><WhyMeSummary /></section>
-      <section className="page-section"><p className="eyebrow">{t('matters_kicker', 'Why my work matters')}</p><h2 className="section-title">{t('matters_heading', 'Real proof, not just claims')}</h2><p className="page-lede">{t('matters_lede', '')}</p><div className="proof-grid">{[1, 2, 3, 4, 5, 6].map(index => <article className="glass-panel panel-card" key={index}><h3>{t(`matters_${index}_title`, '')}</h3><p>{t(`matters_${index}_desc`, '')}</p>{index < 3 && <p>{t(`matters_${index}_examples`, '')}</p>}</article>)}</div></section>
+      <section className="page-section about-proof"><p className="eyebrow">{t('matters_kicker', 'Why my work matters')}</p><h2 className="section-title">{t('matters_heading', 'Real proof, not just claims')}</h2><p className="page-lede">{t('matters_lede', '')}</p><div className="proof-grid">{[1, 2, 3, 4, 5, 6].map(index => <article className="glass-panel panel-card" key={index}><h3>{t(`matters_${index}_title`, '')}</h3><p>{t(`matters_${index}_desc`, '')}</p>{index < 3 && <p>{t(`matters_${index}_examples`, '')}</p>}</article>)}</div></section>
     </PageShell>
   )
 }

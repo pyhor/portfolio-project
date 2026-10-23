@@ -27,7 +27,7 @@ export function ProjectsPage() {
   const github = useGithubData(12)
 
   return (
-    <PageShell>
+    <PageShell className="projects-page">
       <section className="page-section">
         <Box className="section-kicker reveal">
           <Layers3 size={16} />

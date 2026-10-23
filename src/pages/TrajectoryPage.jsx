@@ -26,7 +26,6 @@ function TimelineTrack({ items }) {
                 <span className="timeline-node__category">{t(item.category === 'work' ? 'traj_category_work' : 'traj_category_coding', '')}</span>
                 {(item.endDate.length > 4 || item.startDate !== item.endDate) && <time dateTime={item.endDate}>{t(item.periodKey, '')}</time>}
                 {item.id === SORTED_JOURNEY[0]?.id && <span className="timeline-node__latest">{t('traj_most_recent', '')}</span>}
-                {item.ageKey && <span className="timeline-node__age">{t(item.ageKey, '')}</span>}
               </Box>
               <div className="timeline-node__content">
               <h3>{t(item.titleKey, '')}</h3>

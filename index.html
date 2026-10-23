@@ -15,7 +15,7 @@
     <script>
       ;(function () {
         var stored
-        try { stored = localStorage.getItem('theme') } catch (e) {}
+        try { stored = sessionStorage.getItem('theme') } catch (e) {}
         var theme = stored === 'dark' || stored === 'light' ? stored : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
         document.documentElement.style.colorScheme = theme
         document.documentElement.setAttribute('data-theme', theme)
