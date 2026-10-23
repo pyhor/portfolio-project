@@ -1077,5 +1077,8 @@
   "home_hotel_benefit": "Helps guests find information and take the next step toward an enquiry.",
   "home_cinema_benefit": "Connects customer tasks and administration in one system.",
   "home_vet_benefit": "Organizes client and admin tasks around a shared workflow.",
-  "home_asean_benefit": "Turns transport evidence into a clearer basis for discussion."
+  "home_asean_benefit": "Turns transport evidence into a clearer basis for discussion.",
+  "home_project_details_short": "Details",
+  "home_project_live_short": "Live demo",
+  "home_project_presentation_short": "Presentation"
 }

@@ -25,3 +25,14 @@ export function sortTimelineNewestFirst(items) {
     .sort((a, b) => a.date === b.date ? a.index - b.index : b.date - a.date)
     .map(({ item }) => item)
 }
+
+export function groupTimelineByYear(items) {
+  const groups = new Map()
+  for (const item of sortTimelineNewestFirst(items)) {
+    const date = item.ongoing ? item.startDate : item.endDate
+    const year = dateSortValue(date) === null ? '—' : date.slice(0, 4)
+    if (!groups.has(year)) groups.set(year, { year, items: [] })
+    groups.get(year).items.push(item)
+  }
+  return [...groups.values()]
+}

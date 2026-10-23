@@ -18,52 +18,34 @@ export function useChapterMotion(dependency) {
         })
       }, { threshold: .45 })
       words.forEach(word => observer.observe(word))
-      const coverChapter = (previous, incoming) => {
+      const pinnedChapters = []
+      const coverChapter = (previous, incoming, fade = false) => {
         if (!previous || !incoming) return
+        pinnedChapters.push(previous)
         ScrollTrigger.create({
           trigger: previous,
-          // Read taller content first, then hold its entire colored surface.
-          start: () => previous.offsetHeight > innerHeight + 1 ? 'bottom bottom' : 'top top',
+          // Let taller chapters be read before holding them behind the next chapter.
+          start: () => previous.offsetHeight > innerHeight ? 'bottom bottom' : 'top top',
           endTrigger: incoming, end: 'top top',
-          pin: previous, pinSpacing: false, invalidateOnRefresh: true,
-          anticipatePin: 1,
+          pin: previous, pinSpacing: false, invalidateOnRefresh: true, anticipatePin: 1,
+          onUpdate: self => { previous.inert = self.progress >= .999 },
         })
-        gsap.fromTo(incoming, { opacity: .65 }, {
+        if (fade) gsap.fromTo(incoming, { opacity: .65 }, {
           opacity: 1, ease: 'none', scrollTrigger: {
             trigger: incoming, start: 'top bottom', end: 'top 55%', scrub: true,
             invalidateOnRefresh: true,
           },
         })
       }
-      coverChapter(page.querySelector('#home-matters'), page.querySelector('#home-ideas'))
-      const ending = page.querySelector('.home-ending__stage')
-      const contact = page.querySelector('#home-contact')
-      const journey = page.querySelector('#home-journey')
-      let finishContact
-      if (ending && contact && journey) {
-        // Read all of a tall journey before pinning. Offset contact to the viewport top.
-        const measureOffset = () => {
-          const offset = Math.max(0, journey.offsetHeight - innerHeight)
-          ending.style.setProperty('--contact-offset', `${offset}px`)
-          return offset
-        }
-        measureOffset()
-        const revealContact = gsap.fromTo(contact, { y: () => -contact.offsetHeight - measureOffset() }, {
-          y: 0, ease: 'none', scrollTrigger: {
-            trigger: ending, start: () => `top top-=${measureOffset()}`, end: () => `+=${innerHeight}`,
-            pin: ending, scrub: true, invalidateOnRefresh: true, anticipatePin: 1,
-            onRefreshInit: measureOffset,
-            onUpdate: self => { journey.inert = self.progress >= .999 },
-          },
-        })
-        // Keyboard access to contact must finish the cover before showing a focused field.
-        finishContact = () => {
-          const trigger = revealContact.scrollTrigger
-          if (trigger.progress < 1) { trigger.scroll(trigger.end); ScrollTrigger.update() }
-        }
-        contact.addEventListener('focusin', finishContact)
+      coverChapter(page.querySelector('#home-matters'), page.querySelector('#home-ideas'), true)
+      coverChapter(page.querySelector('#home-playground'), page.querySelector('#home-why'))
+      // Natural document flow brings the solid contact panel upward from below 07.
+      coverChapter(page.querySelector('#home-journey'), page.querySelector('#home-contact'))
+      return () => {
+        observer.disconnect()
+        pinnedChapters.forEach(chapter => { chapter.inert = false })
+        words.forEach(word => word.classList.remove('is-revealed'))
       }
-      return () => { observer.disconnect(); if (finishContact) contact.removeEventListener('focusin', finishContact); if (journey) journey.inert = false; ending?.style.removeProperty('--contact-offset'); words.forEach(word => word.classList.remove('is-revealed')) }
     })
     return () => media.revert()
   }, [dependency])

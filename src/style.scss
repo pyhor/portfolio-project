@@ -676,3 +676,62 @@ button:disabled { cursor: default; opacity: .55; }
   .case-study--document .case-document__menu > summary::before { content: '☰'; }
   .case-study--document .case-document__menu[open] .case-nav { padding-top: 16px; }
 }
+/* Compact chapters and a tighter opening, sized around their content. */
+.portfolio-main:has(.home-page), .portfolio-main:has(.trajectory-page) { padding-top: 80px; }
+.home-page > .hero { padding-top: 24px; }
+.home-page .hero-editorial > .eyebrow { margin-bottom: 20px; }
+.home-page .hero-name { margin-bottom: 16px; }
+.home-page .hero-profession { min-height: 1.65em; max-width: none; margin-bottom: 14px; }
+.home-page .hero-title { margin-bottom: 16px; }
+.home-page .hero-lede { margin-bottom: 18px; }
+.home-page #home-matters, .home-page #home-journey {
+  min-height: 0; padding-top: 96px; padding-bottom: 40px; justify-content: flex-start;
+}
+.home-page #home-matters > *, .home-page #home-journey > * { width: 100%; max-width: 1120px; margin-inline: auto; }
+.home-ending__stage { display: block; overflow: visible; }
+.home-ending__stage > #home-contact { margin-top: 0; }
+:root:not([data-theme='dark']), [data-theme='light'] { --about-bg: #f1ede6; }
+[data-theme='dark'] { --about-bg: #2c2722; }
+.home-page #home-why { position: relative; z-index: 7; background: var(--about-bg); }
+.contact-block .contact-support .contact-card.glass-panel { min-height: 0; padding: 18px 20px; }
+.contact-block .contact-card .contact-card__icon { margin-bottom: 0; }
+.contact-block .contact-card h3 { margin: 10px 0 12px; }
+.home-page .showcase-project__body { padding: 20px; }
+.home-page .showcase-project h3 { font-size: 30px; margin-block: 12px; }
+.home-page .showcase-project__body > p { min-height: 0; margin-bottom: 10px; }
+.home-page .showcase-project__body > .tech-stack { margin-top: 0; padding-top: 4px; }
+.home-page .showcase-project__links { margin-top: auto; padding-top: 8px; gap: 4px 14px; }
+/* Equal side gutters and a visible chapter menu with clearer type. */
+.case-study--document { --gutter: clamp(18px, 2.2vw, 36px); }
+.case-study--document .case-document { grid-template-columns: 200px minmax(0, 1fr); gap: 28px; }
+.case-study--document .case-nav a { font-size: 13px; line-height: 1.5; min-height: 36px; }
+.case-study--document .case-menu-group h2 { font-size: 17px; }
+.case-menu-caption { font-size: 12px; margin-bottom: 14px; }
+/* Years sit outside the cards and stay with their experiences as the page scrolls. */
+.trajectory-page > .back-home { margin: 4px var(--gutter) 0; }
+.trajectory-page > .page-section:first-of-type { padding-top: 16px; padding-bottom: 24px; }
+.trajectory-page > .page-section:nth-of-type(2) { padding-top: 24px; }
+.trajectory-page .page-title { font-size: clamp(38px, 4.4vw, 64px); }
+.timeline-years { margin-top: 32px; max-width: 1200px; }
+.timeline-year { display: grid; grid-template-columns: 110px minmax(0, 1fr); align-items: start; gap: 32px; margin-bottom: 40px; }
+.timeline-year__label { position: sticky; top: 100px; margin: 0; padding-top: 20px; font: 500 38px/1.2 var(--font-display); color: var(--accent); }
+.trajectory-page .timeline-track { margin: 0; width: 100%; }
+.trajectory-page .timeline-node { padding-bottom: 16px; }
+.trajectory-page .timeline-node__card { grid-template-columns: .55fr 1.45fr; padding: 28px; }
+@media (max-width: 760px) {
+  .case-study--document .case-document { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .case-study--document .case-document__sidebar { position: static; max-height: 300px; overflow-y: auto; }
+  .case-study--document .case-document__identity { max-width: none; }
+  .case-study--document .case-nav a { min-height: 44px; }
+  .home-page #home-matters, .home-page #home-journey { padding-top: 80px; padding-bottom: 32px; }
+  .timeline-year { grid-template-columns: 1fr; gap: 16px; margin-bottom: 28px; }
+  .timeline-year__label { position: static; font-size: 32px; padding-top: 0; }
+  .trajectory-page .timeline-track { padding-left: 18px; }
+  .trajectory-page .timeline-node { padding-left: 0; }
+  .trajectory-page .timeline-node__dot { left: -24px; }
+  .trajectory-page .timeline-node__card { display: block; padding: 22px; }
+}
+@media (max-width: 640px) {
+  .portfolio-main:has(.home-page), .portfolio-main:has(.trajectory-page) { padding-top: 64px; }
+}
+.page-shell.trajectory-page > .page-section:first-of-type { padding-top: 16px; padding-bottom: 24px; }

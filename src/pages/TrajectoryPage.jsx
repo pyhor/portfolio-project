@@ -3,28 +3,29 @@ import { PageShell } from '../components/PageShell'
 import { TechStackBadges } from '../components/TechStackBadges'
 import { useI18n } from '../context/I18nProvider'
 import { JOURNEY_ITEMS } from '../data/timeline'
-import { sortTimelineNewestFirst } from '../lib/timeline'
+import { groupTimelineByYear, sortTimelineNewestFirst } from '../lib/timeline'
 
 const Box = 'd' + 'iv'
 
 const SORTED_JOURNEY = sortTimelineNewestFirst(JOURNEY_ITEMS)
+const YEAR_GROUPS = groupTimelineByYear(JOURNEY_ITEMS)
 
 function TimelineTrack({ items }) {
   const { t } = useI18n()
 
   return (
     <ol className="timeline-track">
-      {items.map((item, index) => {
+      {items.map(item => {
         const Icon = item.category === 'work' ? Briefcase : Code2
         return (
-          <li key={item.id} className={`timeline-node timeline-reveal${index === 0 ? ' timeline-node--latest' : ''}`}>
+          <li key={item.id} className={`timeline-node timeline-reveal${item.id === SORTED_JOURNEY[0]?.id ? ' timeline-node--latest' : ''}`}>
             <span className="timeline-node__dot" aria-hidden="true" />
             <article className="timeline-node__card glass-panel float-card">
               <Box className="timeline-node__meta">
                 <Icon size={16} aria-hidden="true" />
                 <span className="timeline-node__category">{t(item.category === 'work' ? 'traj_category_work' : 'traj_category_coding', '')}</span>
-                <time dateTime={item.endDate}>{t(item.periodKey, '')}</time>
-                {index === 0 && <span className="timeline-node__latest">{t('traj_most_recent', '')}</span>}
+                {(item.endDate.length > 4 || item.startDate !== item.endDate) && <time dateTime={item.endDate}>{t(item.periodKey, '')}</time>}
+                {item.id === SORTED_JOURNEY[0]?.id && <span className="timeline-node__latest">{t('traj_most_recent', '')}</span>}
                 {item.ageKey && <span className="timeline-node__age">{t(item.ageKey, '')}</span>}
               </Box>
               <div className="timeline-node__content">
@@ -89,7 +90,7 @@ export function TrajectoryPage() {
   const { t } = useI18n()
 
   return (
-    <PageShell>
+    <PageShell className="trajectory-page">
       <section className="page-section">
         <Box className="section-kicker reveal">
           <Route size={16} />
@@ -104,7 +105,10 @@ export function TrajectoryPage() {
           <Route size={28} className="inline-icon" aria-hidden="true" /> {t('trajectory_journey_title', '')}
         </h2>
         <p className="timeline-order-note reveal">{t('trajectory_order_note', '')}</p>
-        <TimelineTrack items={SORTED_JOURNEY} />
+        <div className="timeline-years">{YEAR_GROUPS.map(group => <section className="timeline-year" key={group.year} aria-labelledby={`year-${group.year}`}>
+          <h3 className="timeline-year__label timeline-reveal" id={`year-${group.year}`}><time dateTime={group.year}>{group.year}</time></h3>
+          <TimelineTrack items={group.items} />
+        </section>)}</div>
       </section>
     </PageShell>
   )

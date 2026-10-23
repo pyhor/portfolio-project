@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { ArrowDown, ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { PageShell } from '../components/PageShell'
@@ -18,13 +17,12 @@ const evidence = ['process','requirements','stories','systems','verification','l
 export function JomGoCaseStudy() {
   useArtifactNavigation()
   const { t } = useI18n()
-  const [menuOpen, setMenuOpen] = useState(() => matchMedia('(min-width: 761px)').matches)
   return <PageShell className="case-study case-study--document">
     <div className="case-document">
       <aside className="case-document__sidebar">
         <a className="case-document__identity" href="#case-introduction"><strong>JomGo</strong><span>{t('bsa_primary')}</span></a>
-        <details className="case-document__menu" open={menuOpen} onToggle={event => setMenuOpen(event.currentTarget.open)}>
-          <summary>{t('bsa_nav_label')}</summary>
+        <div className="case-document__menu">
+          <p className="case-menu-caption">{t('bsa_nav_label')}</p>
           <nav className="case-nav" aria-label={t('bsa_nav_label')}>
             {chapterGroups.map(group => <div className="case-menu-group" key={group.titleKey}>
               <h2>{t(group.titleKey)}</h2>
@@ -35,7 +33,7 @@ export function JomGoCaseStudy() {
               })}
             </div>)}
           </nav>
-        </details>
+        </div>
       </aside>
       <div className="case-document__content">
     <section className="page-section case-hero" id="case-introduction">
