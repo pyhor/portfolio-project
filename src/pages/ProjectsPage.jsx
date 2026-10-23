@@ -44,6 +44,9 @@ export function ProjectsPage() {
         <CaseStudyTeaser />
         <h2 className="section-title reveal">{t('projects_featured_title', 'Featured builds')}</h2>
         <Box className="featured-projects-stack">
+          {[...FEATURED_PROJECTS].reverse().map((project, index) => (
+            <FeaturedProjectCard key={project.id} project={project} index={index} />
+          ))}
           <article className="project-feature glass-panel page-section">
             <span className="project-feature__meta">{t('proj_asean_meta', '')}</span>
             <h2>{t('proj_asean_title', '')}</h2>
@@ -78,9 +81,6 @@ export function ProjectsPage() {
               </Magnetic>
             </Box>
           </article>
-          {FEATURED_PROJECTS.map((project, index) => (
-            <FeaturedProjectCard key={project.id} project={project} index={index} />
-          ))}
         </Box>
       </section>
 

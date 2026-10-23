@@ -33,6 +33,6 @@ const projects = [
   },
 ]
 
-// Current systems case first, then documented project years (newest first).
-const chronologicalOrder = ['jomgo', 'vet-mgmt-system-2024', 'asean-data-2024', 'hotel-website-2023', 'cinema-mgmt-system-2020']
+// Oldest documented work first, progressing to the current systems case.
+const chronologicalOrder = ['cinema-mgmt-system-2020', 'hotel-website-2023', 'asean-data-2024', 'vet-mgmt-system-2024', 'jomgo']
 export const SHOWCASE_PROJECTS = [...projects].sort((a, b) => chronologicalOrder.indexOf(a.id) - chronologicalOrder.indexOf(b.id))
