@@ -48,8 +48,8 @@ export function useChapterMotion(dependency) {
           return offset
         }
         measureOffset()
-        const revealContact = gsap.fromTo(contact, { xPercent: -100, opacity: 0 }, {
-          xPercent: 0, opacity: 1, ease: 'none', scrollTrigger: {
+        const revealContact = gsap.fromTo(contact, { xPercent: -100 }, {
+          xPercent: 0, ease: 'none', scrollTrigger: {
             trigger: ending, start: () => `top top-=${measureOffset()}`, end: () => `+=${innerHeight}`,
             pin: ending, scrub: true, invalidateOnRefresh: true, anticipatePin: 1,
             onRefreshInit: measureOffset,

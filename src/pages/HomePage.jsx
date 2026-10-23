@@ -51,7 +51,7 @@ export function HomePage() {
       <BusinessWorkflow />
       <InnovationSection />
 
-      <section className="page-section capabilities-chapter" id="home-build"><div className="section-heading"><div><p className="eyebrow">04 — {t('studio_capabilities', 'WHAT I BRING')}</p><h2 className="section-title"><AccentText>{t('ref_capabilities_heading', 'From a clear requirement to a usable result.')}</AccentText></h2></div></div><div className="value-grid">{CAPABILITIES.map(({ icon: Icon, id, titleKey }, i) => <article key={id} className="value-card"><div className="value-card__top"><Icon size={25} strokeWidth={1.4} /><span>0{i + 1}</span></div><h3>{t(titleKey, '')}</h3><p>{t(`home_capability_${id}`)}</p><div className="capability-evidence"><Link to={id === 'quality' ? '/trajectory' : '/projects/jomgo'} className="text-link">{t('bsa_evidence')} <ArrowUpRight size={14} /></Link></div></article>)}</div></section>
+      <section className="page-section capabilities-chapter" id="home-build"><div className="section-heading"><div><p className="eyebrow">04 — {t('studio_capabilities', 'WHAT I BRING')}</p><h2 className="section-title"><AccentText>{t('ref_capabilities_heading', 'From a clear requirement to a usable result.')}</AccentText></h2></div><p className="section-heading__note">{t('home_capabilities_intro')}</p></div><div className="value-grid">{CAPABILITIES.map(({ icon: Icon, id, titleKey }, i) => <article key={id} className="value-card"><div className="value-card__top"><Icon size={25} strokeWidth={1.4} /><span>0{i + 1}</span></div><h3>{t(titleKey, '')}</h3><p>{t(`home_capability_${id}`)}</p><div className="capability-evidence"><Link to={id === 'quality' ? '/trajectory' : '/projects/jomgo'} className="text-link">{t('bsa_evidence')} <ArrowUpRight size={14} /></Link></div></article>)}</div></section>
 
       <EngineeringStudy />
       <section className="page-section home-about" id="home-why">
@@ -60,7 +60,7 @@ export function HomePage() {
       </section>
 
       <div className="home-ending"><div className="home-ending__stage">
-      <section className="page-section" id="home-journey"><div className="section-heading"><div><p className="eyebrow">07 — {t('studio_beyond', 'BEYOND THE CODE')}</p><h2 className="section-title"><AccentText>{t('studio_journey_heading', 'Always moving forward.')}</AccentText></h2></div></div><div className="journey-grid">
+      <section className="page-section" id="home-journey"><div className="section-heading"><div><p className="eyebrow">07 — {t('studio_beyond', 'BEYOND THE CODE')}</p><h2 className="section-title"><AccentText>{t('studio_journey_heading', 'Always moving forward.')}</AccentText></h2></div><p className="section-heading__note">{t('home_journey_intro')}</p></div><div className="journey-grid">
         <HomeSectionPreview id="home-trajectory" to="/trajectory" icon={Route} kickerKey="trajectory_kicker" titleKey="nav_trajectory" descKey="home_trajectory_intro" />
         <HomeSectionPreview id="home-education" to="/education" icon={GraduationCap} kickerKey="education_kicker" titleKey="nav_education" descKey="home_education_intro" />
         <HomeSectionPreview id="home-volunteering" to="/volunteering" icon={HeartHandshake} kickerKey="volunteering_kicker" titleKey="nav_volunteering" descKey="home_volunteering_intro" />
