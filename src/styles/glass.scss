@@ -47,6 +47,8 @@
   .system-explore:hover, .lens-pause:hover { background: var(--glass-1); border-color: var(--glass-border); color: var(--accent); }
   .system-explore:hover svg { transform: translate(2px, -2px); }
   .system-explore:active { background: var(--accent-soft); }
+  // Adds breathing room to the existing responsive header scroll-padding.
+  #home-playground { scroll-margin-top: 16px; }
   .system-overview__foot { gap: 5px; }
   .system-overview__foot > span { margin-right: auto; }
   .system-index { font-variant-numeric: tabular-nums; white-space: nowrap; animation: lens-reveal .3s both; }
@@ -97,6 +99,7 @@
     .site-header .theme-toggle, .site-header .language-select { display: none; }
     .site-menu-trigger > span { display: inline; }
     .nav-dialog { inset: 84px 12px auto; width: calc(100% - 24px); max-height: calc(100dvh - 96px); }
+    .hero-visual::before { inset: 8% 0 15%; transform: translateY(8px); }
     .system-desk { -webkit-backdrop-filter: none; backdrop-filter: none; }
     .system-desk__header { padding: 22px 18px 16px; }
     .system-view-switch, .system-connections { margin-inline: 18px; }
