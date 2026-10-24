@@ -1,114 +1,67 @@
 import { useEffect, useRef, useState } from 'react'
-import { ArrowLeft, ArrowRight, ArrowUpRight, Pause, Play } from 'lucide-react'
+import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { SHOWCASE_PROJECTS } from '../data/showcaseProjects'
 import { useI18n } from '../context/I18nProvider'
 import { TechStackBadges } from './TechStackBadges'
-import { loopCardWidth, loopPosition } from '../lib/showcase'
+import { projectWheelStep } from '../lib/projectScroll'
 
 const PROJECT_COPY = { jomgo: 'jomgo', 'hotel-website-2023': 'hotel', 'cinema-mgmt-system-2020': 'cinema', 'vet-mgmt-system-2024': 'vet', 'asean-data-2024': 'asean' }
 
 export function ProjectShowcase() {
-  const { t, lang } = useI18n()
+  const { t } = useI18n()
   const viewportRef = useRef(null)
-  const phaseRef = useRef(0)
-  const controlsRef = useRef(null)
-  const [paused, setPaused] = useState(false)
-
+  const indexRef = useRef(0)
+  const wheelRef = useRef({ index: 0, lastEventAt: -Infinity, direction: 0, handled: false })
+  const [active, setActive] = useState(0)
+  const count = SHOWCASE_PROJECTS.length
+  const stride = () => viewportRef.current.clientWidth + 24
+  const browse = index => {
+    const next = Math.max(0, Math.min(count - 1, index))
+    indexRef.current = next
+    wheelRef.current.index = next
+    setActive(next)
+    viewportRef.current.scrollTo({ left: next * stride(), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' })
+  }
+  const syncActive = () => {
+    const index = Math.max(0, Math.min(count - 1, Math.round(viewportRef.current.scrollLeft / stride())))
+    indexRef.current = index
+    setActive(index)
+  }
   useEffect(() => {
     const viewport = viewportRef.current
-    const root = viewport.parentElement
-    const track = viewport.firstElementChild
-    const cards = [...track.children]
-    const media = matchMedia('(min-width: 1025px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)')
-    let frame = 0, last = 0, stride = 1, gutter = 0, visible = false
-    let focused = root.contains(document.activeElement), pointerInput = false
-    const paint = () => cards.forEach((card, index) => {
-      card.style.transform = `translate3d(${loopPosition(index, phaseRef.current, stride, cards.length, gutter)}px,0,0)`
-    })
-    const stop = () => { cancelAnimationFrame(frame); frame = 0; last = 0; viewport.dataset.running = 'false' }
-    const animate = (time) => {
-      if (last) phaseRef.current = (phaseRef.current + Math.min(time - last, 48) * .023) % (stride * cards.length)
-      last = time
-      paint()
-      frame = requestAnimationFrame(animate)
-    }
-    const sync = () => {
-      if (media.matches && visible && !paused && !focused && !document.hidden) {
-        viewport.dataset.running = 'true'
-        if (!frame) frame = requestAnimationFrame(animate)
-      } else stop()
-    }
-    const measure = () => {
-      viewport.classList.toggle('is-looping', media.matches)
-      cards.forEach(card => {
-        if (media.matches) card.style.width = `${loopCardWidth(viewport.clientWidth, cards.length, 24, 560)}px`
-        else card.style.removeProperty('width')
-      })
-      cards.forEach(card => { card.style.height = '' })
-      const height = Math.ceil(Math.max(...cards.map(card => card.getBoundingClientRect().height)))
-      cards.forEach(card => { card.style.height = `${height}px` })
-      if (media.matches) {
-        stride = cards[0].offsetWidth + 24
-        gutter = parseFloat(getComputedStyle(viewport).paddingLeft) || 0
-        track.style.height = `${Math.max(...cards.map(card => card.offsetHeight))}px`
-        paint()
-      } else {
-        track.style.removeProperty('height')
-        cards.forEach(card => card.style.removeProperty('transform'))
+    const wheel = event => {
+      if (event.ctrlKey) return
+      const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY
+      const now = performance.now()
+      if (now - wheelRef.current.lastEventAt > 220) wheelRef.current.index = indexRef.current
+      const previous = wheelRef.current.index
+      const next = projectWheelStep(wheelRef.current, delta, now, count)
+      wheelRef.current = next
+      if (next.consume) event.preventDefault()
+      if (next.index !== previous) {
+        indexRef.current = next.index
+        setActive(next.index)
+        viewport.scrollTo({ left: next.index * (viewport.clientWidth + 24), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' })
       }
-      sync()
     }
-    const focus = (event) => {
-      focused = !pointerInput
-      if (media.matches) {
-        const index = cards.findIndex(card => card.contains(event.target))
-        if (index >= 0) { phaseRef.current = index * stride; viewport.scrollLeft = 0; paint() }
-      }
-      sync()
-    }
-    const blur = (event) => { focused = !pointerInput && root.contains(event.relatedTarget); sync() }
-    const pointer = () => { pointerInput = true; focused = false; sync() }
-    const keyboardFocus = () => { pointerInput = false; focused = root.contains(document.activeElement); sync() }
-    const browse = (direction) => {
-      if (media.matches) { phaseRef.current += direction * stride; paint() }
-      else viewport.scrollBy({ left: direction * (cards[0].offsetWidth + 24), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' })
-    }
-    const keyboard = (event) => {
-      if (event.target !== viewport || !['ArrowLeft', 'ArrowRight'].includes(event.key)) return
-      event.preventDefault(); browse(event.key === 'ArrowRight' ? 1 : -1)
-    }
-    controlsRef.current = browse
-    const resize = new ResizeObserver(measure)
-    cards.forEach(card => resize.observe(card))
+    const resize = new ResizeObserver(() => viewport.scrollTo({ left: indexRef.current * (viewport.clientWidth + 24), behavior: 'instant' }))
     resize.observe(viewport)
-    const intersection = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; sync() }, { threshold: .05 })
-    intersection.observe(viewport)
-    root.addEventListener('pointerdown', pointer)
-    document.addEventListener('keydown', keyboardFocus)
-    root.addEventListener('focusin', focus)
-    root.addEventListener('focusout', blur)
-    viewport.addEventListener('keydown', keyboard)
-    media.addEventListener('change', measure)
-    document.addEventListener('visibilitychange', sync)
-    measure()
-    return () => {
-      stop(); resize.disconnect(); intersection.disconnect(); controlsRef.current = null
-      viewport.classList.remove('is-looping'); track.style.removeProperty('height')
-      cards.forEach(card => { card.style.removeProperty('transform'); card.style.removeProperty('height'); card.style.removeProperty('width') })
-      root.removeEventListener('pointerdown', pointer); document.removeEventListener('keydown', keyboardFocus)
-      root.removeEventListener('focusin', focus); root.removeEventListener('focusout', blur); viewport.removeEventListener('keydown', keyboard)
-      media.removeEventListener('change', measure); document.removeEventListener('visibilitychange', sync)
-    }
-  }, [lang, paused])
+    viewport.addEventListener('wheel', wheel, { passive: false })
+    return () => { resize.disconnect(); viewport.removeEventListener('wheel', wheel) }
+  }, [count])
 
-  return <div className="project-showcase">
-    <div className="showcase-controls"><p id="showcase-help">{t('home_showcase_hint', 'Explore the projects. Use the arrows to browse or pause the motion.')}</p><div>
-      <button type="button" onClick={() => controlsRef.current?.(-1)} aria-label={t('showcase_previous')} aria-controls="project-rail"><ArrowLeft size={17} /></button>
-      <button type="button" className="showcase-pause" onClick={() => setPaused(value => !value)} aria-pressed={paused} aria-controls="project-rail">{paused ? <Play size={15} /> : <Pause size={15} />}<span>{t(paused ? 'showcase_resume' : 'showcase_pause')}</span></button>
-      <button type="button" onClick={() => controlsRef.current?.(1)} aria-label={t('showcase_next')} aria-controls="project-rail"><ArrowRight size={17} /></button>
+  return <div className="project-showcase project-showcase--stepped">
+    <div className="showcase-controls"><p id="showcase-help">{t('home_showcase_hint')}</p><div>
+      <button type="button" disabled={active === 0} onClick={() => browse(indexRef.current - 1)} aria-label={t('showcase_previous')} aria-controls="project-rail"><ArrowLeft size={17} /></button>
+      <span className="showcase-count" aria-live="polite">{String(active + 1).padStart(2, '0')} / {String(count).padStart(2, '0')}</span>
+      <button type="button" disabled={active === count - 1} onClick={() => browse(indexRef.current + 1)} aria-label={t('showcase_next')} aria-controls="project-rail"><ArrowRight size={17} /></button>
     </div></div>
-    <div className="showcase-viewport" id="project-rail" ref={viewportRef} tabIndex={0} role="region" aria-label={t('showcase_label')} aria-describedby="showcase-help">
+    <div className="showcase-viewport" id="project-rail" ref={viewportRef} tabIndex={0} onScroll={syncActive} role="region" aria-label={t('showcase_label')} aria-describedby="showcase-help" onKeyDown={event => {
+      if (event.target !== event.currentTarget || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return
+      event.preventDefault()
+      browse(event.key === 'Home' ? 0 : event.key === 'End' ? count - 1 : indexRef.current + (event.key === 'ArrowRight' ? 1 : -1))
+    }}>
       <div className="showcase-track">
         {SHOWCASE_PROJECTS.map((project, index) => <article className="showcase-project" key={project.id} data-project={project.id}>
           <img className="showcase-project__background" src={project.backgroundImage || project.media?.[0]} alt="" aria-hidden="true" loading="lazy" />
@@ -123,6 +76,5 @@ export function ProjectShowcase() {
         </article>)}
       </div>
     </div>
-    <p className="showcase-touch-note">{t('showcase_touch_hint')}</p>
   </div>
 }

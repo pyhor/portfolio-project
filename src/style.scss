@@ -1417,3 +1417,34 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; heig
   .home-page #home-journey { padding-block: 24px; }
   .about-page .why-me__card { padding: 16px; }
 }
+
+/* One stationary project per scroll gesture, with native swipe and keyboard support. */
+.home-page .project-showcase--stepped { margin-inline: 0; }
+.project-showcase--stepped .showcase-controls { max-width: 1100px; padding-inline: 0; margin-inline: auto; }
+.project-showcase--stepped .showcase-controls > div { align-items: center; }
+.project-showcase--stepped .showcase-count { min-width: 58px; text-align: center; font: 12px var(--font-display); color: var(--text-soft); }
+.home-page .project-showcase--stepped .showcase-viewport { max-width: 1100px; margin-inline: auto; padding: 0; scroll-padding: 0; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; }
+.project-showcase--stepped .showcase-viewport::-webkit-scrollbar { display: none; }
+.project-showcase--stepped .showcase-track { align-items: stretch; }
+.home-page .project-showcase--stepped .showcase-project { position: relative; flex: 0 0 100%; width: 100%; min-height: 580px; scroll-snap-align: start; scroll-snap-stop: always; }
+.home-page .project-showcase--stepped .showcase-project__body { min-height: 580px; padding: 0 0 6px 12px; }
+.home-page .project-showcase--stepped .showcase-project__copy { width: fit-content; max-width: min(620px, calc(100% - 24px)); padding: 12px 14px 2px; border: 1px solid var(--glass-border); border-radius: var(--radius); background: var(--nav-glass); backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%); }
+.home-page #home-journey { padding-bottom: 52px; }
+.home-page #home-ideas .ideas-detail { padding-top: 0; }
+.home-page #home-ideas .ideas-detail > .eyebrow { margin-bottom: 16px; }
+.home-page #home-ideas .ideas-steps { gap: 18px 24px; }
+.home-page #home-ideas .ideas-steps article { padding-top: 14px; }
+.home-page #home-ideas .ideas-steps h3 { margin-block: 10px 8px; }
+.home-page #home-ideas .ideas-detail > a { margin-top: 16px; }
+.home-page .engineering-heading-line { display: block; white-space: nowrap; }
+.home-page #home-contact { padding-top: 20px; }
+.home-page #home-contact > .section-kicker { margin-bottom: 12px; }
+@media (max-width: 760px) {
+  .project-showcase--stepped .showcase-controls p { display: block; font-size: 11px; max-width: 55%; }
+  .project-showcase--stepped .showcase-controls { gap: 12px; justify-content: space-between; }
+  .project-showcase--stepped .showcase-controls button { padding-inline: 10px; }
+  .home-page .project-showcase--stepped .showcase-project, .home-page .project-showcase--stepped .showcase-project__body { min-height: 560px; }
+  .home-page #home-journey { padding-bottom: 40px; }
+  .home-page .engineering-title-grid { grid-template-columns: 1fr; gap: 12px; }
+  .home-page .engineering-title-grid .section-title { font-size: clamp(20px, 5.5vw, 30px); }
+}

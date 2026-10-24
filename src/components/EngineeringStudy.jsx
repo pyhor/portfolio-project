@@ -11,11 +11,14 @@ export function EngineeringStudy() {
   const [scenario, setScenario] = useState('complete')
   const [selected, setSelected] = useState(0)
   const valid = scenario === 'complete'
+  const heading = t('lab_heading')
+  const splitAt = heading.search(/[.!?，。！？]/)
+  const headingLines = splitAt >= 0 ? [heading.slice(0, splitAt + 1), heading.slice(splitAt + 1).trim()] : [heading]
   return (
     <section className="engineering-chapter page-section" id="home-playground" aria-labelledby="engineering-heading">
       <div className="engineering-chapter__heading">
         <p className="eyebrow">05 — {t('lab_kicker', 'A LITTLE CREATIVE ENGINEERING')}</p>
-        <div className="engineering-title-grid"><h2 id="engineering-heading" className="section-title"><AccentText>{t('lab_heading', 'Serious about details. Curious about possibilities.')}</AccentText></h2><div><p>{t('home_engineering_intro')}</p></div></div>
+        <div className="engineering-title-grid"><h2 id="engineering-heading" className="section-title">{headingLines.map(line => <span className="engineering-heading-line" key={line}><AccentText>{line}</AccentText></span>)}</h2><div><p>{t('home_engineering_intro')}</p></div></div>
       </div>
       <div className="engineering-workspace">
         <div className="engineering-toolbar"><span className="engineering-file"><Code2 size={16} /> registration.flow</span><span className="engineering-demo"><span className="status-dot" />{t('engineering_demo', 'LOCAL INTERACTION STUDY')}</span></div>
