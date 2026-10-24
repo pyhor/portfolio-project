@@ -1505,3 +1505,48 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; heig
   .project-showcase--pinned .showcase-controls p { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   .project-showcase--pinned .showcase-controls { justify-content: flex-end; }
 }
+
+/* Reference-style rail: its introduction travels away with the project cards. */
+.home-page > #home-projects { padding-inline: 0; }
+.home-page .project-showcase--pinned { width: 100%; height: 100%; display: flex; justify-content: center; }
+.home-page .project-showcase--pinned .showcase-viewport { width: 100%; overflow: hidden; }
+.project-showcase--pinned .showcase-track { gap: 24px; padding-inline: var(--gutter); align-items: stretch; }
+.showcase-intro { flex: 0 0 clamp(220px, 22vw, 330px); width: clamp(220px, 22vw, 330px); display: flex; align-items: center; padding-right: 4px; }
+.home-page #home-projects .selected-work__intro { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 20px; }
+.home-page #home-projects .selected-work__intro .section-title { max-width: 11ch; }
+.home-page .project-showcase--pinned .showcase-project { flex-basis: clamp(600px, 52vw, 980px); width: clamp(600px, 52vw, 980px); border-radius: 32px; border: 0; }
+.home-page .project-showcase--pinned .showcase-project__body { padding: 0 0 14px 18px; }
+.home-page .project-showcase--pinned .showcase-project__copy { padding: 10px 14px; max-width: calc(100% - 36px); }
+.home-page .project-showcase--pinned .showcase-project h3 { font-size: clamp(28px, 3vw, 46px); margin: 0 0 10px; }
+.home-page .project-showcase--pinned .showcase-project .tech-stack { gap: 6px 12px; margin: 0; }
+.showcase-project__open { position: absolute; z-index: 2; right: 18px; top: 18px; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--nav-glass); backdrop-filter: blur(12px); color: var(--text); }
+.home-page .project-showcase--pinned .showcase-project--all { background: #09232c; color: #fff; }
+.showcase-all-link { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 36px; height: 100%; width: 100%; padding: clamp(28px, 4vw, 64px); }
+.home-page .project-showcase--pinned .showcase-project--all h3 { color: #fff; font-size: clamp(40px, 5vw, 76px); }
+.showcase-all-link > span { display: inline-flex; align-items: center; gap: 28px; padding: 14px 24px; border: 1px solid #50c5b5; border-radius: 999px; color: #50c5b5; }
+/* Only the centered desktop links receive the curved navigation surface. */
+.site-header, .site-header.is-scrolled, [data-theme='dark'] .site-header.is-scrolled {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+}
+.site-header .desktop-nav {
+  padding: 6px 10px;
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  background: var(--nav-glass);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+}
+.site-header .desktop-nav .header-contact { border-radius: 999px; }
+.home-page #home-ideas { border-radius: 0; padding-bottom: 44px; }
+.contact-block > .section-title { font-size: clamp(36px, 4.5vw, 58px); }
+@media (max-width: 900px) {
+  .showcase-intro { flex-basis: min(70vw, 280px); width: min(70vw, 280px); }
+  .home-page .project-showcase--pinned .showcase-project { flex-basis: min(86vw, 620px); width: min(86vw, 620px); height: clamp(340px, 60svh, 560px); }
+  .home-page #home-projects .selected-work__intro .section-title { font-size: clamp(24px, 5vw, 34px); }
+  .home-page .project-showcase--pinned .showcase-project h3 { font-size: 28px; }
+  .home-page .project-showcase--pinned .showcase-project__body { padding-left: 12px; padding-bottom: 12px; }
+  .home-page .project-showcase--pinned .showcase-project__copy { padding: 10px; }
+}
