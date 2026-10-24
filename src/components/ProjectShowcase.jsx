@@ -42,7 +42,7 @@ export function ProjectShowcase() {
     const measure = () => {
       viewport.classList.toggle('is-looping', media.matches)
       cards.forEach(card => {
-        if (media.matches) card.style.width = `${loopCardWidth(viewport.clientWidth, cards.length)}px`
+        if (media.matches) card.style.width = `${loopCardWidth(viewport.clientWidth, cards.length, 24, 560)}px`
         else card.style.removeProperty('width')
       })
       cards.forEach(card => { card.style.height = '' })

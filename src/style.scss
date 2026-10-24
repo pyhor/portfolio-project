@@ -1300,3 +1300,56 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; heig
 }
 .home-page #home-matters .workflow-node { min-height: 52px; padding: 12px 10px; }
 .home-page .showcase-viewport.is-looping .showcase-project { position: absolute; }
+
+/* Journey stays square-edged; image-led cards keep their own component corners. */
+.home-page #home-journey { border-radius: 0; }
+.home-page .showcase-project {
+  flex-basis: min(88vw, 600px);
+  width: min(88vw, 600px);
+  min-height: 540px;
+  --text: #fff;
+  --text-soft: #e8eef5;
+  --line: #ffffff50;
+  --accent: #fff;
+}
+.home-page .showcase-project__background { opacity: 1; }
+.home-page .showcase-project::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 18%, rgba(8, 17, 28, .24) 40%, rgba(8, 17, 28, .88) 72%, rgba(8, 17, 28, .96));
+  pointer-events: none;
+}
+.home-page .showcase-project__body {
+  z-index: 1;
+  min-height: 540px;
+  padding: 26px;
+  background: transparent;
+  justify-content: flex-end;
+  align-items: flex-start;
+  text-align: left;
+}
+.home-page .showcase-project h3 { margin-block: 8px; font-size: clamp(27px, 2.6vw, 38px); }
+.home-page .showcase-project__body > p { margin-bottom: 8px; max-width: 48ch; }
+.home-page .showcase-project__body > .tech-stack { margin-top: 4px; padding-top: 0; }
+.home-page .showcase-project .tech-badge { color: #e8eef5; background: transparent; }
+.home-page .showcase-project__value mark { color: #fff; background: transparent; padding: 0; font-weight: 500; }
+.home-page .showcase-project__links { margin-top: 8px; padding-top: 0; }
+/* Use the About width for two balanced text columns instead of a sparse stacked grid. */
+.home-page #home-why { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); align-items: start; gap: clamp(24px, 4vw, 64px); padding-block: 36px; }
+.home-page #home-why .about-editorial { display: flex; flex-direction: column; gap: 12px; }
+.home-page #home-why .about-editorial > .eyebrow { margin-bottom: 0; }
+.home-page #home-why .about-editorial__name { font-size: clamp(40px, 4vw, 64px); }
+.home-page #home-why .about-editorial > p:not(.eyebrow) { max-width: none; margin-bottom: 0; font-size: 20px; }
+.home-page #home-why .about-editorial__disciplines { display: flex; flex-direction: row; flex-wrap: wrap; gap: 8px 16px; margin-top: 4px; }
+.home-page #home-why .about-editorial__disciplines span { padding-block: 8px; }
+.home-page #home-why .home-about__copy { align-self: start; }
+.home-page #home-why .home-about__copy .section-title { font-size: clamp(30px, 3vw, 46px); margin-bottom: 14px; }
+.home-page #home-why .home-about__copy > p { font-size: 18px; line-height: 1.65; margin-bottom: 12px; }
+.home-page #home-why .home-stats { margin-top: 18px; }
+@media (max-width: 760px) {
+  .home-page .showcase-project__body { padding: 20px; }
+  .home-page .showcase-project h3 { font-size: 27px; }
+  .home-page #home-why { grid-template-columns: minmax(0, 1fr); gap: 22px; padding-block: 28px; }
+  .home-page #home-why .home-about__copy > p { font-size: 16px; }
+}
