@@ -112,14 +112,14 @@ export function ProjectShowcase() {
       <div className="showcase-track">
         {SHOWCASE_PROJECTS.map((project, index) => <article className="showcase-project" key={project.id} data-project={project.id}>
           <img className="showcase-project__background" src={project.backgroundImage || project.media?.[0]} alt="" aria-hidden="true" loading="lazy" />
-          <div className="showcase-project__body">
+          <div className="showcase-project__body"><div className="showcase-project__copy">
             <span className="eyebrow">0{index + 1} / {t(project.categoryKey)}</span>
             <h3><Link to={project.casePath || '/projects'} data-cursor="view">{t(project.id === 'jomgo' ? 'home_jomgo_title' : project.id === 'asean-data-2024' ? 'home_asean_title' : project.titleKey)}</Link></h3>
             <p>{t(`home_${PROJECT_COPY[project.id]}_intro`)}</p>
             <p className="showcase-project__value"><mark>{t(`home_${PROJECT_COPY[project.id]}_benefit_compact`)}</mark></p>
             <TechStackBadges techString={t(project.techKey)} />
             <div className="showcase-project__links">{project.githubUrl && <a href={project.githubUrl} target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={14} /></a>}{project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noreferrer">{t(project.id === 'asean-data-2024' ? 'home_project_presentation_short' : 'home_project_live_short')} <ArrowUpRight size={14} /></a>}<Link to={project.casePath || '/projects'} data-cursor="view">{t('home_project_details_short')}<ArrowUpRight size={14} /></Link></div>
-          </div>
+          </div></div>
         </article>)}
       </div>
     </div>

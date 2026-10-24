@@ -1353,3 +1353,67 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; heig
   .home-page #home-why { grid-template-columns: minmax(0, 1fr); gap: 22px; padding-block: 28px; }
   .home-page #home-why .home-about__copy > p { font-size: 16px; }
 }
+
+/* A navigation-like glass surface sits only behind the bottom-aligned copy. */
+.home-page .showcase-project {
+  --text: #172638;
+  --text-soft: #3f5064;
+  --line: #17263830;
+  --accent: #245b99;
+  --card-glass: rgba(255, 255, 255, .73);
+}
+[data-theme='dark'] .home-page .showcase-project {
+  --text: #f4f7fb;
+  --text-soft: #d1dbe6;
+  --line: #ffffff40;
+  --accent: #abd0fa;
+  --card-glass: rgba(0, 0, 0, .58);
+}
+.home-page .showcase-project::before { background: transparent; }
+.home-page .showcase-project__body { padding: 0; }
+.showcase-project__copy {
+  width: 100%;
+  padding: 14px 16px 2px;
+  background: var(--card-glass);
+  backdrop-filter: blur(12px) saturate(130%);
+  -webkit-backdrop-filter: blur(12px) saturate(130%);
+  border-top: 1px solid var(--line);
+}
+.home-page .showcase-project__copy > p { font-size: 14px; line-height: 1.6; margin-bottom: 6px; }
+.home-page .showcase-project__copy > .tech-stack { margin-top: 6px; padding-top: 0; }
+.home-page .showcase-project .tech-badge { color: var(--text-soft); }
+.home-page .showcase-project__value mark { color: var(--text); }
+.home-page .showcase-project__links { margin-top: 4px; }
+.home-page #home-why { border-radius: 0; margin-top: 0; }
+/* Short descriptions no longer need tall journey cards. */
+.home-page #home-journey { padding-block: 28px; }
+.home-page #home-journey .section-heading { margin-bottom: 16px; }
+.home-page #home-journey .journey-grid { gap: 16px; }
+.home-page #home-journey .home-preview-card { min-height: 0; padding: 16px; display: flex; flex-direction: column; }
+.home-page #home-journey .home-preview-card__kicker { margin-bottom: 6px; }
+.home-page #home-journey .home-preview-card__title { margin-block: 6px; }
+.home-page #home-journey .home-preview-card__desc { margin-bottom: 0; }
+.home-page #home-journey .home-preview-card__cta { margin-top: 10px; padding-top: 4px; }
+/* Keep the engineering heading and its introduction on the same row. */
+.home-page .engineering-chapter__heading > .eyebrow { margin-bottom: 16px; }
+.home-page .engineering-title-grid { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 20px; align-items: center; margin-bottom: 0; }
+.home-page .engineering-title-grid .section-title { max-width: none; font-size: clamp(26px, 3.2vw, 46px); margin-bottom: 0; }
+.home-page .engineering-title-grid > div { max-width: none; }
+.home-page .engineering-title-grid p { margin: 0; font-size: 14px; }
+.home-page .engineering-workspace { margin-top: 24px; }
+/* Tighten the evidence summary and bring the proof section upward. */
+.about-page > .page-section:has(.why-me) { padding-block: 16px 8px; }
+.about-page .why-me__card { padding: 22px; }
+.about-page .about-benefit-grid { margin-block: 18px; gap: 16px; }
+.about-page .why-me .value-highlights { margin-block: 12px; gap: 6px 14px; }
+.about-page .why-me__stats { gap: 6px 12px; }
+.about-page .why-me__closing { margin-top: 10px; margin-bottom: 0; }
+.page-shell.about-page > .page-section.about-proof { padding-top: 16px; }
+.about-page .about-proof > .eyebrow { margin-bottom: 10px; }
+.about-page .about-proof .section-title { margin-bottom: 12px; }
+@media (max-width: 760px) {
+  .home-page .engineering-title-grid { gap: 14px; }
+  .home-page .engineering-title-grid p { font-size: 13px; }
+  .home-page #home-journey { padding-block: 24px; }
+  .about-page .why-me__card { padding: 16px; }
+}

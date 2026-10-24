@@ -21,7 +21,7 @@ const invariantText = new Set([
 // Reviewed exceptions: shared product names, official names, technical stacks,
 // repository identifiers, and vocabulary that is also standard Malay.
 const invariantKeys = new Set([
-  'why_me_langs_fallback', 'cta_github', 'traj_code_1_project', 'traj_code_1_tech',
+  'footer_credit', 'why_me_langs_fallback', 'cta_github', 'traj_code_1_project', 'traj_code_1_tech',
   'traj_code_2_project', 'traj_code_2_tech', 'traj_code_3_project', 'traj_code_3_tech',
   'proj_asean_tool', 'contact_linkedin_label', 'home_sec_github', 'proj_hotel_tech',
   'proj_cinema_tech', 'contact_email_placeholder', 'ref_copyright', 'bsa_actor3_title',

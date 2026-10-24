@@ -38,7 +38,7 @@ export function useChapterMotion(dependency) {
         })
       }
       coverChapter(page.querySelector('#home-matters'), page.querySelector('#home-ideas'), true)
-      coverChapter(page.querySelector('#home-playground'), page.querySelector('#home-why'))
+      coverChapter(page.querySelector('#home-build'), page.querySelector('#home-playground'))
       // Natural document flow brings the solid contact panel upward from below 07.
       coverChapter(page.querySelector('#home-journey'), page.querySelector('#home-contact'))
       return () => {

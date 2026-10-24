@@ -2,9 +2,9 @@
   "reviewedOn": "2026-10-23",
   "note": "Source revisions record a meaning-level review, not just key coverage. Re-review all translations when English wording changes.",
   "sourceRevisions": {
-    "zh-cn": "f9e0afa7847f7cac47f7785e97c4e7c976ed6de7d62ebc3f10287b2047458441",
-    "zh-tw": "f9e0afa7847f7cac47f7785e97c4e7c976ed6de7d62ebc3f10287b2047458441",
-    "yue-hk": "f9e0afa7847f7cac47f7785e97c4e7c976ed6de7d62ebc3f10287b2047458441",
-    "ms": "f9e0afa7847f7cac47f7785e97c4e7c976ed6de7d62ebc3f10287b2047458441"
+    "zh-cn": "5818e0d2387c81b07015f98632d685b046fd0f4d8504c36ca2cac02331ef7a2a",
+    "zh-tw": "5818e0d2387c81b07015f98632d685b046fd0f4d8504c36ca2cac02331ef7a2a",
+    "yue-hk": "5818e0d2387c81b07015f98632d685b046fd0f4d8504c36ca2cac02331ef7a2a",
+    "ms": "5818e0d2387c81b07015f98632d685b046fd0f4d8504c36ca2cac02331ef7a2a"
   }
 }
