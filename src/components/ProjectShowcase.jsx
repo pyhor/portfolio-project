@@ -111,6 +111,7 @@ export function ProjectShowcase() {
     <div className="showcase-viewport" id="project-rail" ref={viewportRef} tabIndex={0} role="region" aria-label={t('showcase_label')} aria-describedby="showcase-help">
       <div className="showcase-track">
         {SHOWCASE_PROJECTS.map((project, index) => <article className="showcase-project" key={project.id} data-project={project.id}>
+          <img className="showcase-project__background" src={project.backgroundImage || project.media?.[0]} alt="" aria-hidden="true" loading="lazy" />
           <div className="showcase-project__body">
             <span className="eyebrow">0{index + 1} / {t(project.categoryKey)}</span>
             <h3><Link to={project.casePath || '/projects'} data-cursor="view">{t(project.id === 'jomgo' ? 'home_jomgo_title' : project.id === 'asean-data-2024' ? 'home_asean_title' : project.titleKey)}</Link></h3>

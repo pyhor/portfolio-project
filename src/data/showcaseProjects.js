@@ -1,8 +1,9 @@
 import { FEATURED_PROJECTS } from './featuredProjects'
 
-// Only documented work. Text-led previews are not fabricated product screenshots.
+// Screenshots come from the documented projects and their published sites.
 const projects = [
   {
+    backgroundImage: `${import.meta.env.BASE_URL}image/project-backgrounds/jomgo.png`,
     id: 'jomgo', titleKey: 'bsa_jomgo_title', metaKey: 'bsa_primary', descKey: 'bsa_jomgo_desc',
     roleKey: 'bsa_role_body', problemKey: 'bsa_problem_body', contribKey: 'bsa_evidence_intro',
     techKey: 'bsa_jomgo_tech', statusKey: 'bsa_implemented', categoryKey: 'showcase_system',
@@ -16,6 +17,7 @@ const projects = [
     categoryKey: index ? 'showcase_system' : 'showcase_interface',
   })),
   {
+    backgroundImage: `${import.meta.env.BASE_URL}image/project-backgrounds/veterinary.jpeg`,
     id: 'vet-mgmt-system-2024', titleKey: 'showcase_vet_title',
     metaKey: 'traj_code_3_period', descKey: 'showcase_vet_desc',
     roleKey: 'showcase_vet_role', problemKey: 'showcase_vet_problem',
@@ -24,6 +26,7 @@ const projects = [
     githubUrl: 'https://github.com/pyhor/vet-mgmt-system-2024',
   },
   {
+    backgroundImage: `${import.meta.env.BASE_URL}image/project-backgrounds/asean.png`,
     id: 'asean-data-2024', titleKey: 'proj_asean_title',
     metaKey: 'proj_asean_meta', descKey: 'proj_asean_desc',
     roleKey: 'showcase_asean_role', problemKey: 'showcase_asean_problem',
