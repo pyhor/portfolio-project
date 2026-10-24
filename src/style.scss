@@ -1525,10 +1525,11 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; heig
 .home-page .project-showcase--pinned .showcase-project--all h3 { color: #fff; font-size: clamp(40px, 5vw, 76px); }
 .showcase-all-link > span { display: inline-flex; align-items: center; gap: 28px; padding: 14px 24px; border: 1px solid #50c5b5; border-radius: 999px; color: #50c5b5; }
 /* Only the centered desktop links receive the curved navigation surface. */
+// Keep the prefixed declaration first so the production optimizer preserves both.
 .site-header, .site-header.is-scrolled, [data-theme='dark'] .site-header.is-scrolled {
   background: transparent;
-  backdrop-filter: none;
   -webkit-backdrop-filter: none;
+  backdrop-filter: none;
   box-shadow: none;
 }
 .site-header .desktop-nav {
@@ -1536,8 +1537,8 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; heig
   border: 1px solid var(--glass-border);
   border-radius: 999px;
   background: var(--nav-glass);
-  backdrop-filter: blur(16px) saturate(140%);
   -webkit-backdrop-filter: blur(16px) saturate(140%);
+  backdrop-filter: blur(16px) saturate(140%);
 }
 .site-header .desktop-nav .header-contact { border-radius: 999px; }
 .home-page #home-ideas { border-radius: 0; padding-bottom: 44px; }
