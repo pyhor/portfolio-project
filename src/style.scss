@@ -1582,3 +1582,31 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; heig
 @media (prefers-reduced-motion: reduce) {
   .home-page .project-showcase--pinned .showcase-project__body, .showcase-project__open { transition: none; }
 }
+
+/* Touch layouts use an edge-to-edge hero and a translucent navigation bar. */
+@media (max-width: 1280px), (hover: none), (pointer: coarse) {
+  .home-page > .hero { border-radius: 0; }
+  .site-header, .site-header.is-scrolled, [data-theme='dark'] .site-header.is-scrolled {
+    background: var(--nav-glass);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    backdrop-filter: blur(12px) saturate(140%);
+  }
+}
+
+/* Replay the menu entrance each time the dialog opens. */
+.nav-dialog[open] { animation: nav-menu-enter .28s cubic-bezier(.2, .7, .3, 1) both; }
+.nav-dialog[open] .nav-dialog__links li { animation: nav-link-enter .32s ease both; }
+@for $index from 1 through 7 {
+  .nav-dialog[open] .nav-dialog__links li:nth-child(#{$index}) { animation-delay: #{.06 + ($index - 1) * .04}s; }
+}
+@keyframes nav-menu-enter {
+  from { opacity: 0; transform: translateY(-10px) scale(.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes nav-link-enter {
+  from { opacity: 0; transform: translateX(12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-dialog[open], .nav-dialog[open] .nav-dialog__links li { animation: none; }
+}
