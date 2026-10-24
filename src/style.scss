@@ -276,7 +276,7 @@ button:disabled { cursor: default; opacity: .55; }
 .footer-links a { display: flex; align-items: center; gap: 6px; min-height: 44px; }
 .site-footer__bottom { display: flex; justify-content: space-between; align-items: flex-start; gap: 35px; border-top: 1px solid var(--line); padding-top: 22px; color: var(--text-soft); font-size: 10px; line-height: 1.6; }
 .site-footer__credit { max-width: 480px; text-align: right; }
-.scroll-to-top { position: fixed; bottom: 22px; right: 22px; height: 44px; width: 44px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 50%; background: var(--bg-elevated); color: var(--text); box-shadow: 0 4px 18px #0001; opacity: 0; visibility: hidden; z-index: 30; transition: opacity .25s, visibility .25s; }
+.scroll-to-top { position: fixed; bottom: 22px; right: 22px; height: 44px; width: 44px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 50%; background: transparent; color: var(--text); box-shadow: none; opacity: 0; visibility: hidden; z-index: 30; transition: opacity .25s, visibility .25s; }
 .scroll-to-top.is-visible { opacity: 1; visibility: visible; }
 .scroll-to-top__label { display: none; }
 
