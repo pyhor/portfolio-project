@@ -8,7 +8,7 @@
   .case-document__identity strong { font: 500 28px var(--font-display); letter-spacing: -.04em; }
   .case-document__identity span { font-size: 11px; line-height: 1.7; color: var(--text-soft); }
   .case-document .case-nav { position: static; display: flex; flex-direction: column; padding: 0; border: 0; background: transparent; overflow: visible; gap: 4px; }
-  .case-document .case-nav a { white-space: normal; min-height: 44px; display: flex; align-items: center; line-height: 1.6; padding: 10px 12px; border-left: 2px solid transparent; border-radius: 0; }
+  .case-document .case-nav a { white-space: normal; min-height: 44px; display: flex; align-items: center; line-height: 1.6; padding: 10px 12px; border-left: 2px solid transparent; border-radius: var(--radius); }
   .case-document .case-nav a:hover, .case-document .case-nav a:focus-visible { border-left-color: var(--accent); }
   .case-document__content > .page-section {
     padding: 48px clamp(24px, 4vw, 64px);
@@ -54,7 +54,7 @@
   .case-overview a { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 22px 18px 22px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
   .case-overview a svg { flex-shrink: 0; color: var(--accent-2); }
   .case-nav { display: flex; gap: 5px; padding: 10px var(--gutter); background: var(--bg-elevated); border-block: 1px solid var(--line); overflow-x: auto; position: sticky; top: 81px; z-index: 15; scrollbar-width: thin; }
-  .case-nav a { white-space: nowrap; font-size: 11px; padding: 10px; border-radius: 3px; }
+  .case-nav a { white-space: nowrap; font-size: 11px; padding: 10px; border-radius: var(--radius); }
   .case-nav a:hover, .case-nav a:focus-visible { background: var(--accent-soft); color: var(--accent); }
   .case-section { border-bottom: 1px solid var(--line); }
   .case-section:nth-of-type(2n) { background: var(--bg-elevated); }
@@ -65,7 +65,7 @@
   .case-lead { font-size: clamp(18px,1.8vw,25px); margin-bottom: 32px; }
   .case-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px; }
   .case-grid--three { grid-template-columns: repeat(3,minmax(0,1fr)); }
-  .case-card { padding: clamp(22px,2.5vw,38px); border: 1px solid var(--line); background: var(--bg); border-radius: 5px; }
+  .case-card { padding: clamp(22px,2.5vw,38px); border: 1px solid var(--line); background: var(--bg); border-radius: var(--radius); }
   .case-card h3, .case-card h4 { margin: 0 0 15px; }
   .case-card > .eyebrow, .case-card > .case-status { margin-bottom: 18px; }
   .case-card p { font-size: 14px; margin: 0 0 14px; }
@@ -75,7 +75,7 @@
   .case-subtitle { margin: 50px 0 23px; }
   .case-note { font-size: 12px; color: var(--text-soft); line-height: 1.7; }
   .case-status-legend { display: flex; gap: 8px; flex-wrap: wrap; }
-  .case-status { display: inline-flex; width: fit-content; align-items: center; gap: 7px; padding: 5px 8px; border: 1px solid var(--line); border-radius: 3px; font-size: 10px; line-height: 1.5; color: var(--text-soft); background: var(--panel); }
+  .case-status { display: inline-flex; width: fit-content; align-items: center; gap: 7px; padding: 5px 8px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 10px; line-height: 1.5; color: var(--text-soft); background: var(--panel); }
   .case-status::before { content: ''; flex: 0 0 5px; height: 5px; background: currentColor; border-radius: 50%; }
   .case-status[data-status='implemented'] { color: var(--accent-2); }
   .case-status[data-status='proposed'] { color: var(--accent); }
@@ -126,15 +126,15 @@
   .case-live-flow .case-flow { display: grid; grid-template-columns: repeat(6,minmax(0,1fr)); gap: 20px; }
   .case-live-flow .case-flow li { display: flex; align-items: flex-start; flex-direction: column; border: 0; padding: 8px 0; }
   .case-live-flow .case-flow svg { transform: rotate(-90deg); }
-  .lifecycle-board { border: 1px solid var(--line); background: var(--panel); padding: clamp(18px,3vw,42px); border-radius: 5px; }
+  .lifecycle-board { border: 1px solid var(--line); background: var(--panel); padding: clamp(18px,3vw,42px); border-radius: var(--radius); }
   .lifecycle-choices { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 32px; }
-  .lifecycle-choices button { flex: 1; display: flex; gap: 15px; justify-content: space-between; align-items: center; border: 1px solid var(--line); border-radius: 3px; padding: 14px; font: inherit; color: var(--text-soft); background: var(--bg); text-align: start; cursor: pointer; }
+  .lifecycle-choices button { flex: 1; display: flex; gap: 15px; justify-content: space-between; align-items: center; border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; font: inherit; color: var(--text-soft); background: var(--bg); text-align: start; cursor: pointer; }
   .lifecycle-choices button span { font-size: 10px; color: var(--accent); }
   .lifecycle-choices button[aria-pressed='true'] { border-color: var(--accent-2); color: var(--text); }
   .lifecycle-chain { display: grid; grid-template-columns: repeat(6,minmax(0,1fr)); gap: 22px; }
   .lifecycle-step { position: relative; }
   .lifecycle-step > svg { position: absolute; top: 44px; right: -20px; color: var(--accent-2); }
-  .lifecycle-step button { min-height: 175px; height: 100%; width: 100%; display: flex; align-items: flex-start; flex-direction: column; gap: 15px; padding: 18px 12px; background: var(--bg); border: 1px solid var(--line); border-top: 2px solid var(--accent-2); border-radius: 3px; color: var(--text); text-align: start; cursor: pointer; transition: background .2s, border-color .2s; }
+  .lifecycle-step button { min-height: 175px; height: 100%; width: 100%; display: flex; align-items: flex-start; flex-direction: column; gap: 15px; padding: 18px 12px; background: var(--bg); border: 1px solid var(--line); border-top: 2px solid var(--accent-2); border-radius: var(--radius); color: var(--text); text-align: start; cursor: pointer; transition: background .2s, border-color .2s; }
   .lifecycle-step button > span { font-size: 9px; color: var(--text-soft); text-transform: uppercase; }
   .lifecycle-step button > strong { font: 500 20px var(--font-display); color: var(--accent-2); }
   .lifecycle-step button > small { font-size: 11px; line-height: 1.6; }
@@ -154,10 +154,10 @@
   .case-learning { padding-top: 50px; margin-top: 45px; border-top: 1px solid var(--line); }
   .case-learning h3 { font-size: 30px; }
   .case-learning p { font-size: 17px; }
-  .case-teaser { display: grid; grid-template-columns: 1.1fr 1fr; align-items: center; gap: clamp(25px,5vw,80px); border: 1px solid var(--line); background: var(--panel); padding: clamp(25px,4vw,60px); margin-bottom: 50px; border-radius: 5px; }
+  .case-teaser { display: grid; grid-template-columns: 1.1fr 1fr; align-items: center; gap: clamp(25px,5vw,80px); border: 1px solid var(--line); background: var(--panel); padding: clamp(25px,4vw,60px); margin-bottom: 50px; border-radius: var(--radius); }
   .case-teaser h2 { font-size: clamp(28px,3vw,46px); font-weight: 500; letter-spacing: -.045em; line-height: 1.15; margin: 20px 0; }
   .case-teaser p:not(.eyebrow) { font-size: 14px; color: var(--text-soft); line-height: 1.8; margin-bottom: 25px; max-width: 55ch; }
-  .case-teaser__map { min-width: 0; background: var(--bg); border: 1px solid var(--line); padding: 30px; border-radius: 3px; }
+  .case-teaser__map { min-width: 0; background: var(--bg); border: 1px solid var(--line); padding: 30px; border-radius: var(--radius); }
   .case-teaser__map > div { display: grid; grid-template-columns: 25px 1fr 25px; gap: 20px; align-items: center; margin: 35px 0; }
   .case-teaser__map > div svg { color: var(--accent-2); }
   .case-teaser__map > div i { height: 1px; background: var(--line); }

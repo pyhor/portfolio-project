@@ -14,7 +14,7 @@
   overflow: hidden;
   color: var(--scene-ink);
   border: 1px solid var(--scene-line);
-  border-radius: 10px;
+  border-radius: var(--radius);
   background:
     radial-gradient(ellipse at 50% 41%, #f4f8fc 0%, transparent 66%),
     var(--scene-ground);
@@ -77,7 +77,7 @@
   inset: 41px 0 70px;
   cursor: grab;
   touch-action: pan-y;
-  border-radius: 3px;
+  border-radius: var(--radius);
   -webkit-tap-highlight-color: transparent;
 
   &.is-dragging {
@@ -164,7 +164,7 @@
     min-height: 44px;
     padding: 7px 12px;
     border: 0;
-    border-radius: 3px;
+    border-radius: var(--radius);
     color: var(--scene-ink);
     background: transparent;
     font: inherit;
@@ -196,7 +196,7 @@
   gap: 2px;
   padding: 3px;
   border: 1px solid var(--scene-line);
-  border-radius: 5px;
+  border-radius: var(--radius);
   background: var(--scene-control);
   backdrop-filter: blur(10px);
 }

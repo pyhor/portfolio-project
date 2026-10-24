@@ -4,11 +4,11 @@
   .showcase-controls { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 0 var(--gutter) 24px; }
   .showcase-controls p { font-size: 12px; color: var(--text-soft); margin: 0; max-width: 60ch; }
   .showcase-controls > div { display: flex; gap: 8px; flex-shrink: 0; }
-  .showcase-controls button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; min-width: 44px; padding: 10px 14px; background: var(--panel); border: 1px solid var(--line); border-radius: 2px; font-size: 11px; color: var(--text); }
+  .showcase-controls button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; min-width: 44px; padding: 10px 14px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); font-size: 11px; color: var(--text); }
   .showcase-controls button:hover { border-color: var(--accent); }
   .showcase-viewport { overflow-x: auto; overflow-y: hidden; padding: 6px var(--gutter) 20px; scrollbar-width: thin; scrollbar-color: var(--line) transparent; scroll-padding-inline: var(--gutter); overscroll-behavior-x: contain; }
   .showcase-track { display: flex; align-items: flex-start; gap: 24px; position: relative; }
-  .showcase-project { flex: 0 0 max(420px, 46vw); min-width: 0; width: max(420px, 46vw); background: var(--bg-elevated); border: 1px solid var(--line); border-radius: 2px; }
+  .showcase-project { flex: 0 0 max(420px, 46vw); min-width: 0; width: max(420px, 46vw); background: var(--bg-elevated); border: 1px solid var(--line); border-radius: var(--radius); }
   .showcase-viewport.is-looping { padding-inline: var(--gutter); overflow: hidden; }
   .is-looping .showcase-project { position: absolute; top: 0; left: 0; will-change: transform; }
   .showcase-visual { display: block; position: relative; height: clamp(225px, 21vw, 380px); overflow: hidden; padding: 22px; background: #dce7ee; color: #203b51; border-bottom: 1px solid var(--line); }
