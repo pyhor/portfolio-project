@@ -1448,3 +1448,60 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; heig
   .home-page .engineering-title-grid { grid-template-columns: 1fr; gap: 12px; }
   .home-page .engineering-title-grid .section-title { font-size: clamp(20px, 5.5vw, 30px); }
 }
+
+/* The whole showcase pins while vertical scrolling carries the cards left. */
+.home-page > #home-projects {
+  height: 100svh;
+  min-height: 0;
+  margin-top: 0;
+  padding-block: clamp(18px, 4svh, 40px);
+  overflow: hidden;
+}
+.selected-work__layout { display: grid; grid-template-columns: minmax(220px, .35fr) minmax(0, 1fr); align-items: center; gap: clamp(24px, 3vw, 48px); height: 100%; }
+.home-page #home-projects .selected-work__intro { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 24px; margin: 0; }
+.home-page #home-projects .section-title { font-size: clamp(28px, 3vw, 46px); max-width: 11ch; margin-bottom: 0; }
+.selected-work__intro .section-heading__aside { max-width: none; width: 100%; flex: none; }
+.selected-work__intro .section-heading__aside p { margin-bottom: 18px; }
+.home-page .project-showcase--pinned { min-width: 0; margin: 0; display: flex; flex-direction: column-reverse; gap: 12px; }
+.project-showcase--pinned .showcase-controls { padding: 0; margin: 0; align-items: center; gap: 12px; }
+.project-showcase--pinned .showcase-controls p { font-size: 11px; max-width: 50%; }
+.project-showcase--pinned .showcase-controls > div { align-items: center; }
+.project-showcase--pinned .showcase-count { min-width: 56px; text-align: center; font: 12px var(--font-display); }
+.home-page .project-showcase--pinned .showcase-viewport { padding: 0; margin: 0; overflow: hidden; scroll-snap-type: none; touch-action: pan-y; scrollbar-width: none; }
+.project-showcase--pinned .showcase-track { align-items: stretch; will-change: transform; }
+.home-page .project-showcase--pinned .showcase-project { position: relative; flex: 0 0 clamp(540px, 52vw, 880px); width: clamp(540px, 52vw, 880px); min-height: 0; height: clamp(360px, 66svh, 640px); }
+.home-page .project-showcase--pinned .showcase-project__body { min-height: 0; height: 100%; padding: 0 0 6px 12px; }
+.home-page .project-showcase--pinned .showcase-project__copy { width: fit-content; max-width: min(620px, calc(100% - 24px)); padding: 12px 14px 2px; border: 0; border-radius: var(--radius); background: var(--nav-glass); backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%); }
+.site-header { transition: transform .24s ease, background .35s, box-shadow .35s; }
+.site-header.is-scroll-hidden { transform: translateY(calc(-100% - 4px)); pointer-events: none; }
+@media (max-width: 900px) {
+  .selected-work__layout { grid-template-columns: minmax(0, 1fr); gap: 16px; align-content: center; }
+  .home-page #home-projects .selected-work__intro { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: center; }
+  .home-page #home-projects .section-title { font-size: clamp(24px, 4vw, 34px); max-width: none; }
+  .home-page #home-projects .selected-work__intro .eyebrow { margin-bottom: 8px; }
+  .selected-work__intro .section-heading__aside p { margin-bottom: 4px; font-size: 12px; }
+  .home-page .project-showcase--pinned .showcase-project { flex-basis: calc(100% - 28px); width: calc(100% - 28px); height: clamp(340px, 50svh, 480px); }
+  .project-showcase--pinned .showcase-controls { justify-content: space-between; }
+  .project-showcase--pinned .showcase-controls p { display: block; font-size: 10px; }
+  .home-page .project-showcase--pinned .showcase-project__copy { padding: 10px 12px 2px; }
+  .home-page .project-showcase--pinned .showcase-project__copy > p { font-size: 12px; margin-bottom: 4px; }
+  .home-page .project-showcase--pinned .showcase-project h3 { font-size: 24px; margin-block: 5px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-header { transition: none; }
+}
+
+@media (max-width: 360px) {
+  .home-page .project-showcase--pinned .showcase-project__body { padding-left: 6px; }
+  .home-page .project-showcase--pinned .showcase-project__copy { max-width: calc(100% - 12px); padding: 8px 10px 2px; }
+  .home-page .project-showcase--pinned .showcase-project h3 { font-size: 21px; }
+  .home-page .project-showcase--pinned .showcase-project__copy > p { font-size: 11px; }
+}
+@media (max-width: 900px) and (max-height: 650px) {
+  .home-page > #home-projects { padding-block: 12px; }
+  .home-page #home-projects .section-title { font-size: 20px; line-height: 1.2; }
+  .home-page #home-projects .selected-work__intro .eyebrow { font-size: 9px; margin-bottom: 6px; }
+  .selected-work__intro .section-heading__aside p { font-size: 11px; }
+  .project-showcase--pinned .showcase-controls p { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .project-showcase--pinned .showcase-controls { justify-content: flex-end; }
+}

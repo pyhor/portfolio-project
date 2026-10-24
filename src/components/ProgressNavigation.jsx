@@ -6,6 +6,7 @@ import { useI18n } from '../context/I18nProvider'
 import { ROUTES } from '../routes'
 import { LangSwitcher } from './LangSwitcher'
 import { ThemeToggle } from './ThemeToggle'
+import { headerVisibility } from '../lib/headerVisibility'
 
 const NAV_ROUTES = ['home', 'about', 'projects', 'trajectory', 'education', 'volunteering', 'contact']
 
@@ -13,11 +14,25 @@ export function ProgressNavigation({ pageProgress = 0 }) {
   const { t } = useI18n()
   const { pathname } = useLocation()
   const [open, setOpen] = useState(false)
+  const [scrollHidden, setScrollHidden] = useState(false)
   const dialogRef = useRef(null)
   const triggerRef = useRef(null)
   const progress = Math.min(1, Math.max(0, pageProgress))
 
   useEffect(() => { setOpen(false) }, [pathname])
+  useEffect(() => {
+    let state = { anchorY: window.scrollY, visible: true }
+    let frame = 0
+    setScrollHidden(false)
+    const update = () => {
+      frame = 0
+      state = headerVisibility(state, window.scrollY)
+      setScrollHidden(!state.visible)
+    }
+    const scroll = () => { if (!frame) frame = requestAnimationFrame(update) }
+    window.addEventListener('scroll', scroll, { passive: true })
+    return () => { cancelAnimationFrame(frame); window.removeEventListener('scroll', scroll) }
+  }, [pathname])
   useEffect(() => {
     if (!open) return
     const dialog = dialogRef.current
@@ -45,7 +60,7 @@ export function ProgressNavigation({ pageProgress = 0 }) {
   })
 
   return <>
-    <header className={`site-header${progress > .005 ? ' is-scrolled' : ''}`}>
+    <header className={`site-header${progress > .005 ? ' is-scrolled' : ''}${scrollHidden && !open ? ' is-scroll-hidden' : ''}`} onFocusCapture={() => setScrollHidden(false)}>
       <div className="site-header__inner">
         <NavLink to="/" end className="site-brand" aria-label={`pyhor — ${t('nav_home', 'Home')}`}>
           <span className="site-brand__mark" aria-hidden="true">p.</span>

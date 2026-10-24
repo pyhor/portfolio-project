@@ -1,68 +1,73 @@
-import { useEffect, useRef, useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { SHOWCASE_PROJECTS } from '../data/showcaseProjects'
 import { useI18n } from '../context/I18nProvider'
 import { TechStackBadges } from './TechStackBadges'
-import { projectWheelStep } from '../lib/projectScroll'
 
+gsap.registerPlugin(ScrollTrigger)
 const PROJECT_COPY = { jomgo: 'jomgo', 'hotel-website-2023': 'hotel', 'cinema-mgmt-system-2020': 'cinema', 'vet-mgmt-system-2024': 'vet', 'asean-data-2024': 'asean' }
 
 export function ProjectShowcase() {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
   const viewportRef = useRef(null)
+  const trackRef = useRef(null)
+  const triggerRef = useRef(null)
   const indexRef = useRef(0)
-  const wheelRef = useRef({ index: 0, lastEventAt: -Infinity, direction: 0, handled: false })
   const [active, setActive] = useState(0)
   const count = SHOWCASE_PROJECTS.length
-  const stride = () => viewportRef.current.clientWidth + 24
+  const distance = () => Math.max(0, trackRef.current.scrollWidth - viewportRef.current.clientWidth)
+  const stride = () => trackRef.current.firstElementChild.offsetWidth + 24
   const browse = index => {
     const next = Math.max(0, Math.min(count - 1, index))
-    indexRef.current = next
-    wheelRef.current.index = next
-    setActive(next)
-    viewportRef.current.scrollTo({ left: next * stride(), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' })
+    const trigger = triggerRef.current
+    if (!trigger) return
+    const progress = Math.min(distance(), next * stride()) / Math.max(1, distance())
+    window.scrollTo({ top: trigger.start + (trigger.end - trigger.start) * progress, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' })
   }
-  const syncActive = () => {
-    const index = Math.max(0, Math.min(count - 1, Math.round(viewportRef.current.scrollLeft / stride())))
-    indexRef.current = index
-    setActive(index)
-  }
-  useEffect(() => {
-    const viewport = viewportRef.current
-    const wheel = event => {
-      if (event.ctrlKey) return
-      const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY
-      const now = performance.now()
-      if (now - wheelRef.current.lastEventAt > 220) wheelRef.current.index = indexRef.current
-      const previous = wheelRef.current.index
-      const next = projectWheelStep(wheelRef.current, delta, now, count)
-      wheelRef.current = next
-      if (next.consume) event.preventDefault()
-      if (next.index !== previous) {
-        indexRef.current = next.index
-        setActive(next.index)
-        viewport.scrollTo({ left: next.index * (viewport.clientWidth + 24), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' })
-      }
-    }
-    const resize = new ResizeObserver(() => viewport.scrollTo({ left: indexRef.current * (viewport.clientWidth + 24), behavior: 'instant' }))
-    resize.observe(viewport)
-    viewport.addEventListener('wheel', wheel, { passive: false })
-    return () => { resize.disconnect(); viewport.removeEventListener('wheel', wheel) }
-  }, [count])
+  useLayoutEffect(() => {
+    const section = viewportRef.current.closest('.selected-work')
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches
+    const context = gsap.context(() => {
+      const tween = gsap.to(trackRef.current, {
+        x: () => -distance(), ease: 'none',
+        scrollTrigger: {
+          trigger: section, start: 'top top', end: () => `+=${Math.max(innerHeight, distance())}`,
+          pin: true, pinSpacing: true, scrub: reduced ? true : .35,
+          invalidateOnRefresh: true, anticipatePin: 1,
+          onUpdate: self => {
+            const index = self.progress >= .999 ? count - 1 : Math.min(count - 1, Math.round(distance() * self.progress / stride()))
+            indexRef.current = index
+            setActive(index)
+          },
+        },
+      })
+      triggerRef.current = tween.scrollTrigger
+    }, section)
+    const refresh = () => ScrollTrigger.refresh()
+    window.addEventListener('load', refresh)
+    return () => { window.removeEventListener('load', refresh); triggerRef.current = null; context.revert() }
+  }, [lang, count])
 
-  return <div className="project-showcase project-showcase--stepped">
+  return <div className="project-showcase project-showcase--pinned">
     <div className="showcase-controls"><p id="showcase-help">{t('home_showcase_hint')}</p><div>
       <button type="button" disabled={active === 0} onClick={() => browse(indexRef.current - 1)} aria-label={t('showcase_previous')} aria-controls="project-rail"><ArrowLeft size={17} /></button>
       <span className="showcase-count" aria-live="polite">{String(active + 1).padStart(2, '0')} / {String(count).padStart(2, '0')}</span>
       <button type="button" disabled={active === count - 1} onClick={() => browse(indexRef.current + 1)} aria-label={t('showcase_next')} aria-controls="project-rail"><ArrowRight size={17} /></button>
     </div></div>
-    <div className="showcase-viewport" id="project-rail" ref={viewportRef} tabIndex={0} onScroll={syncActive} role="region" aria-label={t('showcase_label')} aria-describedby="showcase-help" onKeyDown={event => {
+    <div className="showcase-viewport" id="project-rail" ref={viewportRef} tabIndex={0} role="region" aria-label={t('showcase_label')} aria-describedby="showcase-help" onFocusCapture={event => {
+      const card = event.target.closest('.showcase-project')
+      if (!card) return
+      viewportRef.current.scrollLeft = 0
+      browse([...trackRef.current.children].indexOf(card))
+    }} onKeyDown={event => {
       if (event.target !== event.currentTarget || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return
       event.preventDefault()
       browse(event.key === 'Home' ? 0 : event.key === 'End' ? count - 1 : indexRef.current + (event.key === 'ArrowRight' ? 1 : -1))
     }}>
-      <div className="showcase-track">
+      <div className="showcase-track" ref={trackRef}>
         {SHOWCASE_PROJECTS.map((project, index) => <article className="showcase-project" key={project.id} data-project={project.id}>
           <img className="showcase-project__background" src={project.backgroundImage || project.media?.[0]} alt="" aria-hidden="true" loading="lazy" />
           <div className="showcase-project__body"><div className="showcase-project__copy">

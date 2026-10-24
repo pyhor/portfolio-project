@@ -46,8 +46,8 @@ export function HomePage() {
 
 
       <section className="page-section selected-work" id="home-projects">
-        <div className="section-heading"><div><p className="eyebrow">01 — {t('studio_selected', 'SELECTED WORK')}</p><h2 className="section-title"><AccentText>{t('studio_work_heading', 'Real projects. Useful outcomes.')}</AccentText></h2></div><div className="section-heading__aside"><p>{t('home_intro_projects')}</p><Link to="/projects" className="text-link">{t('studio_all_projects', 'All projects')} <ArrowUpRight size={18} /></Link></div></div>
-        <ProjectShowcase />
+        <div className="selected-work__layout"><div className="section-heading selected-work__intro"><div><p className="eyebrow">01 — {t('studio_selected', 'SELECTED WORK')}</p><h2 className="section-title"><AccentText>{t('studio_work_heading', 'Real projects. Useful outcomes.')}</AccentText></h2></div><div className="section-heading__aside"><p>{t('home_intro_projects')}</p><Link to="/projects" className="text-link">{t('studio_all_projects', 'All projects')} <ArrowUpRight size={18} /></Link></div></div>
+        <ProjectShowcase /></div>
       </section>
       <BusinessWorkflow />
       <InnovationSection />
