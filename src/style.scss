@@ -1177,3 +1177,58 @@ button:disabled { cursor: default; opacity: .55; }
   .site-header__tools { gap: 0; }
   .site-header .theme-toggle select { max-width: 66px; }
 }
+
+/* Sections share a softer silhouette; components keep their 12px corners. */
+:root { --section-radius: 28px; }
+.page-section, .home-page > section, .home-ending__stage > section,
+.case-section, .contact-block, .github-block { border-radius: var(--section-radius); }
+.featured-projects-stack > article { border-radius: var(--radius); }
+.projects-page .featured-projects-stack > article:not(:first-child) {
+  border-top: 1px solid var(--line);
+  box-shadow: 0 -14px 28px -25px color-mix(in srgb, var(--text) 35%, transparent);
+}
+/* A transparent water bead follows pointer movement at every viewport size. */
+@media (prefers-reduced-motion: no-preference) {
+  .portfolio-cursor[data-visible='true'] { display: block; }
+  .portfolio-cursor .cursor-point { opacity: 0; }
+  .portfolio-cursor .cursor-follower span,
+  .portfolio-cursor:is([data-state]) .cursor-follower span {
+    width: 38px; height: 38px; left: -19px; top: -19px;
+    border-radius: 50%; border: 1px solid #ffffff90;
+    background: radial-gradient(circle at 27% 22%, #ffffffbd 0%, #ffffff38 12%, transparent 36%), linear-gradient(135deg, #ffffff45, #a9d6eb16 48%, #ffffff52);
+    box-shadow: inset 2px 2px 5px #ffffff99, inset -3px -4px 7px #75a6ba55, 0 4px 12px #102b4530;
+    backdrop-filter: blur(3px) saturate(145%);
+    -webkit-backdrop-filter: blur(3px) saturate(145%);
+    color: transparent; font-size: 0;
+    transform: scale(var(--droplet-stretch, 1), var(--droplet-squash, 1));
+  }
+  .portfolio-cursor[data-down='true'] .cursor-follower span { width: 32px; height: 32px; left: -16px; top: -16px; }
+  .portfolio-cursor[data-pointer='touch'] .cursor-follower span { width: 30px; height: 30px; left: -15px; top: -15px; }
+}
+/* Shorter home copy uses tighter vertical rhythm without changing the hero's first-screen layout. */
+.home-page { --chapter-space: clamp(28px, 3vw, 44px); }
+.home-page > .page-section, .home-ending__stage > section { padding-block: var(--chapter-space); }
+.home-page #home-matters, .home-page #home-journey { padding-block: 48px 28px; }
+.home-page .section-heading { margin-bottom: 22px; }
+.home-page .section-title { margin-bottom: 16px; }
+.home-page .home-about__copy > p { margin-bottom: 14px; }
+.home-page .home-stats { margin-top: 18px; }
+.home-page .value-card, .home-page .home-preview-card { padding-block: 18px; }
+.home-page .value-card__top { margin-bottom: 16px; }
+.home-page .workflow-details { padding-block: 22px; min-height: 0; }
+.home-page .workflow-details__copy > p:last-of-type { margin-bottom: 12px; }
+.home-page .home-preview-card p { margin-bottom: 12px; }
+.home-page .showcase-project__body { padding: 18px; }
+.home-page .showcase-project__body > p { min-height: 0; margin-bottom: 10px; }
+.home-page .showcase-project__value { line-height: 1.6; }
+.home-page .engineering-title-grid { margin-bottom: 20px; }
+.home-page #home-why { gap: 24px; }
+@media (max-width: 760px) {
+  .home-page #home-matters, .home-page #home-journey { padding-block: 32px 24px; }
+}
+
+.portfolio-cursor[popover] { margin: 0; padding: 0; border: 0; width: auto; height: auto; overflow: visible; background: transparent; }
+.portfolio-cursor::backdrop { background: transparent; pointer-events: none; }
+@media (prefers-reduced-motion: no-preference) {
+  html:has(dialog[open]) .portfolio-cursor[data-visible='true'] { display: block; }
+}

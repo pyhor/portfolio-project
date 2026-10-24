@@ -6,6 +6,8 @@ import { useI18n } from '../context/I18nProvider'
 import { TechStackBadges } from './TechStackBadges'
 import { loopCardWidth, loopPosition } from '../lib/showcase'
 
+const PROJECT_COPY = { jomgo: 'jomgo', 'hotel-website-2023': 'hotel', 'cinema-mgmt-system-2020': 'cinema', 'vet-mgmt-system-2024': 'vet', 'asean-data-2024': 'asean' }
+
 export function ProjectShowcase() {
   const { t, lang } = useI18n()
   const viewportRef = useRef(null)
@@ -112,8 +114,8 @@ export function ProjectShowcase() {
           <div className="showcase-project__body">
             <span className="eyebrow">0{index + 1} / {t(project.categoryKey)}</span>
             <h3><Link to={project.casePath || '/projects'} data-cursor="view">{t(project.id === 'jomgo' ? 'home_jomgo_title' : project.id === 'asean-data-2024' ? 'home_asean_title' : project.titleKey)}</Link></h3>
-            <p>{t(`home_${['jomgo', 'hotel', 'cinema', 'vet', 'asean'][index]}_intro`)}</p>
-            <p className="showcase-project__value"><mark>{t(`home_${['jomgo', 'hotel', 'cinema', 'vet', 'asean'][index]}_benefit`)}</mark></p>
+            <p>{t(`home_${PROJECT_COPY[project.id]}_intro`)}</p>
+            <p className="showcase-project__value"><mark>{t(`home_${PROJECT_COPY[project.id]}_benefit_compact`)}</mark></p>
             <TechStackBadges techString={t(project.techKey)} />
             <div className="showcase-project__links">{project.githubUrl && <a href={project.githubUrl} target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={14} /></a>}{project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noreferrer">{t(project.id === 'asean-data-2024' ? 'home_project_presentation_short' : 'home_project_live_short')} <ArrowUpRight size={14} /></a>}<Link to={project.casePath || '/projects'} data-cursor="view">{t('home_project_details_short')}<ArrowUpRight size={14} /></Link></div>
           </div>
